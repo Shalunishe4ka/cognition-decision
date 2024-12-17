@@ -1,0 +1,16 @@
+/* Текст вызова */
+.challenge-text {
+    font-size: 5rem; /* Увеличен для читаемости */
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-family: 'Invitation', sans-serif;
+    font-style: italic;
+  }
+  
+  .challenge-text-sign {
+    font-family: "Reggae One", sans-serif;
+    font-size: 5rem;
+    color: white; /* Подчёркиваемый элемент */
+    margin-left: 1.2rem;
+  }

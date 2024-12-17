@@ -1,0 +1,56 @@
+.App-header {
+  /* width: 100%; */
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #0b001a;
+}
+
+.App-header a {
+  color: #ffd700;
+  text-decoration: none;
+}
+
+.App-header a:hover {
+  color: white;
+}
+
+.App-header ul li.active a {
+  color: white; /* Цвет для активного пункта */
+}
+
+.App-header ul li.active:hover a {
+  color: #ffd700;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  font-size: 1.7rem;
+  color: #ffd700;
+}
+
+nav ul li:hover {
+  color: white;
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icons a {
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.social-icons a:hover {
+  color: #ffd700;
+}

@@ -1,0 +1,144 @@
+/* Общая стилизация страницы */
+.start-page {
+  background-color: #0e0a20; /* Тёмно-синий фон */
+  color: #ffe81c; /* Жёлтый цвет текста */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  font-family: "Arial", sans-serif;
+  overflow: hidden; /* Для предотвращения появления прокрутки */
+}
+
+/* Заголовок с иконками */
+.header {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.header a {
+  margin-left: 15px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.header a:hover {
+  transform: scale(1.2);
+  color: #ffffff;
+}
+
+.code-text {
+  height: 180px;
+  margin-top: 5px;
+  color: rgba(255, 232, 28, 0);
+  -webkit-text-stroke: 7px rgba(255, 232, 28, 1); /* Толщина и цвет обводки */
+  font: 400 180px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
+    sans-serif;
+}
+
+.perspective-container {
+  display: flex;
+  margin-top: 2rem;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem; /* Расстояние между словами */
+  perspective: 2500px; /* Увеличенная перспектива для глубины */
+  letter-spacing: -5px;
+}
+
+.perspective-text {
+  font-size: 8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+  transform-origin: top center; /* Точка трансформации — верхняя часть текста */
+  color: #ffe81c;
+}
+
+.perspective-text:first-child {
+  transform: rotateX(60deg); /* "Лежит" под углом и слегка сужается */
+}
+
+.perspective-text:last-child {
+  transform: rotateX(60deg); /* То же, но с противоположным углом */
+}
+
+/* Кнопки */
+.button-container {
+  display: flex;
+  max-width: 100%;
+  gap: 50px;
+  white-space: nowrap;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.play-button {
+  background-color: rgba(255, 232, 28, 1);
+  color: rgba(0, 0, 0, 1);
+  font-weight: 700;
+  padding: 11px 70px;
+  border: 1px solid rgba(255, 232, 28, 1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.play-button:hover {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.info-button {
+  overflow: hidden;
+  background-color: transparent;
+  color: rgba(255, 232, 28, 1);
+  font-weight: 300;
+  padding: 11px 67px;
+  border: 3px solid rgba(255, 232, 28, 1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.info-button:hover {
+  color: white;
+  border: 3px solid white;
+  transition: all 0.3s ease;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes perspectiveFade {
+  from {
+    transform: perspective(500px) rotateX(40deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(500px) rotateX(25deg);
+    opacity: 1;
+  }
+}
