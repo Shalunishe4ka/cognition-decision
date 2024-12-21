@@ -5,10 +5,10 @@ import "./StartPage.css";
 const ButtonGroup = () => {
   return (
     <div className="button-container">
-      <Link className="play-link" to={"./ChallengeComponent"}>
+      <Link className="play-link" to={"/challengecomponent"}>
         <button className="play-button">Play</button>
       </Link>
-      <Link className="rules-link" to={"./rules"}>
+      <Link className="rules-link" to={"/rules"}>
         <button className="info-button">Info</button>
       </Link>
     </div>

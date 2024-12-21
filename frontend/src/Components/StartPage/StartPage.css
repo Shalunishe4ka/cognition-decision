@@ -1,71 +1,68 @@
 /* Общая стилизация страницы */
 .start-page {
-  background-color: #0e0a20; /* Тёмно-синий фон */
   color: #ffe81c; /* Жёлтый цвет текста */
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   padding: 20px;
   text-align: center;
-  font-family: "Arial", sans-serif;
   overflow: hidden; /* Для предотвращения появления прокрутки */
 }
 
-/* Заголовок с иконками */
-.header {
+.content {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   width: 100%;
-  padding: 10px 20px;
-}
-
-.header a {
-  margin-left: 15px;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.header a:hover {
-  transform: scale(1.2);
-  color: #ffffff;
 }
 
 .code-text {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
   height: 180px;
-  margin-top: 5px;
   color: rgba(255, 232, 28, 0);
   -webkit-text-stroke: 7px rgba(255, 232, 28, 1); /* Толщина и цвет обводки */
   font: 400 180px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
     sans-serif;
+  margin-bottom: 1.5rem;
 }
 
 .perspective-container {
   display: flex;
-  margin-top: 2rem;
   justify-content: center;
-  align-items: center;
-  gap: 4rem; /* Расстояние между словами */
-  perspective: 2500px; /* Увеличенная перспектива для глубины */
-  letter-spacing: -5px;
+  align-items: baseline;
+  gap: 8rem; /* Расстояние между словами */
+  perspective: 800px; /* Глубина перспективы */
+
+  margin-top: 2rem; /* Небольшой отступ сверху */
+  height: 190px;
+  margin-bottom: 6.5rem;
 }
 
 .perspective-text {
-  font-size: 8rem;
-  font-weight: bold;
+  font-size: 8.5rem; /* Уменьшаем размер текста */
   text-transform: uppercase;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-  transform-origin: top center; /* Точка трансформации — верхняя часть текста */
-  color: #ffe81c;
+  color: #ffe81c; /* Цвет текста */
+  line-height: 90%;
+  transform-origin: top center; /* Точка трансформации сверху */
+  font-family: "Anton", sans-serif;
 }
 
 .perspective-text:first-child {
-  transform: rotateX(60deg); /* "Лежит" под углом и слегка сужается */
+  transform: scaleY(2.3) perspective(800px) rotateX(50deg) skewX(-10deg)
+    translateX(5%) translateY(-10%);
 }
 
 .perspective-text:last-child {
-  transform: rotateX(60deg); /* То же, но с противоположным углом */
+  transform: scaleY(2.3) perspective(800px) rotateX(50deg) skewX(10deg)
+    translateX(-5%) translateY(-10%);
 }
+
+
+
+
 
 /* Кнопки */
 .button-container {
@@ -81,7 +78,8 @@
   background-color: rgba(255, 232, 28, 1);
   color: rgba(0, 0, 0, 1);
   font-weight: 700;
-  padding: 11px 70px;
+  font-size: 2.25rem;
+  padding: 9.5px 81px;
   border: 1px solid rgba(255, 232, 28, 1);
   transition: all 0.3s ease;
   cursor: pointer;
@@ -99,10 +97,11 @@
   background-color: transparent;
   color: rgba(255, 232, 28, 1);
   font-weight: 300;
-  padding: 11px 67px;
+  padding: 7.5px 84.5px;
   border: 3px solid rgba(255, 232, 28, 1);
   transition: all 0.3s ease;
   cursor: pointer;
+  font-size: 2.25rem;
 }
 
 .info-button:hover {

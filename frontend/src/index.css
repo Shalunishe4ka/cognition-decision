@@ -43,6 +43,20 @@ body {
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'MoonDance';
+  src: url('./assets/MoonDance-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Anton';
+  src: url('./assets/Anton-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

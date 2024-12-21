@@ -3,8 +3,8 @@ import React from "react";
 export const CognitionDecisionText = () => {
   return (
     <div className="perspective-container">
-      <span className="perspective-text">COGNITION</span>
-      <span className="perspective-text">DECISION</span>
+      <p className="perspective-text">COGNITION</p>
+      <p className="perspective-text">DECISION</p>
     </div>
   );
 };
