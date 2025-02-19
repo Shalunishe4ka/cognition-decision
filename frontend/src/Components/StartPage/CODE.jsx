@@ -3,8 +3,10 @@ import React from "react";
 export const CODE = () => {
   return (
     <div className="code-text">
-      C<h1 style={{ fontSize: "168px" }}>о</h1>D
-      <h1 style={{ fontSize: "128px" }}>Е</h1>
+      <h1 className="C">C</h1>
+      <h1 className="O">O</h1>
+      <h1 className="D">D</h1>
+      <h1 className="E">E</h1>
     </div>
   );
 };
