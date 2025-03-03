@@ -1,9 +1,9 @@
 .App-header {
-  /* width: 100%; */
   display: flex;
   justify-content: space-between;
   padding: 1rem;
   background-color: #0b001a;
+  align-items: center;
 }
 
 .App-header a {
@@ -53,4 +53,46 @@ nav ul li:hover {
 
 .social-icons a:hover {
   color: #ffd700;
+}
+
+
+/* Адаптивность для экранов до 768px (планшеты) */
+@media screen and (max-width: 768px) {
+  .App-header {
+    padding: 0.75rem;
+  }
+
+  nav ul {
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    align-content: center;
+  }
+
+  nav ul li {
+    font-size: 1.5rem;
+  }
+
+  .social-icons {
+    margin-top: 0.5rem;
+  }
+}
+
+/* Адаптивность для экранов до 480px (телефоны) */
+@media screen and (max-width: 480px) {
+  .App-header {
+    padding: 0.5rem;
+  }
+
+  nav ul {
+    gap: 0.5rem;
+  }
+
+  nav ul li {
+    font-size: 1.2rem;
+  }
+
+  .social-icons a {
+    font-size: 1.2rem;
+  }
 }

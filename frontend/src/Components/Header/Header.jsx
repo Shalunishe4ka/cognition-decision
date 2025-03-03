@@ -3,8 +3,9 @@ import "./Header.css";
 import SocialIcons from "./SocialIcons";
 import { Link, useLocation } from "react-router-dom";
 
-const Header = () => {
-  const location = useLocation(); // Используем хук useLocation для получения текущего URL
+const Header = ({ headerShow }) => {
+  const location = useLocation();
+  if (!headerShow) return null
   return (
     <header className="App-header">
       <SocialIcons />
@@ -13,9 +14,8 @@ const Header = () => {
           <li className={location.pathname === "/" ? "active" : ""}>
             <Link to="/">Main</Link>
           </li>
-          {/* <li>Контакты</li> */}
           <li>
-            <Link to="/">Project</Link>
+            <Link to="/">Registration</Link>
           </li>
         </ul>
       </nav>

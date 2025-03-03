@@ -5,7 +5,8 @@ import { CognitionDecisionText } from "./CognitionDecisionText";
 import { CODE } from "./CODE";
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText";
 
-const StartPage = () => {
+const StartPage = ({setHeaderShow}) => {
+  setHeaderShow(true)
   return (
     <div className="start-page">
       <div className="content">

@@ -1,16 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./StartPage.css";
 
 const ButtonGroup = () => {
+  const navigate = useNavigate();
   return (
     <div className="button-container">
-      <Link className="play-link" to={"/challengecomponent"}>
-        <button className="play-button">Play</button>
-      </Link>
-      <Link className="rules-link" to={"/rules"}>
-        <button className="info-button">Info</button>
-      </Link>
+      <button className="play-button" onClick={() => navigate("/challengecomponent")}>
+        <Link className="play-link" to={"/challengecomponent"}>
+          Play
+        </Link>
+      </button>
+      <button className="info-button" onClick={() => navigate("/rules")}>
+        <Link className="rules-link" to={"/rules"}>
+          Info</Link>
+      </button>
     </div>
   );
 };

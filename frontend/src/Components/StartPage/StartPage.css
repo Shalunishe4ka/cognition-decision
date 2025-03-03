@@ -6,24 +6,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
   text-align: center;
-  overflow: hidden;
-  /* Для предотвращения появления прокрутки */
+  overflow: hidden !important; /* Для предотвращения появления прокрутки */
 }
 
 .content {
   display: flex;
   flex-direction: column;
   width: 100%;
+  overflow: hidden !important; /* Для предотвращения появления прокрутки */
+
 }
 
 .code-text {
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-  height: auto;
-  /* Изменяем высоту на автоматическую */
+  height: 180px;
+  margin-top: 5px;
   color: rgba(255, 232, 28, 0);
   -webkit-text-stroke: 7px rgba(255, 232, 28, 1);
   /* Толщина и цвет обводки */
@@ -37,63 +34,16 @@
   line-height: 1;
   font: 400 180px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
     sans-serif;
-  /* Убираем лишние отступы между буквами */
 }
 
-.C {
-  font-size: 220px;
-  height: auto;
+#code-o{
+  font: 400 168px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
+  sans-serif;
 }
 
-.O {
-  font-size: 128px;
-  height: auto;
-}
-
-.D {
-  font-size: 220px;
-  height: auto;
-}
-
-.E {
-  font-size: 128px;
-  height: auto;
-}
-
-.perspective-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8rem;
-  /* Расстояние между словами */
-  perspective: 800px;
-  /* Глубина перспективы */
-  margin-top: 2rem;
-  /* Небольшой отступ сверху */
-  height: 250px;
-  /* Изменяем высоту на автоматическую */
-  margin-bottom: -1rem;
-}
-
-.perspective-text {
-  font-size: 8.5rem;
-  /* Размер текста */
-  text-transform: uppercase;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-  color: #ffe81c;
-  /* Цвет текста */
-  line-height: 1 !important;
-  transform-origin: top center;
-  /* Точка трансформации сверху */
-  font-family: "Anton", sans-serif;
-}
-
-.perspective-text:first-child {
-  transform: scaleY(2.3) perspective(800px) rotateX(50deg) skewX(-10deg) translateX(5%) translateY(-50%);
-}
-
-.perspective-text:last-child {
-  transform: scaleY(2.3) perspective(800px) rotateX(50deg) skewX(10deg) translateX(-5%) translateY(-50%);
+#code-E{
+  font: 400 128px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
+  sans-serif;
 }
 
 /* Кнопки */
@@ -108,297 +58,149 @@
 
 .play-button {
   background-color: rgba(255, 232, 28, 1);
-  color: rgba(0, 0, 0, 1);
-  font-weight: 700;
-  font-size: 2.25rem;
   padding: 9.5px 81px;
   border: 1px solid rgba(255, 232, 28, 1);
   transition: all 0.3s ease;
   cursor: pointer;
+  max-width: 220px;
+  display: flex;
+  justify-content: center;
 }
 
 .play-button:hover {
   background-color: transparent;
   border: 1px solid white;
-  color: white;
   transition: all 0.3s ease;
 }
 
 .info-button {
   overflow: hidden;
   background-color: transparent;
-  color: rgba(255, 232, 28, 1);
-  font-weight: 300;
-  padding: 7.5px 84.5px;
+  padding: 10px 84.5px;
   border: 3px solid rgba(255, 232, 28, 1);
   transition: all 0.3s ease;
   cursor: pointer;
-  font-size: 2.25rem;
+  max-width: 220px;
+  display: flex;
+  justify-content: center;
 }
 
 .info-button:hover {
-  color: white;
   border: 3px solid white;
   transition: all 0.3s ease;
 }
 
-/* Анимации */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+.rules-link {
+  color: rgba(255, 232, 28, 1);
+  font-weight: 300;
+  font-size: 2.25rem;
+}
+.play-link {
+  color: rgba(0, 0, 0, 1);
+  font-weight: 700;
+  font-size: 2.25rem;  
 }
 
-@keyframes slideIn {
-  from {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.info-button:hover .rules-link, .play-button:hover .play-link{
+  color: white;
+  transition: all 0.3s ease;
 }
 
-@keyframes perspectiveFade {
-  from {
-    transform: perspective(500px) rotateX(40deg);
-    opacity: 0;
-  }
-
-  to {
-    transform: perspective(500px) rotateX(25deg);
-    opacity: 1;
-  }
+.mainImage {
+  aspect-ratio: 4.72;
+  object-fit: contain;
+  object-position: center;
+  width: 1027px;
+  max-width: 100%;
 }
 
-/* Медиа-запросы для адаптации */
-@media (max-width: 1200px) {
-  .C {
-    font-size: 180px;
-  }
+.perspective-container {
+  margin-bottom: 70px;
+  margin-top: 47px;
 
-  .O {
-    font-size: 140px;
-  }
-
-  .D {
-    font-size: 180px;
-  }
-
-  .E {
-    font-size: 140px;
-  }
-
-  .perspective-text {
-    font-size: 7rem;
-  }
-
-  .perspective-container {
-    gap: 6rem;
-    margin-bottom: -1rem;
-  }
-
-  .button-container {
-    gap: 30px;
-  }
-
-  .play-button,
-  .info-button {
-    font-size: 2rem;
-    padding: 8px 60px;
-  }
 }
 
-@media (max-width: 992px) {
+
+
+/* Адаптивные стили для планшетов (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .start-page {
+    position: absolute;
+    top: 15%;
+  }
   .code-text {
-    margin-bottom: 3rem;
-  }
-
-  .C {
-    font-size: 160px;
-  }
-
-  .O {
-    font-size: 120px;
-  }
-
-  .D {
-    font-size: 160px;
-  }
-
-  .E {
-    font-size: 120px;
-  }
-
-  .perspective-text {
-    font-size: 6rem;
-  }
-
-  .perspective-container {
-    gap: 4rem;
-    margin-bottom: 2rem;
+    font: 400 100px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica, sans-serif;
     height: 100px;
+    -webkit-text-stroke: 4px rgba(255, 232, 28, 1);
+    margin-top: 3px;
+  }
+  
+  #code-o{
+    font: 400 80px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica, sans-serif;
+  }
+
+  #code-E{
+    font: 400 60px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica, sans-serif;
   }
 
   .button-container {
     gap: 20px;
   }
-
+  
   .play-button,
   .info-button {
+    padding: 8px 40px;
+    max-width: 180px;
+  }
+  
+  .rules-link,
+  .play-link {
     font-size: 1.8rem;
   }
-
-  .info-button {
-    padding: 7px 50px;
-  }
-
-  .play-button {
-    padding: 10px 48px;
-  }
-}
-
-@media (max-width: 768px) {
-  .code-text {
-    margin-bottom: 2rem;
-  }
-
-  .C {
-    font-size: 140px;
-  }
-
-  .O {
-    font-size: 100px;
-  }
-
-  .D {
-    font-size: 140px;
-  }
-
-  .E {
-    font-size: 100px;
-  }
-
-  .perspective-text {
-    font-size: 5rem;
-  }
-
+  
   .perspective-container {
-    gap: 3rem;
-    margin-bottom: 1rem;
-    height: 100px;
+    margin-bottom: 50px;
+    margin-top: 30px;
   }
-
-  .button-container {
-    gap: 15px;
-  }
-
-  .play-button,
-  .info-button {
-    font-size: 1.6rem;
-  }
-
-  .info-button {
-    padding: 6px 40px;
-
-  }
-
-  .play-button {
-    padding: 8px 38px;
-  }
-
-
 }
 
-@media (max-width: 576px) {
+/* Адаптивные стили для телефонов (max-width: 480px) */
+@media screen and (max-width: 480px) {
   .start-page {
-    justify-content: center;
-    height: 100vh;
+    position: absolute;
+    top: 20%;
   }
   .code-text {
-    -webkit-text-stroke: 6px rgba(255, 232, 28, 1);
+    font: 400 80px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica, sans-serif;
+    height: 80px;
+    -webkit-text-stroke: 3px rgba(255, 232, 28, 1);
+    margin-top: 2px;
   }
-  .content {
-    position: relative;
-    top: -20%;
-  }
-
-  .code-text {
-    margin-bottom: 1rem;
+  #code-o{
+    font: 400 80px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica, sans-serif;
   }
 
-  .C {
-    font-size: 120px;
+  #code-E{
+    font: 400 60px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica, sans-serif;
   }
-
-  .O {
-    font-size: 80px;
-  }
-
-  .D {
-    font-size: 120px;
-  }
-
-  .E {
-    font-size: 80px;
-  }
-
-  .perspective-text {
-    font-size: 3.25rem;
-  }
-
-  .perspective-container {
-    gap: 1.75rem;
-    margin-bottom: 1rem;
-    height: 100px;
-  }
-
+  
   .button-container {
     gap: 10px;
   }
-
+  
   .play-button,
   .info-button {
-    font-size: 1.4rem;
-    /* padding: 5px 30px; */
+    padding: 6px 30px;
+    max-width: 150px;
   }
-
-  .info-button {
-    padding: 5px 30px;
-
+  
+  .rules-link,
+  .play-link {
+    font-size: 1.5rem;
   }
-
-  .play-button {
-    padding: 7px 28.5px;
-  }
-}
-
-@media (max-width: 400px) { 
-  .perspective-text {
-    font-size: 2.75rem;
-  }
-  .code-text {
-    -webkit-text-stroke: 2px rgba(255, 232, 28, 1);
-  }
-  .C {
-    font-size: 80px;
-  }
-
-  .O {
-    font-size: 40px;
-  }
-
-  .D {
-    font-size: 80px;
-  }
-
-  .E {
-    font-size: 40px;
+  
+  .perspective-container {
+    margin-bottom: 30px;
+    margin-top: 20px;
   }
 }

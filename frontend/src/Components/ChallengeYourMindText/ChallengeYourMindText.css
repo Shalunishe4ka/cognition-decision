@@ -1,24 +1,45 @@
 .challenge-text {
-  font-size: clamp(3rem, 6vw, 6rem);
-  /* минимальный, оптимальный и максимальный размер */
-  font-weight: 400;
-  color: #ffffff;
-  font-family: 'MoonDance', sans-serif;
-  font-style: italic;
-  text-align: center;
-  margin: 0 auto;
+    font-size: 6rem; /* Увеличен для читаемости */
+    font-weight: 400;
+    color: #ffffff;
+    font-family: 'MoonDance', sans-serif;
+    font-style: italic;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0 10px 0;
+  }
+  
+  .challenge-text-sign {
+    font-family: "Reggae One", sans-serif;
+    font-size: 5rem;
+    color: white; /* Подчёркиваемый элемент */
+    margin-left: 1.2rem;
+  }
+
+
+  /* Адаптивность для планшетов (макс. ширина 768px) */
+@media screen and (max-width: 768px) {
+  .challenge-text {
+    font-size: 4rem;
+    margin: 20px 0 5px 0;
+  }
+  
+  .challenge-text-sign {
+    font-size: 3rem;
+    margin-left: 0.8rem;
+  }
 }
 
-.challenge-text-sign {
-  font-family: "Reggae One", sans-serif;
-  font-size: clamp(2.5rem, 5vw, 5rem);
-  color: white;
-  margin-left: clamp(0.5rem, 1.2vw, 1.2rem);
-}
-
-@media (max-width: 400px) {
-  .challenge-text, .challenge-text-sign {
-    font-size: 2.25rem;
-    margin-bottom: 2rem;
+/* Адаптивность для телефонов (макс. ширина 480px) */
+@media screen and (max-width: 480px) {
+  .challenge-text {
+    font-size: 3rem;
+    margin: 15px 0 5px 0;
+  }
+  
+  .challenge-text-sign {
+    font-size: 2.5rem;
+    margin-left: 0.5rem;
   }
 }
