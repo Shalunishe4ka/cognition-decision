@@ -25,15 +25,8 @@
   -webkit-text-stroke: 7px rgba(255, 232, 28, 1);
   /* Толщина и цвет обводки */
   margin-bottom: 1.5rem;
-}
-
-.C,
-.O,
-.D,
-.E {
-  line-height: 1;
   font: 400 180px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
-    sans-serif;
+  sans-serif;
 }
 
 #code-o{

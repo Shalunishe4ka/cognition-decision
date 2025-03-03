@@ -1,0 +1,242 @@
+/* Контейнер основной карточки */
+.planet-card {
+    position: absolute;
+    justify-content: center;
+    align-content: center;
+    top: 10%;
+    left: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+    width: 80%;
+    max-width: 450px;
+  }
+  
+  /* Блок сегмента */
+  .segment-domen {
+    text-align: left;
+    z-index: 23;
+    background-color: rgb(0, 0, 0);
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-around;
+    margin-top: 20px;
+    top: 5%;
+    left: 5%;
+    bottom: 5%;
+    right: 5%;
+    padding: 15px;
+    border: 1px solid rgb(194, 194, 194);
+  }
+  
+  .segment-domen-header {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    top: 2%;
+  }
+  
+  .segment-domen-planet {
+    display: flex;
+    gap: 20px;
+  }
+  
+  /* Стили для изображения планеты (выбрана современная версия) */
+  .planet-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  /* Группа кнопок в модальном окне */
+  .Button-Group-Modal {
+    display: flex;
+    align-items: center;
+    height: 40px;
+  }
+  
+  .return-main {
+    border: 3px solid white;
+    padding: 5px 15px;
+    border-radius: 10px;
+    max-height: 40px;
+  }
+  
+  /* Контейнер карточек сегмента */
+  .segment-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+    text-align: center;
+    overflow-x: auto;
+  }
+  
+  .segment-card {
+    width: 215px;
+    margin: 10px;
+    transform-origin: bottom center;
+    height: 300px;
+  }
+  
+  /* Стили для заголовка карточки */
+  .card-header {
+    height: 47px;
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat";
+  }
+  
+  .card-header p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  /* Состояния зума карточки */
+  .zoomed .card-body {
+    position: relative !important;
+    top: 15%;
+    flex: none;
+    width: 25%;
+    background-color: #6c757d9c;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+  
+  .zoomed .card-header {
+    position: relative;
+    top: 15%;
+    flex: none;
+    background-color: #6c757d9c;
+    width: 25%;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    color: rgb(255, 218, 150);
+  }
+  
+  .zoomed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(2px) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(1.5);
+    transition: transform 0.5s ease, background 0.5s ease;
+  }
+  
+  .unzoomed {
+    transform: scale(1);
+    transition: transform 0.7s ease;
+  }
+  
+  /* Описание карточки */
+  .card-description {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ccc;
+  }
+  
+  /* Объединённое оформление футера карточки */
+  .card-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin-top: 10px;
+    height: 45px;
+  }
+  
+  /* Кнопки действия */
+  .btn-CLOSE {
+    position: absolute;
+    top: -9%;
+    left: 90%;
+  }
+  
+  .btn-CHECK {
+    background-color: black;
+    border: 3px solid;
+    padding: 5px 15px;
+    border-radius: 10px;
+    position: absolute;
+    left: 4.7em;
+    top: 85%;
+    align-self: flex-end;
+  }
+  
+  /* Стили для модального окна */
+  .modal-content-custom {
+    background: #1d1d1d;
+    border-radius: 15px;
+    border: none;
+    color: #fff;
+  }
+  
+  .modal-header-custom {
+    border-bottom: none;
+  }
+  
+  .modal-header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* Контейнер карточек в модальном окне */
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+  }
+  
+  /* Стили для отдельной карточки */
+  .card-item {
+    background: #2a2a2a;
+    border-radius: 10px;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+  }
+  
+  .card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .card-item.zoomed {
+    transform: scale(1.2);
+    z-index: 100;
+  }
+  
+  /* Стили для тела карточки */
+  .card-body {
+    margin-top: 10px;
+  }
+  
+  .card-body img {
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Контейнер для действий над карточкой */
+  .card-action {
+    margin-top: 10px;
+  }
+  

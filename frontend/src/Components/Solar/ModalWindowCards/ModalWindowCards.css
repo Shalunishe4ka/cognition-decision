@@ -1,0 +1,136 @@
+/* Основной контейнер модального окна */
+.modal-content-custom {
+  background-color: #000;
+  border: 1px solid rgb(194, 194, 194);
+  color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  position: relative;
+  width: 1500px; /* Фиксированная ширина */
+  max-width: 90%;
+  height: 780px; /* Фиксированная высота */
+  margin: auto;
+}
+
+/* Применяем шрифт ко всем текстовым элементам внутри модального окна */
+.modal-content-custom,
+.modal-content-custom * {
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Центрирование модального окна */
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none !important;
+}
+
+/* Заголовок модального окна */
+.modal-header-custom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  position: relative;
+}
+
+/* Блок с информацией о планете */
+.modal-header-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Изображение планеты */
+.planet-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 25px;
+  object-fit: cover;
+}
+
+/* Кнопка закрытия — всегда в правом верхнем углу */
+.close-cardList-modal-window {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+/* Модальное тело с фиксированной высотой и прокруткой */
+.modal-body-custom {
+  height: calc(100% - 160px); /* резервируем место для заголовка */
+  overflow-y: auto;
+}
+
+/* Контейнер карточек, выравнивание по центру и распределение по рядам */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+  height: -webkit-fill-available;
+}
+
+/* Карточка */
+.card-item {
+  background: #2a2a2a;
+  border-radius: 10px;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.card-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.card-item.zoomed {
+  transform: scale(1.2);
+  z-index: 100;
+}
+
+/* Заголовок карточки */
+.card-header {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Тело карточки */
+.card-body {
+  margin-top: 10px;
+}
+
+.card-body img {
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  height: auto;
+}
+
+/* Описание карточки */
+.card-description {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+/* Футер карточки */
+.card-footer {
+  margin-top: 10px;
+}
+
+/* Контейнер для кнопок действий */
+.card-action {
+  margin-top: 10px;
+}

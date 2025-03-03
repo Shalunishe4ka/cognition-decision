@@ -7,6 +7,7 @@ const ChallengeComponent = ({ setHeaderShow }) => {
   setHeaderShow(false);
   const [showVideo, setShowVideo] = useState(false);
   const [showText, setShowText] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const navigate = useNavigate();
   const videoRef = useRef(null);
 
@@ -15,25 +16,19 @@ const ChallengeComponent = ({ setHeaderShow }) => {
       setShowText(true);
     }, 1500);
 
+    // Ждем таймер, и если видео уже загружено, делаем его видимым
     const videoTimer = setTimeout(() => {
-      setShowVideo(true);
-      setShowText(false);
+      if (videoLoaded) {
+        setShowVideo(true);
+        setShowText(false);
+      }
     }, 4500);
 
     return () => {
       clearTimeout(textTimer);
       clearTimeout(videoTimer);
     };
-  }, []);
-
-  // Опционально: попытка перевести видео в полноэкранный режим
-  useEffect(() => {
-    if (showVideo && videoRef.current && videoRef.current.requestFullscreen) {
-      videoRef.current.requestFullscreen().catch(err => {
-        console.warn("Fullscreen request failed:", err);
-      });
-    }
-  }, [showVideo]);
+  }, [videoLoaded]);
 
   const handleVideoEnd = () => {
     navigate("/solar");
@@ -78,23 +73,29 @@ const ChallengeComponent = ({ setHeaderShow }) => {
         </div>
       </section>
 
-      {showVideo && (
-        <div className="videoOverlay">
-          <video
-            ref={videoRef}
-            // src="premain.mp4"
-            src="https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Videos/premain.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9WaWRlb3MvcHJlbWFpbi5tcDQiLCJpYXQiOjE3NDEwMTcxOTEsImV4cCI6MzMxNzgxNzE5MX0.HPJtYaidwA-GwRn84lc88HrWerfoI_jxmokW4zxEJdg"
-            className="fullScreenVideo"
-            onEnded={handleVideoEnd}
-            autoPlay
-            muted
-            // playsInline
-            webkit-playsinline="true"
-          />
-        </div>
-      )}
+      {/* Видео рендерится всегда, но его видимость управляется через класс */}
+      <div className="videoOverlay">
+        <video
+          ref={videoRef}
+          src="https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Videos/Intro%20Video.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9WaWRlb3MvSW50cm8gVmlkZW8ubXA0IiwiaWF0IjoxNzQxMDI0ODYxLCJleHAiOjMzMTc4MjQ4NjF9.1X-HjKe4x6fvYhZJGa3ETM6wEgwBYuurHNPAXgv7CpQ"
+          preload="auto"
+          className={`fullScreenVideo ${showVideo ? "visible" : "hidden"}`}
+          onCanPlay={() => setVideoLoaded(true)}
+          onEnded={handleVideoEnd}
+          autoPlay
+          muted
+          playsInline
+          webkit-playsinline="true"
+        />
+        {showVideo && (
+          <button className="skipButton" onClick={handleVideoEnd}>
+            Skip Video
+          </button>
+        )}
+      </div>
     </main>
   );
 };
 
 export default ChallengeComponent;
+

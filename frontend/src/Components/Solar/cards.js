@@ -220,19 +220,19 @@ export const cardcreds = {
   Green: {
     name: "Green",
     desc: "Жизнь в окружении природы / Сбережение природы / Качество среды обитания.",
-    src: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Green.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9HcmVlbi5qcGciLCJpYXQiOjE3NDEwMTg4NTcsImV4cCI6MzMxNzgxODg1N30.RmFLPQc6YbrTnA-iggPfWrfuaODG0O9g0vj72XLl16Y",
+    src: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Green/Card%20Desc%20Images/Green.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9HcmVlbi9DYXJkIERlc2MgSW1hZ2VzL0dyZWVuLmpwZyIsImlhdCI6MTc0MTAyMjQ0NSwiZXhwIjozMzE3ODIyNDQ1fQ.lG4OwNZgQvORGgTikAjNJiLtwnh3qFm8Mis01D-Y7ok",
     color: "#52ffbd",
   },
   Orange: {
     name: "Orange",
     desc: "Совершенное общественное устройство / Баланс социальных факторов / Настройка институционального комплекса.",
-    src: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Oragne.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFnbmUucG5nIiwiaWF0IjoxNzQxMDE4ODY5LCJleHAiOjMzMTc4MTg4Njl9.w2e2_ShrjkY-yb7dTaelwDWitGLZKvP_lCh20kWg6_E",
+    src: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Oragne.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvT3JhZ25lLnBuZyIsImlhdCI6MTc0MTAyNjMzOSwiZXhwIjozMzE3ODI2MzM5fQ.XPHzQCyIwMleLfLHt43t_gCQGNfAWG9eVytXbpIRfm0",
     color: "#ff8b2b",
   },
   Violet: {
     name: "Violet",
     desc: "Устойчивое жизнеобеспечение / Сбережение природы / Надежность и безопасность.",
-    src: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Violet.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9WaW9sZXQucG5nIiwiaWF0IjoxNzQxMDE4ODg0LCJleHAiOjMzMTc4MTg4ODR9.HAQvE6l68VLXYU1SpctRbTOBPMb1qZIKa3ZogLg3JoU",
+    src: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Violet/Violet.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9WaW9sZXQvVmlvbGV0LnBuZyIsImlhdCI6MTc0MTAyNjMwNiwiZXhwIjozMzE3ODI2MzA2fQ._qe7CGRwKWLapAVuWtbOdyjleD87u9XGk3-iOU9sxNw",
     color: "#eea8ff",
   },
 };

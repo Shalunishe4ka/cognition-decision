@@ -1,0 +1,153 @@
+.solar-challege-text-container {
+  position: absolute;
+  top: 100px;
+  width: 100%;
+}
+
+.pagination-button {
+  display: flex;
+  justify-content: space-between;
+}
+
+.text-block-solar {
+  color: white;
+  font: 400 72px "Moon Dance", cursive;
+}
+
+.GraphPreviewModalBody {
+  display: flex;
+  justify-content: center;
+  color: rgb(255, 218, 150);
+}
+
+.custom-modal-content {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(3px);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.modal-window.out {
+  animation: slideInFromLeft 0.9s ease-in-out;
+}
+
+.modal-window.in {
+  animation: slideOutToRight 0.9s ease-in-out;
+}
+
+#buttonPlayZoommedCard {
+  color: #342b41;
+  display: flex;
+  align-content: center;
+  border: none;
+  border-radius: 15px;
+  width: 80px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-over-body {
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+
+#game-over-title {
+  font-size: 2em;
+  font-family: "Montserrat";
+  text-align: center;
+  color: white;
+}
+
+#modal-header {
+  text-align: center;
+  justify-content: center;
+}
+
+.game-over-header {
+  text-align: center;
+  justify-content: center;
+}
+
+.game-over-footer {
+  display: flex;
+  justify-content: center !important;
+  gap: 2em;
+  text-align: center;
+  align-content: center;
+  border: none;
+}
+
+#game-over-ok-button {
+  display: flex;
+  border-radius: 15px;
+  width: 120px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+}
+
+#game-over-ok-button p {
+  margin: 0;
+}
+
+@keyframes gameOverSlideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes gameOverSlideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.game-over-modal.slide-in {
+  animation: gameOverSlideIn 0.9s ease-in-out;
+}
+
+.game-over-modal.slide-out {
+  animation: gameOverSlideOut 0.9s ease-in-out;
+}
