@@ -8,15 +8,26 @@ const ChallengeComponent = ({ setHeaderShow }) => {
   const [showVideo, setShowVideo] = useState(false);
   const [showText, setShowText] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
   const navigate = useNavigate();
   const videoRef = useRef(null);
 
   useEffect(() => {
+    // Предзагрузка фонового изображения
+    const backgroundImg = new Image();
+    backgroundImg.src = "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/2ndpage_bg.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvMm5kcGFnZV9iZy5wbmciLCJpYXQiOjE3NDEwMjQ3MDYsImV4cCI6MzMxNzgyNDcwNn0.bVkxcIrKMbheXJpgPIyNtagGR0hQKwX1R9xXX4ofQRM";
+    backgroundImg.onload = () => {
+      setIsBackgroundLoaded(true);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isBackgroundLoaded) return;
+
     const textTimer = setTimeout(() => {
       setShowText(true);
     }, 1500);
 
-    // Ждем таймер, и если видео уже загружено, делаем его видимым
     const videoTimer = setTimeout(() => {
       if (videoLoaded) {
         setShowVideo(true);
@@ -28,11 +39,15 @@ const ChallengeComponent = ({ setHeaderShow }) => {
       clearTimeout(textTimer);
       clearTimeout(videoTimer);
     };
-  }, [videoLoaded]);
+  }, [videoLoaded, isBackgroundLoaded]);
 
   const handleVideoEnd = () => {
     navigate("/solar");
   };
+
+  if (!isBackgroundLoaded) {
+    return <div className="loadingScreen">Loading...</div>;
+  }
 
   return (
     <main className="challengeContainer">
@@ -40,24 +55,8 @@ const ChallengeComponent = ({ setHeaderShow }) => {
         <div className="star-system">
           <div className="burningStar" />
           <svg className="constellationLine" viewBox="0 0 100 100">
-            <line
-              x1="-100"
-              y1="100"
-              x2="45"
-              y2="20"
-              stroke="white"
-              strokeWidth="0.5"
-              strokeLinecap="round"
-            />
-            <line
-              x1="45"
-              y1="20"
-              x2="75"
-              y2="85"
-              stroke="white"
-              strokeWidth="0.5"
-              strokeLinecap="round"
-            />
+            <line x1="-100" y1="100" x2="45" y2="20" stroke="white" strokeWidth="0.5" strokeLinecap="round" />
+            <line x1="45" y1="20" x2="75" y2="85" stroke="white" strokeWidth="0.5" strokeLinecap="round" />
           </svg>
         </div>
         <div className="contentWrapper">
@@ -73,7 +72,6 @@ const ChallengeComponent = ({ setHeaderShow }) => {
         </div>
       </section>
 
-      {/* Видео рендерится всегда, но его видимость управляется через класс */}
       <div className="videoOverlay">
         <video
           ref={videoRef}
@@ -98,4 +96,3 @@ const ChallengeComponent = ({ setHeaderShow }) => {
 };
 
 export default ChallengeComponent;
-

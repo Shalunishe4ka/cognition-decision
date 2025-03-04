@@ -14,3 +14,8 @@ p {
 button {
   font-family: "Montserrat", sans-serif;
 }
+
+
+.modal-open{
+  padding: 0 !important
+}

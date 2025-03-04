@@ -1,0 +1,165 @@
+/* Основной контейнер модального окна */
+@media (max-width: 480px) {
+    /* Основной контейнер модального окна */
+    .modal-content-custom {
+      background-color: #000;
+      border: 1px solid rgb(194, 194, 194);
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px; /* уменьшили отступы */
+      position: relative;
+      top: -35px;
+      width: 90%; /* Адаптивная ширина */
+      height: 80vh; /* Фиксированная высота в относительных единицах */
+      margin: 0 auto; /* Центрирование по горизонтали */
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Применяем шрифт ко всем текстовым элементам внутри модального окна */
+    .modal-content-custom,
+    .modal-content-custom * {
+        font-family: "Montserrat", sans-serif;
+    }
+
+    /* Центрирование модального окна */
+    .modal-dialog {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        outline: none !important;
+    }
+
+    /* Заголовок модального окна */
+    .modal-header-custom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 10px;
+        position: relative;
+        border-bottom: 1px solid white;
+    }
+
+    /* Блок с информацией о планете */
+    .modal-header-content {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    /* Изображение планеты */
+    .planet-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        object-fit: cover;
+    }
+
+    /* Кнопка закрытия — всегда в правом верхнем углу */
+    .close-cardList-modal-window {
+        position: absolute;
+        top: 0;
+        bottom: 100%;
+        /* left: 0; */
+        right: 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        font-size: 1.5rem;
+    }
+
+    /* Модальное тело с фиксированной высотой и прокруткой */
+    .modal-body-custom {
+        max-height: calc(100vh - 160px);
+        height: 80vh;
+        overflow-y: auto;
+    }
+
+    /* Контейнер карточек, выравнивание по центру и распределение по рядам */
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    /* Карточка */
+    .card-item {
+        background: #2a2a2a;
+        border-radius: 10px;
+        padding: 10px;
+        width: 75%; /* Адаптивная ширина */
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+    }
+
+    .card-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-item.zoomed {
+        transform: scale(1.2);
+        z-index: 100;
+    }
+
+    /* Заголовок карточки */
+    .card-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        font-weight: bold;
+        height: 45px;
+    }
+
+    .planet-name-card-header {
+        font-size: 48px;
+      }
+      
+      .planet-description-card-header {
+        font-size: 16px;
+      }
+      
+
+    /* Тело карточки */
+    .card-body {
+        margin-top: 10px;
+    }
+
+    .card-body img {
+        border-radius: 10px;
+        cursor: pointer;
+        width: 100%;
+        height: auto;
+    }
+
+    /* Описание карточки */
+    .card-description {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #ccc;
+    }
+
+    /* Футер карточки */
+    .card-footer {
+        margin-top: 10px;
+    }
+
+    /* Контейнер для кнопок действий */
+    .card-action {
+        margin-top: 10px;
+    }
+
+    .modal-cards-buttons {
+        border-radius: 10px;
+        background: transparent;
+        width: 100px;
+        height: 35px;
+    }
+}

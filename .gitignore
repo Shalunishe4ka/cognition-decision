@@ -22,3 +22,5 @@
 /frontend/yarn-error.log*
 
 .vscode/
+
+/server/cognition-decision-venv

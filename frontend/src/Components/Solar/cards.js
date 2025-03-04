@@ -83,8 +83,7 @@ export const cards = {
   Violet: [
     {
       index: 0,
-      title:
-        "Разведение крупного рогатого скота",
+      title: "Разведение крупного рогатого скота",
       description:
         "Средства к существованию на основе разведения крупного рогатого скота",
       link: "https://search.app/v3gP3M1KYo56szXT8",
@@ -92,8 +91,7 @@ export const cards = {
     },
     {
       index: 1,
-      title:
-        "Растениеводство и мелкое скотоводство",
+      title: "Растениеводство и мелкое скотоводство",
       description:
         "Средства к существованию, основанные на растениеводстве и мелком скотоводстве",
       link: "https://search.app/1tYx1f76uoSNkcho9",
@@ -175,43 +173,49 @@ export const cards = {
       index: 0,
       title: "Преступление и наказание",
       description: "Преступление и наказание",
-      link: "https://www.craiyon.com/image/f2TkYJ46TqKyyl0Rt_GJ3g",
-      image: "/imgs/cards/Orange/Crime & Punishment.png",
+      link: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Crime%20&%20Punishment.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvQ3JpbWUgJiBQdW5pc2htZW50LnBuZyIsImlhdCI6MTc0MTAzNTgyNiwiZXhwIjozMzE3ODM1ODI2fQ.t6Gs-qO_Srb3F2bjRCEhb11YfTrAqqfW2R4TFcIEeHg",
+      image:
+        "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Crime%20&%20Punishment.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvQ3JpbWUgJiBQdW5pc2htZW50LnBuZyIsImlhdCI6MTc0MTAzNTgyNiwiZXhwIjozMzE3ODM1ODI2fQ.t6Gs-qO_Srb3F2bjRCEhb11YfTrAqqfW2R4TFcIEeHg",
     },
     {
       index: 1,
       title: "Кубинский ракетный кризис",
       description: "Кубинский ракетный кризис",
-      link: "https://search.app/Yjx1o9gNj5d2jzaZ7",
-      image: "/imgs/cards/Orange/Cuban crisis.png",
+      link: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Cuban%20crisis.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvQ3ViYW4gY3Jpc2lzLnBuZyIsImlhdCI6MTc0MTAzNTg0OCwiZXhwIjozMzE3ODM1ODQ4fQ.Qhvck6qSBDGf8PfAFiUtP6ILDeOAtDNSR7YjYTPcVpg",
+      image:
+        "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Cuban%20crisis.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvQ3ViYW4gY3Jpc2lzLnBuZyIsImlhdCI6MTc0MTAzNTg0OCwiZXhwIjozMzE3ODM1ODQ4fQ.Qhvck6qSBDGf8PfAFiUtP6ILDeOAtDNSR7YjYTPcVpg",
     },
     {
       index: 2,
       title: "Финансовый кризис в Малайзии",
       description: "Финансовый кризис спекулятивных инвестиций",
-      link: "https://search.app/Wy8Y3erT3fLKqgEB6",
-      image: "/imgs/cards/Orange/Financial crisis 1.png",
+      link: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Financial%20crisis%20Malaysia.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvRmluYW5jaWFsIGNyaXNpcyBNYWxheXNpYS5wbmciLCJpYXQiOjE3NDEwMzU5MDAsImV4cCI6MzMxNzgzNTkwMH0._p60wnPzrN5OqPMIkUXdp8efryEzCyA3V7L3PPueBnY",
+      image:
+        "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Financial%20crisis%20Malaysia.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvRmluYW5jaWFsIGNyaXNpcyBNYWxheXNpYS5wbmciLCJpYXQiOjE3NDEwMzU5MDAsImV4cCI6MzMxNzgzNTkwMH0._p60wnPzrN5OqPMIkUXdp8efryEzCyA3V7L3PPueBnY",
     },
     {
       index: 3,
       title: "Финансовый кризис в Южной Кореи",
       description: "Финансовый кризис промышленного развития",
-      link: "https://search.app/Lf1xh2KB8mMmD1tT8",
-      image: "/imgs/cards/Orange/Financial crisis 2.png",
+      link: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Financial%20crisis%20South%20Korea.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvRmluYW5jaWFsIGNyaXNpcyBTb3V0aCBLb3JlYS5wbmciLCJpYXQiOjE3NDEwMzU5NjcsImV4cCI6MzMxNzgzNTk2N30.AhIBX8UBfGR3SODRtD_QlQwSYXifOqDEs23FwFEA8cg",
+      image:
+        "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Financial%20crisis%20South%20Korea.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvRmluYW5jaWFsIGNyaXNpcyBTb3V0aCBLb3JlYS5wbmciLCJpYXQiOjE3NDEwMzU5NjcsImV4cCI6MzMxNzgzNTk2N30.AhIBX8UBfGR3SODRtD_QlQwSYXifOqDEs23FwFEA8cg",
     },
     {
       index: 4,
       title: "Влияние ИТ на расходы",
       description: "Влияние ИТ на расходы по экономическому развитию",
-      link: "https://www.craiyon.com/image/k_54MUGrRfCyrtE5GLuzJA",
-      image: "/imgs/cards/Orange/Impact of IT services.png",
+      link: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Impact%20of%20IT%20services.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvSW1wYWN0IG9mIElUIHNlcnZpY2VzLnBuZyIsImlhdCI6MTc0MTAzNTk5MSwiZXhwIjozMzE3ODM1OTkxfQ.HI985N-GMAWzaFCji7FHouodjzgPWwn5Jfy5r2799xE",
+      image:
+        "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Impact%20of%20IT%20services.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvSW1wYWN0IG9mIElUIHNlcnZpY2VzLnBuZyIsImlhdCI6MTc0MTAzNTk5MSwiZXhwIjozMzE3ODM1OTkxfQ.HI985N-GMAWzaFCji7FHouodjzgPWwn5Jfy5r2799xE",
     },
     {
       index: 5,
       title: "Бездомность",
       description: "Бездомность",
-      link: "https://www.craiyon.com/image/OUFGuuZ8RNuZ0gh-BvYh_Q",
-      image: "/imgs/cards/Orange/Homelessness.png",
+      link: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Homelessness.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvSG9tZWxlc3NuZXNzLnBuZyIsImlhdCI6MTc0MTAzNjAxMCwiZXhwIjozMzE3ODM2MDEwfQ.o9fKWsCd1GP5SGu14zLGbkGefUzYOr0oYrWsWCPrKlo",
+      image:
+        "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Orange/Card%20Images/Homelessness.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9PcmFuZ2UvQ2FyZCBJbWFnZXMvSG9tZWxlc3NuZXNzLnBuZyIsImlhdCI6MTc0MTAzNjAxMCwiZXhwIjozMzE3ODM2MDEwfQ.o9fKWsCd1GP5SGu14zLGbkGefUzYOr0oYrWsWCPrKlo",
     },
   ],
 };
@@ -220,7 +224,7 @@ export const cardcreds = {
   Green: {
     name: "Green",
     desc: "Жизнь в окружении природы / Сбережение природы / Качество среды обитания.",
-    src: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Green/Card%20Desc%20Images/Green.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9HcmVlbi9DYXJkIERlc2MgSW1hZ2VzL0dyZWVuLmpwZyIsImlhdCI6MTc0MTAyMjQ0NSwiZXhwIjozMzE3ODIyNDQ1fQ.lG4OwNZgQvORGgTikAjNJiLtwnh3qFm8Mis01D-Y7ok",
+    src: "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/Planet%20Images/Green/Green.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvUGxhbmV0IEltYWdlcy9HcmVlbi9HcmVlbi5qcGciLCJpYXQiOjE3NDEwMzY0MTQsImV4cCI6MzMxNzgzNjQxNH0.wv70f9hSLsRMB8JraQobTSDbJVYzCXvtVXjzbVhRQtk",
     color: "#52ffbd",
   },
   Orange: {

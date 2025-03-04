@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Cancel";
 import { Link } from "react-router-dom";
 import { cards, cardcreds } from "../cards";
 import "./ModalWindowCards.css";
-
+import "./mobileVersion.css"
 // Кастомный хук для предзагрузки изображений
 const useImagePreloader = (urls) => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -78,13 +78,13 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
               className="planet-image"
             />
             <div>
-              <h1 style={{ color: cardcreds[selectedPlanet.name].color, fontSize: "80px" }}>
+              <h1 className="planet-name-card-header" style={{ color: cardcreds[selectedPlanet.name].color }}>
                 {cardcreds[selectedPlanet.name].name}
               </h1>
-              <h5 style={{ fontSize: "28px" }}>
-                <span style={{ color: cardcreds[selectedPlanet.name].color, fontSize: "28px" }}>
+              <h5 className="planet-description-card-header">
+                <span className="planet-description-card-header" style={{ color: cardcreds[selectedPlanet.name].color}}>
                   Стратегия жизни:
-                </span>
+                </span>{" "}
                 {cardcreds[selectedPlanet.name].desc}
               </h5>
             </div>
@@ -145,16 +145,20 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
               <div className="card-action">
                 {!isZoomed && (
                   <button
-                    className="choose-card-in-modal-window"
+                    className="modal-cards-buttons choose-card-in-modal-window"
                     onClick={() => handleZoomWindow(index)}
+                    style={{
+                      color: cardcreds[selectedPlanet.name].color, border: `3px solid ${cardcreds[selectedPlanet.name].color}`,
+
+                    }}
                   >
                     Выбрать
                   </button>
                 )}
                 {isZoomed && index === selectedCardIndex && (
-                  <Button variant="outline-danger" onClick={handleZoomOut}>
+                  <button onClick={handleZoomOut}>
                     Отмена
-                  </Button>
+                  </button>
                 )}
               </div>
             </div>

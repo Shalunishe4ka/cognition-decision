@@ -7,9 +7,9 @@
   padding: 20px;
   position: relative;
   width: 1500px; /* Фиксированная ширина */
-  max-width: 90%;
+  /* max-width: 90%; */
   height: 780px; /* Фиксированная высота */
-  margin: auto;
+  /* margin: auto; */
 }
 
 /* Применяем шрифт ко всем текстовым элементам внутри модального окна */
@@ -33,6 +33,7 @@
   justify-content: space-between;
   padding-bottom: 10px;
   position: relative;
+  border-bottom: 1px solid white;
 }
 
 /* Блок с информацией о планете */
@@ -102,8 +103,20 @@
 
 /* Заголовок карточки */
 .card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 16px;
   font-weight: bold;
+  height: 45px;
+}
+
+.planet-name-card-header {
+  font-size: 80px;
+}
+
+.planet-description-card-header {
+  font-size: 28px;
 }
 
 /* Тело карточки */
@@ -133,4 +146,11 @@
 /* Контейнер для кнопок действий */
 .card-action {
   margin-top: 10px;
+}
+
+.modal-cards-buttons {
+  border-radius: 10px;
+  background: transparent;
+  width: 100px;
+  height: 35px;
 }
