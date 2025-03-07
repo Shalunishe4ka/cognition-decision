@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./ChallengeComponent.css";
+import "./ChallengeComponentAdaptives.css";
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText";
+
 
 const ChallengeComponent = ({ setHeaderShow }) => {
   setHeaderShow(false);
@@ -51,7 +53,7 @@ const ChallengeComponent = ({ setHeaderShow }) => {
 
   return (
     <main className="challengeContainer">
-      <section className="heroSection">
+      <div className="heroSection">
         <div className="star-system">
           <div className="burningStar" />
           <svg className="constellationLine" viewBox="0 0 100 100">
@@ -59,18 +61,20 @@ const ChallengeComponent = ({ setHeaderShow }) => {
             <line x1="45" y1="20" x2="75" y2="85" stroke="white" strokeWidth="0.5" strokeLinecap="round" />
           </svg>
         </div>
-        <div className="contentWrapper">
+        <div className="challenge-mind-text-div">
           <ChallengeYourMindText />
-          <div className="second-page-texts">
-            <h1 className="comabla">Coma Berenices</h1>
-            {showText && (
-              <Link to="/solar" className="letsGoText">
-                Let's go!
-              </Link>
-            )}
-          </div>
         </div>
-      </section>
+
+        <div className="second-page-texts">
+          <h1 className="comabla">Coma Berenices</h1>
+          {showText && (
+            <Link to="/solar" className="letsGoText">
+              Let's go!
+            </Link>
+          )}
+        </div>
+      </div>
+
 
       <div className="videoOverlay">
         <video

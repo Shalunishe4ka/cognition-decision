@@ -1,5 +1,6 @@
 import React from "react";
 import "./ChallengeYourMindText.css";
+import "./ChallengeYourMindTextAdaptives.css";
 
 export const ChallengeYourMindText = () => {
   return (

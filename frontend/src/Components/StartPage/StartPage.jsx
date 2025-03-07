@@ -1,5 +1,6 @@
 import React from "react";
 import "./StartPage.css";
+import "./StartPageAdaptives.css"
 import ButtonGroup from "./ButtonGroup";
 import { CognitionDecisionText } from "./CognitionDecisionText";
 import { CODE } from "./CODE";

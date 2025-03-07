@@ -1,0 +1,76 @@
+/* Медиазапросы */
+
+/* Мобильные устройства (480px) */
+@media (max-width: 1366px) {
+  .star-system {
+    top: 5.75rem;
+    left: 12.75rem;
+  }
+  .comabla {
+    left: 9rem;
+    top: 20rem;
+  }
+  .letsGoText {
+    top: 24rem;
+    left: 65%;
+    font-size: 84px;
+  }
+  .constellationLine {
+    width: 355px;
+    height: 220px;
+  }
+}
+
+/* Мобильные устройства (480px) */
+@media (max-width: 480px) {
+  .heroSection {
+    position: absolute;
+    top: 10%;
+  }
+  .challenge-mind-text-div {
+    position: absolute;
+    top: -1.5rem;
+  }
+    .comabla {
+      font-size: 48px;
+      top: 20rem;
+      left: 15px;
+    }
+    .star-system {
+      top: 8rem;
+      left: 3rem;
+      height: 100px;
+      width: 120px;
+      
+
+    }
+    .burningStar {
+      top: 2rem;
+      width: 10px;
+      height: 10px;
+    }
+    .constellationLine {
+      width: 150px;
+      height: 100px;
+    }  
+    .letsGoText {
+      font-size: 64px;
+      top: 30rem;
+      left: calc(50% - 20px);
+    }
+    .contentWrapper {
+      width: 100%;
+      padding: 5px;
+    }
+    .fullScreenVideo {
+      object-fit: fill;
+    }
+    .skipButton {
+      position: absolute;
+      font-size: 24px;
+      right: 25px;
+      max-width: 200px;
+      max-height: 50px;
+      z-index: 1001;
+    }
+  }

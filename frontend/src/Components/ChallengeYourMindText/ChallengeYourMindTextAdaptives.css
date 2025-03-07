@@ -1,0 +1,37 @@
+/* Адаптивность для планшетов (макс. ширина 1366px) */
+@media screen and (max-width: 1366px) {
+  .challenge-text {
+  font-size: 5rem;
+  margin-top: 20px
+}
+  .challenge-text-sign {
+    font-size: 4rem;
+  }
+}
+
+
+/* Адаптивность для планшетов (макс. ширина 768px) */
+@media screen and (max-width: 768px) {
+  .challenge-text {
+    font-size: 4rem;
+    margin: 20px 0 5px 0;
+  }
+
+  .challenge-text-sign {
+    font-size: 3rem;
+    margin-left: 0.8rem;
+  }
+}
+
+/* Адаптивность для телефонов (макс. ширина 480px) */
+@media screen and (max-width: 480px) {
+  .challenge-text {
+    font-size: 3rem;
+    margin: 15px 0 5px 0;
+  }
+
+  .challenge-text-sign {
+    font-size: 2.5rem;
+    margin-left: 0.5rem;
+  }
+}

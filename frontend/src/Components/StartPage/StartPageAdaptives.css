@@ -1,0 +1,120 @@
+/* Адаптивные стили для ноутбуков (max-width: 1366px) */
+@media screen and (max-width: 1366px) {
+  .start-page {
+    margin-bottom: 150px;
+  }
+  .code-text {
+    height: 140px;
+    margin: 0;
+    -webkit-text-stroke: 5px rgba(255, 232, 28, 1);
+    font-size: 140px;
+  }
+  #code-o {
+    font-size: 128px;
+  }
+  #code-E {
+    font-size: 88px;
+  }
+
+  .play-button {
+    padding: 5px 55px;
+  }
+  .info-button {
+    padding: 9px 58.5px;
+  }
+  .perspective-container {
+    margin-bottom: 40px;
+  }
+  .mainImage {
+    width: 55%;
+  }
+}
+
+/* Адаптивные стили для планшетов (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .start-page {
+    position: absolute;
+    top: 15%;
+  }
+  .code-text {
+    font: 400 100px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
+      sans-serif;
+    height: 100px;
+    -webkit-text-stroke: 4px rgba(255, 232, 28, 1);
+    margin-top: 3px;
+  }
+
+  #code-o {
+    font: 400 80px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
+      sans-serif;
+  }
+
+  #code-E {
+    font: 400 60px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
+      sans-serif;
+  }
+
+  .button-container {
+    gap: 20px;
+  }
+
+  .play-button,
+  .info-button {
+    padding: 8px 40px;
+    max-width: 180px;
+  }
+
+  .rules-link,
+  .play-link {
+    font-size: 1.8rem;
+  }
+
+  .perspective-container {
+    margin-bottom: 50px;
+    margin-top: 30px;
+  }
+}
+
+/* Адаптивные стили для телефонов (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  .start-page {
+    position: absolute;
+    top: 20%;
+  }
+  .code-text {
+    font: 400 80px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
+      sans-serif;
+    height: 80px;
+    -webkit-text-stroke: 3px rgba(255, 232, 28, 1);
+    margin-top: 2px;
+  }
+  #code-o {
+    font: 400 80px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
+      sans-serif;
+  }
+
+  #code-E {
+    font: 400 60px "MajorMonoDisplay-Regular", -apple-system, Roboto, Helvetica,
+      sans-serif;
+  }
+
+  .button-container {
+    gap: 10px;
+  }
+
+  .play-button,
+  .info-button {
+    padding: 6px 30px;
+    max-width: 150px;
+  }
+
+  .rules-link,
+  .play-link {
+    font-size: 1.5rem;
+  }
+
+  .perspective-container {
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+}

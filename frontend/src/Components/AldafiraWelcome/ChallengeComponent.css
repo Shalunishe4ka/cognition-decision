@@ -7,7 +7,6 @@
   background-image: url("https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/2ndpage_bg.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvMm5kcGFnZV9iZy5wbmciLCJpYXQiOjE3NDEwMjQ3MDYsImV4cCI6MzMxNzgyNDcwNn0.bVkxcIrKMbheXJpgPIyNtagGR0hQKwX1R9xXX4ofQRM");
   background-position: center;
   background-repeat: no-repeat;
-  /* Указываем начальный размер фона в процентах */
   background-size: 100% 100%;
   animation: zoomBackground 10s ease-in-out forwards;
 }
@@ -43,7 +42,6 @@
   opacity: 1;
 }
 
-
 .skipButton {
   position: fixed;
   /* top: 20px; */
@@ -68,10 +66,8 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 1250px;
   width: 100%;
   align-items: center;
-  padding: 61px 80px 223px;
 }
 
 .comabla {
@@ -79,6 +75,15 @@
   font-size: 64px;
   font-family: "MoonDance", sans-serif;
   position: absolute;
+  top: 26rem;
+  left: 14rem;
+}
+
+.star-system {
+  position: absolute;
+  left: 17rem;
+  right: 0;
+  bottom: 0;
   top: 10rem;
 }
 
@@ -104,7 +109,6 @@
   text-align: center;
   position: absolute;
   display: flex;
-  width: 1322px;
   max-width: 100%;
   flex-direction: column;
   align-items: center;
@@ -112,8 +116,7 @@
 
 .burningStar {
   position: absolute;
-  top: 150px;
-  left: 350px;
+  top: 6rem;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -145,57 +148,6 @@
 /* SVG (линии) адаптив */
 .constellationLine {
   position: absolute;
-  top: 60px;
-  left: 345px;
   width: 385px;
   height: 250px;
-}
-
-
-
-/* Медиазапросы */
-
-/* Мобильные устройства (480px) */
-@media (max-width: 480px) {
-  .comabla {
-    font-size: 48px;
-    top: 20rem;
-    left: 15px;
-  }
-
-  .burningStar {
-    top: 12.75rem;
-    left: 110px;
-    width: 10px;
-    height: 10px;
-  }
-
-  .letsGoText {
-    font-size: 64px;
-    left: calc(50% - 10px);
-  }
-  .contentWrapper {
-    width: 100%;
-    padding: 5px;
-  }
-  .constellationLine {
-    top: 11.5rem;
-    left: 100px;
-    width: 150px;
-    height: 100px;
-  }
-  .heroSection {
-    padding: 0;
-  }
-  .fullScreenVideo {
-    object-fit: fill;
-  }
-  .skipButton {
-    position: absolute;
-    font-size: 24px;
-    right: 25px;
-    max-width: 200px;
-    max-height: 50px;
-    z-index: 1001;
-  }
 }
