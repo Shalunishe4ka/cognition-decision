@@ -1,0 +1,8 @@
+	Presence of Property	Opportunity	Theft	Community Intervention	Criminal Intention	Punishment	Police Presence
+Presence of Property	0	0.7	0.7	0	0.8	0	0
+Opportunity	0	0	0.8	0	0	0	0
+Theft	0	-0.3	0	0.3	0	0	0.4
+Community Intervention	0	0	-0.3	0	0	0.4	0.4
+Criminal Intention	0	0	0.4	0	0	0	0
+Punishment	0.2	0	0	0	-0.5	0	0
+Police Presence	0.3	0	-0.5	0	0	0	0

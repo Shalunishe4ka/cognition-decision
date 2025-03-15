@@ -1,0 +1,18 @@
+	Prescription errors	Transcription errors	Interpretation errors	Preparation errors	Drug management errors	Experience	Therapy knowledge	Pathology knowledge	Patient information	Mistaken procedures	Lack of procedures	Patient identification	Work-related stress	Binds occurrence	External staff use	Clinical documentation quality	Clinical risk
+Prescription errors	0.00	0.24	0.23	0.27	0.23	0.00	0.00	0.00	0.00	0.28	0.00	0.00	0.00	0.00	0.00	0.00	0.26
+Transcription errors	0.12	0.00	0.21	0.19	0.20	0.00	0.00	0.00	0.00	0.13	0.00	0.00	0.00	0.00	0.00	0.00	0.30
+Interpretation errors	0.17	0.30	0.00	0.20	0.13	0.00	0.00	0.00	0.00	0.25	0.00	0.00	0.00	0.00	0.00	0.00	0.28
+Preparation errors	0.18	0.30	0.21	0.00	0.18	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.25
+Drug management errors	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.20
+Experience	-0.35	-0.31	-0.35	-0.22	-0.27	0.00	0.13	0.00	0.00	-0.32	-0.16	0.00	0.00	0.00	-0.16	0.00	-0.22
+Therapy knowledge	-0.12	-0.24	-0.23	-0.15	-0.11	0.00	0.00	0.00	0.00	-0.23	0.00	0.00	0.00	0.00	0.00	0.00	-0.13
+Pathology knowledge	-0.15	0.00	0.00	0.00	0.00	0.00	0.11	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00
+Patient information	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	-0.12	0.00	-0.11	0.00	0.00	0.00
+Mistaken procedures	0.19	0.15	0.11	0.23	0.26	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.14
+Lack of procedures	0.28	0.16	0.25	0.16	0.20	0.00	0.00	0.00	0.00	0.24	0.00	0.00	0.12	0.18	0.00	0.00	0.15
+Patient identification	0.11	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00
+Work-related stress	0.13	0.00	0.20	0.16	0.13	0.00	0.00	0.00	0.00	0.15	0.00	0.17	0.00	0.00	0.00	0.00	0.10
+Binds occurrence	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.13	0.00	0.00	0.00	0.00
+External staff use	0.11	0.00	0.11	0.10	0.12	0.00	0.00	0.00	0.00	0.22	0.00	0.00	0.14	0.22	0.00	0.00	0.00
+Clinical documentation quality 	0.12	0.20	0.22	0.12	0.14	0.00	0.00	0.00	0.00	0.19	0.00	0.00	0.00	0.00	0.00	0.00	0.12
+Clinical risk	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00

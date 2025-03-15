@@ -1,0 +1,13 @@
+	 Water temperature	 Invasive species	 Oxygen deficient zones	 Harmful algal blooms	 Impaired water quality	 Precipitation intensity, frequency and duration	 Net basin runoff	 Nutrient pollution	 Sport fishing	 Habitat Availability and Quality	 Wetlands, bogs, fens and reeds	 Winter ice cover
+ Water temperature	0	0.35	0.31	0.33	0	0	0	0	0	0	0	0
+ Invasive species	0	0	0	0	0	0	0	0	0	0.08	0	0
+ Oxygen deficient zones	0	0	0	0	0.5	0	0	0	0	0	0	0
+ Harmful algal blooms	0	0	0	0	0.49	0	0	0	-0.23	0	0	0
+ Impaired water quality	0	0	0	0	0	0	0	0	0	-0.2	0	0
+ Precipitation intensity, frequency and duration	0	0	0	0	0	0	0.82	0	0	0	0	0
+ Net basin runoff	0	0	0	0	0	0	0	0.34	0	0	0.18	0
+ Nutrient pollution	0	0	0	0.4	0	0	0	0	0	0	0	0
+ Sport fishing	0	0	0	0	0	0	0	0	0	0	0	0
+ Habitat Availability and Quality	0	0	0	0	0	0	0	0	0.8	0	0	0
+ Wetlands, bogs, fens and reeds	0	0	0	0	0	0	0	0	0	0.28	0	0
+ Winter ice cover	0	0	0	0	0	0	0	0	0.38	0	0	0

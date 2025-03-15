@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "./ChallengeComponent.css";
 import "./ChallengeComponentAdaptives.css";
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText";
-
+import bg from "./assets/bg.png"
+import intro from "./assets/premain.mp4"
 
 const ChallengeComponent = ({ setHeaderShow }) => {
   setHeaderShow(false);
@@ -17,7 +18,7 @@ const ChallengeComponent = ({ setHeaderShow }) => {
   useEffect(() => {
     // Предзагрузка фонового изображения
     const backgroundImg = new Image();
-    backgroundImg.src = "https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Images/2ndpage_bg.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9JbWFnZXMvMm5kcGFnZV9iZy5wbmciLCJpYXQiOjE3NDEwMjQ3MDYsImV4cCI6MzMxNzgyNDcwNn0.bVkxcIrKMbheXJpgPIyNtagGR0hQKwX1R9xXX4ofQRM";
+    backgroundImg.src = bg;
     backgroundImg.onload = () => {
       setIsBackgroundLoaded(true);
     };
@@ -79,7 +80,7 @@ const ChallengeComponent = ({ setHeaderShow }) => {
       <div className="videoOverlay">
         <video
           ref={videoRef}
-          src="https://wbtqmewzdckavymnlqjc.supabase.co/storage/v1/object/sign/Contents/Videos/Intro%20Video.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJDb250ZW50cy9WaWRlb3MvSW50cm8gVmlkZW8ubXA0IiwiaWF0IjoxNzQxMDI0ODYxLCJleHAiOjMzMTc4MjQ4NjF9.1X-HjKe4x6fvYhZJGa3ETM6wEgwBYuurHNPAXgv7CpQ"
+          src={intro}
           preload="auto"
           className={`fullScreenVideo ${showVideo ? "visible" : "hidden"}`}
           onCanPlay={() => setVideoLoaded(true)}

@@ -1,0 +1,13 @@
+	E-workflow introduction	Number of e-services	Penetration rate of broadband	Citizen�s e-skills	Government spending	Speed of public services delivery 	Level of public services accessibility	Spending on economic development	Expenditure on social protection	Level of citizens� satisfaction	Regional GDP	Quality of life
+E-workflow introduction	0	0	0	0	-1	1	0	0	0	0	0	0
+Number of e-services	0	0	0	0	-1	1	0.2	0	0	0	0	0
+Penetration rate of broadband	0	0	0	0	-1	1	0.6	0	0	0	0	0
+Citizens e-skills	0	0	0	0	0	0	0.8	0	0	0	0	0
+Government spending	0	0	0	0	0	0	0	1	0.2	0	0	0
+Speed of public services delivery 	0	0	0	0	0	0	0	0	0	0.4	0	0
+Level of public services accessibility	0	0	0	0	0	0	0	0	0	0.6	0	0
+Spending on economic development	0	0	0	0	0	0	0	0	0	0	0.4	0
+Expenditure on social protection	0	0	0	0	0	0	0	0	0	0	0	0.2
+Level of citizens� satisfaction	0	0	0	0	0	0	0	0	0	0	0	0.2
+Regional GDP	0	0	0	0	0	0	0	0	0.6	0.6	0	0.2
+Quality of life	0	0	0	0	0	0	0	0	0	0	0	0

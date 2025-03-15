@@ -1,0 +1,15 @@
+	 Precipitation intensity, frequency and duration	 Wetlands, bogs, fens and reeds	 Net basin runoff	 Changes to lake levels	 Winter ice cover	 Habitat Availability and Quality	 Nutrient pollution	 Water temperature	 Invasive species	 Harmful algal blooms	 Primary productivity	 Commercial fishing	 Oxygen deficient zones	 Impaired water quality
+ Precipitation intensity, frequency and duration	0	0.69	0.96	0	0	0	0	0	0	0	0	0	0	0
+ Wetlands, bogs, fens and reeds	0	0	0	0.49	0	0.12	0.74	0	0	0	0	0	0	0
+ Net basin runoff	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Changes to lake levels	0	0	0	0	0	0.27	0	0	0	0	0	0	0	0
+ Winter ice cover	0	0	0	0	0	0.49	0	0	0	0	0	0	0	0
+ Habitat Availability and Quality	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0
+ Nutrient pollution	0	0	0	0	0	0	0	0	0	0.8	0.2	0	0	0
+ Water temperature	0	0	0	0	0	0	0	0	0.47	0.8	0	0.4	0.56	0
+ Invasive species	0	0	0	0	0	0	0	0	0	0	0	0.25	0	0
+ Harmful algal blooms	0	0	0	0	0	0	0	0	0	0	0	0	0	0.72
+ Primary productivity	0	0	0	0	0	0	0	0	0	0	0	0	0.73	0
+ Commercial fishing	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Oxygen deficient zones	0	0	0	0	0	0	0	0	0	0	0	0	0	0.72
+ Impaired water quality	0	0	0	0	0	0.17	0	0	0	0	0	0	0	0

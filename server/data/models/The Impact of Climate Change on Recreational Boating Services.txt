@@ -1,0 +1,9 @@
+	 Ambient air temperature	 Winter ice cover	 Wind	 Evaporation	 Precipitation intensity, frequency and duration	 Net basin runoff	 Changes to lake levels	 Recreational boating
+ Ambient air temperature	0	-0.41	0	0.64	0	0	0	0.5
+ Winter ice cover	0	0	0	-0.21	0	0	0	0
+ Wind	0	0	0	0.56	0	0	0	-0.25
+ Evaporation	0	0	0	0	0	0	0.15	0
+ Precipitation intensity, frequency and duration	0	0	0	0	0	0.82	0	-0.32
+ Net basin runoff	0	0	0	0	0	0	0.58	0
+ Changes to lake levels	0	0	0	0	0	0	0	0.7
+ Recreational boating	0	0	0	0	0	0	0	0

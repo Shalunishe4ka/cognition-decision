@@ -1,0 +1,24 @@
+	 Personal motivation	 Cost saving	 Knowledge decay	 Knowledge management investment	 External knowledge investment	 Availability of expert knowledge	 Technology  cost	 Personal reward	 Staff turnover	 Employee expertise states	 Staff training	 Training investment	 Staff & Management cost	 Services cost	 Systems & Procedures investment	 Management turnover	 Top management training	 Staff communication	 Team microculture	 Microculture	 CAD culture	 Communication medium investment	 Region microculture
+ Personal motivation	0	0.85	-0.2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Cost saving	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Knowledge decay	0	0	0	0	0	-0.73	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Knowledge management investment	0	0	0	0	0	0.85	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ External knowledge investment	0	-0.9	0	0	0	0.85	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Availability of expert knowledge	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Technology  cost	0	-0.85	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Personal reward	0.9	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Staff turnover	0	0	0	0	0	0	0	0	0	-0.73	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Employee expertise states	0.3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.2	0	0	0	0	0
+ Staff training	0	0	0	0	0	0	0	0	0	0.73	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Training investment	0	-0.5	0	0	0	1	0	0	0	0	1	0	-0.55	0	0.35	0	1	0	0.58	0	0	0	0
+ Staff & Management cost	0	-0.73	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Services cost	0	-0.9	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Systems & Procedures investment	0	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0.95	0	0
+ Management turnover	0	0	0	0	0	0	0	0	0	-0.58	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Top management training	0	0	0	0	0	0	0	0	0	0.65	0	0	0	0	0	0	0	0	0	0	0	0	0
+ Staff communication	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.65	0	0	0	0
+ Team microculture	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+ Microculture	0	0	0	0	0	0	0	0.73	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ CAD culture	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0
+ Communication medium investment	0	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.2	0	0.1	0	0.1
+ Region microculture	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.2	0	0	0

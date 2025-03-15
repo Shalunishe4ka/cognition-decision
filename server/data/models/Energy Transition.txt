@@ -1,0 +1,20 @@
+	CO2_ Emissions	Air and Environment Pollution	Solid and Water Waste	Environmental Sustainability	Public Acceptance	NIMBY Phenomenon	Public Trust	Fear and Risk	Infrastructure of the region to adopt to new technologies	Innovative (patented) methodologies	Support by Research Institutes and Government	Funding	New Businesses	New Jobs	Cost of Transition 	Fossil Fuels Costs	Changing residential infrastructure for fossil fuel consumption	Gas/Petroleum Cost for vehicle mobility	Energy Transition to New Policies
+CO2_ Emissions	0	0	0.3	-0.62	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Air and Environment Pollution	0	0	0.83	0	0	0	-0.4	0.43	0	0	0	0	0	0	0	0	0	0	0
+Solid and Water Waste	0	0	0	-0.7	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Environmental Sustainability	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1
+Public Acceptance	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.7
+NIMBY Phenomenon	0	0	0	-0.27	-0.3	0	0	0	0	0	0	0	-0.57	-0.2	0	0	0	0	0
+Public Trust	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Fear and Risk	0	0	0	0	0	0	0	0	-0.61	0	0	0	0	0	0	0	0	0	0
+Infrastructure of the region to adopt to new technologies	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Innovative (patented) methodologies	0	0	0	0.75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Support by Research Institutes and Government	0	0	0	0	0	0	0.58	0	0	0.33	0	0.7	0	0.55	0	0	0	0	0
+Funding	0	0	0	0.47	0.54	0	0	0	0	0	0	0	0	0.46	0	0	0	0	0
+New Businesses	0	0	0	0	0	-0.26	0	0	0	0	0	0	0	0.89	0	0	0	0	0
+New Jobs	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Cost of Transition 	0	0	0	-0.43	0	0	0	0	0.54	0	0	0	0	0	0	0	-0.68	0	0
+Fossil Fuels Costs	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.59	0	0
+Changing residential infrastructure for fossil fuel consumption	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.77
+Gas/Petroleum Cost for vehicle mobility	0	0	0	-0.48	0	0	0	0	0	0	0	0	0	0	0	0	0.7	0	0.81
+Energy Transition to New Policies	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0

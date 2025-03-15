@@ -1,0 +1,24 @@
+	Traveling expenses	Lodging expenses	Visa expenses	Distance from hometown	Accessibility	Safety	Climate	Location image	Lodging opportunities	Conference reputation	Registration fee	Publication opportunities	Academic reputation of the committee members	Content of the conference program	Reputation of the keynote speakers	Sense of belonging	Network opportunities 	Profile of other participants 	Date of conference	Duration of conference	Social program	Vacation opportunities	Nightlife
+Traveling expenses	0	0.6	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Lodging expenses	0.3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Visa expenses	0.3	0.3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Distance from hometown	0.9	0	0	0	0.9	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Accessibility	0.9	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Safety	0	0	0	0	0	0	0	0.9	0.1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Climate	0	0	0	0	0	0	0	0.9	0	0	0	0	0	0	0	0	0	0	0.9	0	0.3	0.1	0
+Location image	0.6	0.6	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.3	0	0
+Lodging opportunities	0	0.9	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Conference reputation	0	0	0	0	0	0	0	0	0	0	0.9	0.6	0.3	0	0.3	0.1	0.9	0.9	0	0	0	0	0
+Registration fee	0	0.3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Publication opportunities	0	0	0	0	0	0	0	0	0	0	0.3	0	0	0	0	0	0	0.3	0	0	0	0	0
+Academic reputation of the committee members	0	0	0	0	0	0	0	0	0	0.9	0	0	0	0	0.1	0	0	0	0	0	0	0	0
+Content of the conference program	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.3	0	0	0	0	0
+Reputation of the keynote speakers	0	0	0	0	0	0	0	0	0	0.9	0.1	0	0	0	0	0	0	0	0	0	0	0	0
+Sense of belonging	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Network opportunities 	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Profile of other participants 	0	0	0	0	0	0	0	0	0	0.3	0	0	0	0	0	0.3	0.3	0	0	0	0	0	0
+Date of conference	0.6	0.6	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Duration of conference	0	0.3	0	0	0	0	0	0	0	0.6	0.3	0	0	0	0	0	0	0	0	0	0.3	0	0
+Social program	0	0	0	0	0	0	0	0	0	0	0.1	0	0	0	0	0	0	0	0	0	0	0	0
+Vacation opportunities	0	0	0	0	0	0	0	0.3	0	0	0	0	0	0	0	0	0	0	0	0	0.6	0	0.6
+Nightlife	0	0	0	0	0	0	0	0.3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0

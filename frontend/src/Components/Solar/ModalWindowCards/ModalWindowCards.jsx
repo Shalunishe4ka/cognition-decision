@@ -1,51 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Spinner } from "react-bootstrap";
 import CloseIcon from "@mui/icons-material/Cancel";
 import { Link } from "react-router-dom";
-import { cards, cardcreds } from "../cards";
+import axios from "axios";
 import "./ModalWindowCards.css";
-import "./mobileVersion.css"
-// Кастомный хук для предзагрузки изображений
-const useImagePreloader = (urls) => {
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-
-  useEffect(() => {
-    let loadedCount = 0;
-    const total = urls.length;
-    urls.forEach((url) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === total) setImagesLoaded(true);
-      };
-      img.onerror = () => {
-        loadedCount++;
-        if (loadedCount === total) setImagesLoaded(true);
-      };
-    });
-  }, [urls]);
-
-  return imagesLoaded;
-};
+import "./mobileVersion.css";
 
 export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  // Данные для выбранной планеты
-  const currentCards = cards[selectedPlanet.name];
-  // Собираем URL-ы изображений для шапки и карточек
-  const imageUrls = [
-    cardcreds[selectedPlanet.name].src,
-    ...currentCards.map((segment) => segment.image),
-  ];
-  const imagesLoaded = useImagePreloader(imageUrls);
+  // Загрузка карточек из API
+  useEffect(() => {
+    if (!selectedPlanet) return;
 
-  if (!imagesLoaded) {
+    async function fetchCards() {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `http://localhost:8000/cards/${selectedPlanet.name}`
+        );
+        setCards(response.data);
+        console.log(response.data)
+      } catch (error) {
+        console.error("Ошибка загрузки карточек:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCards();
+  }, [selectedPlanet]);
+  // Пока данные загружаются, показываем спиннер
+  if (loading) {
     return (
-      <div className="planet-card">
-        <p>Загрузка...</p>
+      <div className="planet-card text-center" style={{ padding: "2rem" }}>
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Загрузка...</span>
+        </Spinner>
       </div>
     );
   }
@@ -72,32 +66,13 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
       <Modal.Header className="modal-header-custom">
         <Modal.Title>
           <div className="modal-header-content">
-            <img
-              src={cardcreds[selectedPlanet.name].src}
-              alt="planet"
-              className="planet-image"
-            />
-            <div>
-              <h1 className="planet-name-card-header" style={{ color: cardcreds[selectedPlanet.name].color }}>
-                {cardcreds[selectedPlanet.name].name}
-              </h1>
-              <h5 className="planet-description-card-header">
-                <span className="planet-description-card-header" style={{ color: cardcreds[selectedPlanet.name].color}}>
-                  Стратегия жизни:
-                </span>{" "}
-                {cardcreds[selectedPlanet.name].desc}
-              </h5>
-            </div>
+            <img />
+            <h1>{selectedPlanet.name}</h1>
+            <p>Стратегия жизни: {selectedPlanet.description}</p>
           </div>
         </Modal.Title>
         <button
           className="close-cardList-modal-window"
-          style={{
-            color: cardcreds[selectedPlanet.name].color,
-            border: 'none',
-            backgroundColor: "transparent",
-            borderRadius: "10px",
-          }}
           onClick={() => setSelectedPlanet(null)}
         >
           <CloseIcon fontSize="large" />
@@ -105,18 +80,19 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
       </Modal.Header>
       <Modal.Body className="modal-body-custom">
         <div className="cards-container">
-          {currentCards.map((segment, index) => (
+          {cards.map((segment, index) => (
             <div
-              key={segment.index}
-              className={`card-item ${isZoomed && index === selectedCardIndex ? "zoomed" : ""
-                }`}
+              key={segment.id}
+              className={`card-item ${
+                isZoomed && index === selectedCardIndex ? "zoomed" : ""
+              }`}
             >
               <div className="card-header">
                 <p>{segment.title}</p>
               </div>
               <div className="card-body">
                 <img
-                  src={segment.image}
+                  src={segment.image_url}
                   alt={segment.title}
                   width={isZoomed && index === selectedCardIndex ? 250 : 180}
                   height={isZoomed && index === selectedCardIndex ? 250 : 180}
@@ -147,18 +123,13 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
                   <button
                     className="modal-cards-buttons choose-card-in-modal-window"
                     onClick={() => handleZoomWindow(index)}
-                    style={{
-                      color: cardcreds[selectedPlanet.name].color, border: `3px solid ${cardcreds[selectedPlanet.name].color}`,
-
-                    }}
+                    // onClick={() => console.log(segment.image_url)}
                   >
                     Выбрать
                   </button>
                 )}
                 {isZoomed && index === selectedCardIndex && (
-                  <button onClick={handleZoomOut}>
-                    Отмена
-                  </button>
+                  <button onClick={handleZoomOut}>Отмена</button>
                 )}
               </div>
             </div>

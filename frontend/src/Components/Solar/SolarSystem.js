@@ -6,7 +6,7 @@ import { PlanetCardModal } from "./ModalWindowCards/ModalWindowCards";
 import "./SolarSystem.css"; // Import the CSS file for styling
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText";
 import CameraResetter from "./CameraResetter"
-import { Scene } from "./SolarSystemRender.jsx/Scene";
+import { Scene } from "./SolarSystemRender/Scene";
 
 
 const SolarSystem = () => {

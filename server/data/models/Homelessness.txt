@@ -1,0 +1,15 @@
+	Homelessness	Criminal Justice System Involvement 	Poverty 	Unemployment 	Education 	Income 	Addiction 	Social Support Network 	Family Breakdown 	Mental Illness 	Non-Government organization (NGO) 	Childhood Homelessness 	Government Assistance 	Cost of Housing
+Homelessness	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Criminal Justice System Involvement 	0.625	0	0.773	0.502	0	0	0	0	0.773	0	0	0	0	0
+Poverty 	0	0.5	0	0	0	0	0.25	0	0.625	0	0	0	0	0
+Unemployment 	0.352	0	0	0	0	0	0	0	0	0	0	0	0.75	0
+Education 	-0.5	0	-0.773	-0.773	0	0.75	0	0	0	0	0	0	0	0
+Income 	-0.648	0	0	0	0	0	0	0	0	0	0	0	0	0
+Addiction 	0.648	0.648	0	0	0	0	0	0	0.773	0.625	0	0	0	0
+Social Support Network 	0	0	0	0	0	0	-0.5	0	-0.366	0	0	0	0	0
+Family Breakdown 	0.648	0	0	0	0	0	0.648	0	0	0	0	0.625	0	0
+Mental Illness 	0.5	0.502	0	0	0	0	0.634	0	0.625	0	0	0	0	0
+Non-Government organization (NGO) 	-0.5	0	0	0	0	0	0	0	0	0	0	0	0	0
+Childhood Homelessness 	0	0	0	0	-0.625	0	0	0	0	0	0	0	0	0
+Government Assistance 	-0.634	0	0	0	0	0	0	0	0	0	0	0	0	0
+Cost of Housing	0.498	0	0	0	0	0	0	0	0	0	0	0	0	0

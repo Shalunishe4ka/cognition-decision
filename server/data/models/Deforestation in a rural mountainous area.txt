@@ -1,0 +1,18 @@
+	Wood demand	Number of owners	Forest management difficulties	Land abandonment	Grassland abandonment	Illegal logging	Forest policy enforcement	Land development	Landslide risk	Nature conservation	Clear cutting	Livelihood security	Habitat degradation	Exposed slopes	Landslide occurrence	Water runoff	Soil erosion
+Wood demand	0	0	0.5	0	0	0.25	0	0	0	0	0	0	0	0	0	0	0
+Number of owners	0	0	1	0.5	0	0.25	0	0.75	0	0	0	0	0	0	0	0	0
+Forest management difficulties	0	0	0	0	0	0	-0.6	0	0	0	0	0	0	0	0	0	0
+Land abandonment	0	0	0	0	0.75	0	0	0	0	0	0	0	0	0	0	0	0
+Grassland abandonment	0	0	0	0	0	0	0	0	0	0	0	0	0.75	0	0	0	0
+Illegal logging	0	0	0.25	0	0	0	0	0	0	0	0.3	0	0	0	0	0	0
+Forest policy enforcement	0	0	0	0	0	-0.75	0	0	0	0	-0.5	0	0	0	0	0	0
+Land development	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0
+Landslide risk	0	0	0.25	0	0	0	0	0	0	0	0	-0.5	0	0	0	0	0
+Nature conservation	0	0	0	-0.25	-0.25	0	0	0	0	0	0	0	-0.75	0	0	0	0
+Clear cutting	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0
+Livelihood security	0	0	0	0.25	0	-1	0	0.75	0	0	0	0	0	0	0	0	0
+Habitat degradation	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Exposed slopes	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0.75
+Landslide occurrence	0	0	0	0	0	0	0	0	0.9	0	0	0	0	0	0	0	0
+Water runoff	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.8	0	0
+Soil erosion	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0

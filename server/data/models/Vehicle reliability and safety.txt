@@ -1,0 +1,11 @@
+	Driver qualification	Road conditions	Unit operating costs	terms of Use	Maintenance intervals	Quality of maintenance and repair	Vehicle design quality	Quality of operating materials and spare parts	Storage conditions	Vehicle reliability and safety
+Driver qualification	0	0	0	0	0.1	0	0	0	0	0.5
+Road conditions	0	0	0.3	0.4	0	0	0	0	0	0.3
+Unit operating costs	0	0	0	0	0	0	0	0	0	0.2
+terms of Use	0	0	0.5	0	0.6	0	0	0	0	0.7
+Maintenance intervals	0	0	-0.4	0	0	0	0	0	0	0.8
+Quality of maintenance and repair	0	0	0	0	0.1	0	0	0	0	0.4
+Vehicle design quality	0	0	-0.6	0	-0.5	0	0	0	0	0.6
+Quality of operating materials and spare parts	0	0	0.3	0	0.5	0	0	0	0	0
+Storage conditions	0	0	0	0	-0.1	0	0	0	0	0.1
+Vehicle reliability and safety	0	0	0	0	0	0	0	0	0	0

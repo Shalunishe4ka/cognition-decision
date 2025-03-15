@@ -1,0 +1,28 @@
+	 Being able to tailor outreach materials	Protection of communities and private lands	Create fuel breaks	Historical land use	Two-way engagement between neighbors	Outreach	Aesthetic values	Recreation value	Floodplain restoration	Wildlife habitat	Creation of landscapes that are resilient to fire	High-intensity fire	Observation of effects of treatment	Tolerance of smoke from prescribed burning	Prescribed burning	Mosaics mosaic of public, private, and tribal lands, structural diversity	Positive impacts to endangered species	Fuels reduction	Wildfire risk mitigation planning	Availability of resources	Competitiveness for funding	Liability	Being able to do stewardship at larger scales	Being able to address cross-boundary issues	Collaboration	Collective expertise	Ability to get insurance
+Being able to tailor outreach materials	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Protection of communities and private lands	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Create fuel breaks	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Historical land use	0	0	0	0	0	0	0	0	0	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Two-way engagement between neighbors	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Outreach	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0	0	0	0	0	0	0
+Aesthetic values	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Recreation value	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Floodplain restoration	0	0	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Wildlife habitat	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0
+Creation of landscapes that are resilient to fire	0	0	0	0	0	0	0	0	0	0	0	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+High-intensity fire	0	-1	0	0	0	0	-1	-1	0	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Observation of effects of treatment	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Tolerance of smoke from prescribed burning	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0
+Prescribed burning	0	0	0	0	0	0	0	0	0	0	1	-1	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0
+Mosaics mosaic of public, private, and tribal lands, structural diversity	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Positive impacts to endangered species	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0
+Fuels reduction	0	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Wildfire risk mitigation planning	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0
+Availability of resources	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	1
+Competitiveness for funding	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+Liability	0	0	0	0	0	0	0	0	0	0	0	0	0	0	-1	0	0	0	0	0	0	0	0	0	0	0	0
+Being able to do stewardship at larger scales	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0
+Being able to address cross-boundary issues	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0
+Collaboration	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	1	0	1	0
+Collective expertise	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0
+Ability to get insurance	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	-1	0	0	0	0	0

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.2.1",
@@ -12,7 +13,9 @@
     "@react-three/drei": "^10.0.3",
     "@react-three/fiber": "^9.0.4",
     "@react-three/postprocessing": "^3.0.4",
+    "@supabase/supabase-js": "^2.49.1",
     "@svgr/webpack": "^5.5.0",
+    "axios": "^1.8.2",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.8",

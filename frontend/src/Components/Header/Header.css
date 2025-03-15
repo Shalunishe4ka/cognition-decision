@@ -56,6 +56,18 @@ nav ul li:hover {
 }
 
 
+.log-out-button {
+  background-color: transparent;
+  border: none;
+  color: #ffd700;
+  font: 400 1.5rem "Motserrat", sans-serif;
+  cursor: pointer;
+}
+
+.log-out-button:hover {
+  color: white;
+}
+
 /* Адаптивность для экранов до 768px (планшеты) */
 @media screen and (max-width: 768px) {
   .App-header {
