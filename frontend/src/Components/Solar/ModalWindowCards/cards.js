@@ -1,6 +1,4 @@
-import greenImage from "./imgs/Green.jpg";
-import orangeImage from "./imgs/Orange.png";
-import violetImage from "./imgs/Violet.png";
+
 export const cards = {
   Green: [
     {

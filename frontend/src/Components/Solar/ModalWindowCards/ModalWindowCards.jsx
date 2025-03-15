@@ -68,13 +68,18 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
               src={cardcreds[selectedPlanet.name].src}
               className="planet-image"
             />
-            <h1
-              className="selected-planet-name"
-              style={{ color: cardcreds[selectedPlanet.name].color }}
-            >
-              {selectedPlanet.name}
-            </h1>
-            <p>Стратегия жизни: {selectedPlanet.description}</p>
+            <div>
+              <h1
+                className="selected-planet-name"
+                style={{ color: cardcreds[selectedPlanet.name].color }}
+              >
+                {selectedPlanet.name}
+              </h1>
+              <h3 className="life-strategy">
+                <span id="life-strategy-span" style={{ color: cardcreds[selectedPlanet.name].color }}>Стратегия жизни: </span>
+                {selectedPlanet.description}
+              </h3>
+            </div>
           </div>
         </Modal.Title>
         <button
@@ -93,26 +98,53 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
             <div
               key={segment.id}
               className={`card-item ${isZoomed && index === selectedCardIndex
-                  ? "card-item-zoomed"
-                  : "card-item-normal"
+                ? "card-item-zoomed"
+                : "card-item-normal"
                 }`}
             >
               <div className="card-header">
                 <p>{segment.title}</p>
+                {isZoomed && index === selectedCardIndex && (
+
+                  <button className="close-card-modal-window">
+                    <CloseIcon
+                      fontSize="large"
+                      style={{ color: cardcreds[selectedPlanet.name].color }}
+                      onClick={handleZoomOut}
+                    />
+                  </button>
+                )}
               </div>
               <div className="card-body">
+                <img
+                  src={segment.image}
+                  alt={segment.title}
+                  className={index === selectedCardIndex ? 'card-img-zoomed' : 'card-img'}
+                />
                 {isZoomed && index === selectedCardIndex && (
                   <>
                     <div className="card-description">
                       <p>{segment.description}</p>
                     </div>
                     <div className="card-footer">
-                      <Link
-                        to={`/matrix/${selectedCardIndex + 1}`}
-                        state={{ selectedPlanet, selectedCardIndex }}
+                      <button
+                        className="modal-cards-buttons choose-card-in-modal-window"
+                        onClick={() => handleZoomWindow(index)}
+                        style={{
+                          borderColor: cardcreds[selectedPlanet.name].color,
+                          cursor: "pointer",
+                          width: "150px",
+                          height: "40px"
+                        }}
                       >
-                        Играть
-                      </Link>
+                        <Link
+                          to={`/matrix/${selectedCardIndex + 1}`}
+                          state={{ selectedPlanet, selectedCardIndex }}
+                          style={{ color: cardcreds[selectedPlanet.name].color, fontSize: "1.5rem" }}
+                        >
+                          Играть
+                        </Link>
+                      </button>
                     </div>
                   </>
                 )}
@@ -122,12 +154,14 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
                   <button
                     className="modal-cards-buttons choose-card-in-modal-window"
                     onClick={() => handleZoomWindow(index)}
+                    style={{
+                      color: cardcreds[selectedPlanet.name].color,
+                      borderColor: cardcreds[selectedPlanet.name].color,
+                      cursor: "pointer"
+                    }}
                   >
-                    Выбрать
+                    Pick
                   </button>
-                )}
-                {isZoomed && index === selectedCardIndex && (
-                  <button onClick={handleZoomOut}>Отмена</button>
                 )}
               </div>
             </div>
