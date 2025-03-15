@@ -1,48 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Spinner } from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal } from "react-bootstrap";
 import CloseIcon from "@mui/icons-material/Cancel";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { cards, cardcreds } from "./cards";
 import "./ModalWindowCards.css";
 import "./mobileVersion.css";
 
 export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
-  const [cards, setCards] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedCardIndex, setSelectedCardIndex] = useState(null);
-  const [isZoomed, setIsZoomed] = useState(false);
+  const [selectedCardIndex, setSelectedCardIndex] = useState(null); // Хранилище для индексов
+  const [isClosing, setIsClosing] = useState(false); // Для работы анимации
+  const [isZoomed, setIsZoomed] = useState(false); // State for zoom effect
 
-  // Загрузка карточек из API
-  useEffect(() => {
-    if (!selectedPlanet) return;
 
-    async function fetchCards() {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `http://localhost:8000/cards/${selectedPlanet.name}`
-        );
-        setCards(response.data);
-        console.log(response.data)
-      } catch (error) {
-        console.error("Ошибка загрузки карточек:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCards();
-  }, [selectedPlanet]);
-  // Пока данные загружаются, показываем спиннер
-  if (loading) {
-    return (
-      <div className="planet-card text-center" style={{ padding: "2rem" }}>
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Загрузка...</span>
-        </Spinner>
-      </div>
-    );
-  }
+  const currentCards = cards[selectedPlanet.name];
 
   // Анимация зума для карточки
   const handleZoomWindow = (index) => {
@@ -52,7 +22,14 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
 
   const handleZoomOut = () => {
     setIsZoomed(false);
+    setIsClosing(false);
     setTimeout(() => setSelectedCardIndex(null), 300);
+  };
+
+  const handleCardClick = (event) => {
+    if (isZoomed) {
+      event.stopPropagation(); // Prevent the click from propagating to the parent
+    }
   };
 
   return (
@@ -66,8 +43,8 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
       <Modal.Header className="modal-header-custom">
         <Modal.Title>
           <div className="modal-header-content">
-            <img />
-            <h1>{selectedPlanet.name}</h1>
+            <img src={cardcreds[selectedPlanet.name].src} className="planet-image" />
+            <h1 className="selected-planet-name" style={{ color: cardcreds[selectedPlanet.name].color }}>{selectedPlanet.name}</h1>
             <p>Стратегия жизни: {selectedPlanet.description}</p>
           </div>
         </Modal.Title>
@@ -75,24 +52,23 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
           className="close-cardList-modal-window"
           onClick={() => setSelectedPlanet(null)}
         >
-          <CloseIcon fontSize="large" />
+          <CloseIcon fontSize="large" style={{ color: cardcreds[selectedPlanet.name].color }} />
         </button>
       </Modal.Header>
       <Modal.Body className="modal-body-custom">
         <div className="cards-container">
-          {cards.map((segment, index) => (
+          {currentCards.map((segment, index) => (
             <div
               key={segment.id}
-              className={`card-item ${
-                isZoomed && index === selectedCardIndex ? "zoomed" : ""
-              }`}
+              className={`card-item ${isZoomed && index === selectedCardIndex ? "zoomed" : ""
+                }`}
             >
               <div className="card-header">
                 <p>{segment.title}</p>
               </div>
               <div className="card-body">
                 <img
-                  src={segment.image_url}
+                  src={segment.image}
                   alt={segment.title}
                   width={isZoomed && index === selectedCardIndex ? 250 : 180}
                   height={isZoomed && index === selectedCardIndex ? 250 : 180}
@@ -123,7 +99,7 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
                   <button
                     className="modal-cards-buttons choose-card-in-modal-window"
                     onClick={() => handleZoomWindow(index)}
-                    // onClick={() => console.log(segment.image_url)}
+                  // onClick={() => console.log(segment.image_url)}
                   >
                     Выбрать
                   </button>
