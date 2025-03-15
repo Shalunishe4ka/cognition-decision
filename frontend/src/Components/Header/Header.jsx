@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { supabase } from "../UserCredsPage/supabaseClient";
+import React, { useState } from "react";
+
 import "./Header.css";
 import SocialIcons from "./SocialIcons";
 import { Link, useLocation } from "react-router-dom";
 
 const Header = ({ headerShow }) => {
   const location = useLocation();
+  //eslint-disable-next-line
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    async function fetchUser() {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-    }
-    fetchUser();
-  }, []);
 
   if (!headerShow) return null;
 
@@ -30,11 +24,7 @@ const Header = ({ headerShow }) => {
           {user ? (
             <>
               <li>
-                <button className="log-out-button" onClick={async () => {
-                  await supabase.auth.signOut();
-                  setUser(null);
-                  window.location.reload(); // Обновляем страницу после выхода
-                }}>
+                <button className="log-out-button">
                   Logout
                 </button>
               </li>

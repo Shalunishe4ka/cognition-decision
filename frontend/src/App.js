@@ -5,8 +5,6 @@ import Header from "./Components/Header/Header";
 import ChallengeComponent from "./Components/AldafiraWelcome/ChallengeComponent";
 import { useState } from "react";
 import SolarSystem from "./Components/Solar/SolarSystem";
-import { SignUpPage } from "./Components/UserCredsPage/SignUp/SignUpPage";
-import { SignInPage } from "./Components/UserCredsPage/SignIn/SignInPage";
 
 function App() {
   const [headerShow, setHeaderShow] = useState(true);
@@ -20,8 +18,6 @@ function App() {
           element={<ChallengeComponent setHeaderShow={setHeaderShow} />}
         />
         <Route path="/solar" element={<SolarSystem />} />
-        <Route path="/sign-up" element={<SignUpPage setHeaderShow={setHeaderShow}/>} />
-        <Route path="/sign-in" element={<SignInPage setHeaderShow={setHeaderShow}/>} />
       </Routes>
     </Router>
   );
