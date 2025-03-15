@@ -1,20 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import CloseIcon from "@mui/icons-material/Cancel";
 import { Link } from "react-router-dom";
+// Импорт локальных карточек на случай, если данные будут отсутствовать
 import { cards, cardcreds } from "./cards";
 import "./ModalWindowCards.css";
 import "./mobileVersion.css";
+// Импорт функции-хаба для объединения карточек с данными модели
+import { parseCardsAndModels } from "./cleintServerHub";
 
 export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
-  const [selectedCardIndex, setSelectedCardIndex] = useState(null); // Хранилище для индексов
-  const [isClosing, setIsClosing] = useState(false); // Для работы анимации
-  const [isZoomed, setIsZoomed] = useState(false); // State for zoom effect
+  const [selectedCardIndex, setSelectedCardIndex] = useState(null);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
+  // Новый state для объединённых карточек, полученных через хаб
+  const [unifiedCards, setUnifiedCards] = useState([]);
 
+  // Если selectedPlanet меняется, загружаем соответствующие карточки через хаб
+  useEffect(() => {
+    if (selectedPlanet && selectedPlanet.name) {
+      // Можно передать mapping, если требуется сопоставление индексов;
+      // здесь для примера используем пустой mapping, т.е. card.index = vertex index
+      parseCardsAndModels({}).then((cardsData) => {
+        // Если требуется выбрать карточки по категории, можно фильтровать по selectedPlanet.name
+        // Здесь, например, если selectedPlanet.name совпадает с ключом в cards, то используем его
+        setUnifiedCards(cardsData);
+      }).catch((error) => {
+        console.error("Ошибка загрузки карточек через хаб:", error);
+        // На случай ошибки можно использовать локальные карточки как запасной вариант
+        setUnifiedCards(cards[selectedPlanet.name] || []);
+      });
+    }
+  }, [selectedPlanet]);
 
-  const currentCards = cards[selectedPlanet.name];
+  // Если unifiedCards не загрузились, можно использовать локальные данные
+  const currentCards = unifiedCards.length > 0 ? unifiedCards : cards[selectedPlanet.name];
 
-  // Анимация зума для карточки
   const handleZoomWindow = (index) => {
     setIsZoomed(true);
     setTimeout(() => setSelectedCardIndex(index), 300);
@@ -28,7 +49,7 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
 
   const handleCardClick = (event) => {
     if (isZoomed) {
-      event.stopPropagation(); // Prevent the click from propagating to the parent
+      event.stopPropagation();
     }
   };
 
@@ -43,8 +64,16 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
       <Modal.Header className="modal-header-custom">
         <Modal.Title>
           <div className="modal-header-content">
-            <img src={cardcreds[selectedPlanet.name].src} className="planet-image" />
-            <h1 className="selected-planet-name" style={{ color: cardcreds[selectedPlanet.name].color }}>{selectedPlanet.name}</h1>
+            <img
+              src={cardcreds[selectedPlanet.name].src}
+              className="planet-image"
+            />
+            <h1
+              className="selected-planet-name"
+              style={{ color: cardcreds[selectedPlanet.name].color }}
+            >
+              {selectedPlanet.name}
+            </h1>
             <p>Стратегия жизни: {selectedPlanet.description}</p>
           </div>
         </Modal.Title>
@@ -52,7 +81,10 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
           className="close-cardList-modal-window"
           onClick={() => setSelectedPlanet(null)}
         >
-          <CloseIcon fontSize="large" style={{ color: cardcreds[selectedPlanet.name].color }} />
+          <CloseIcon
+            fontSize="large"
+            style={{ color: cardcreds[selectedPlanet.name].color }}
+          />
         </button>
       </Modal.Header>
       <Modal.Body className="modal-body-custom">
@@ -60,24 +92,15 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
           {currentCards.map((segment, index) => (
             <div
               key={segment.id}
-              className={`card-item ${isZoomed && index === selectedCardIndex ? "zoomed" : ""
+              className={`card-item ${isZoomed && index === selectedCardIndex
+                  ? "card-item-zoomed"
+                  : "card-item-normal"
                 }`}
             >
               <div className="card-header">
                 <p>{segment.title}</p>
               </div>
               <div className="card-body">
-                <img
-                  src={segment.image}
-                  alt={segment.title}
-                  width={isZoomed && index === selectedCardIndex ? 250 : 180}
-                  height={isZoomed && index === selectedCardIndex ? 250 : 180}
-                  onClick={() =>
-                    isZoomed && index === selectedCardIndex
-                      ? handleZoomOut()
-                      : null
-                  }
-                />
                 {isZoomed && index === selectedCardIndex && (
                   <>
                     <div className="card-description">
@@ -99,7 +122,6 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
                   <button
                     className="modal-cards-buttons choose-card-in-modal-window"
                     onClick={() => handleZoomWindow(index)}
-                  // onClick={() => console.log(segment.image_url)}
                   >
                     Выбрать
                   </button>
@@ -114,4 +136,4 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
       </Modal.Body>
     </Modal>
   );
-};
+}

@@ -1,18 +1,18 @@
-/* Основной контейнер модального окна */
+/* Основной контейнер модального окна с эффектом размытия фона */
 .modal-content-custom {
-  background-color: #000;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(3px);
   border: 1px solid rgb(194, 194, 194);
   color: #fff;
-  border-radius: 10px;
+  border-radius: 15px; /* обновлено с 10px */
   padding: 20px;
   position: relative;
-  width: 1500px; /* Фиксированная ширина */
-  /* max-width: 90%; */
-  height: 780px; /* Фиксированная высота */
-  /* margin: auto; */
+  width: 1500px; /* можно адаптировать под нужды */
+  height: 780px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Применяем шрифт ко всем текстовым элементам внутри модального окна */
+/* Применяем шрифт ко всем элементам внутри */
 .modal-content-custom,
 .modal-content-custom * {
   font-family: "Montserrat", sans-serif;
@@ -51,7 +51,7 @@
   object-fit: cover;
 }
 
-/* Кнопка закрытия — всегда в правом верхнем углу */
+/* Кнопка закрытия */
 .close-cardList-modal-window {
   position: absolute;
   top: 15px;
@@ -63,13 +63,13 @@
   font-size: 1.5rem;
 }
 
-/* Модальное тело с фиксированной высотой и прокруткой */
+/* Модальное тело с прокруткой */
 .modal-body-custom {
-  height: calc(100% - 160px); /* резервируем место для заголовка */
+  height: calc(100% - 160px);
   overflow-y: auto;
 }
 
-/* Контейнер карточек, выравнивание по центру и распределение по рядам */
+/* Контейнер карточек */
 .cards-container {
   display: flex;
   flex-wrap: wrap;
@@ -80,10 +80,10 @@
   height: -webkit-fill-available;
 }
 
-/* Карточка */
-.card-item {
+/* Обычная карточка */
+.card-item-normal {
   background: #2a2a2a;
-  border-radius: 10px;
+  border-radius: 15px; /* обновлено с 10px */
   padding: 10px;
   width: 200px;
   text-align: center;
@@ -91,25 +91,29 @@
   position: relative;
 }
 
-.card-item:hover {
+.card-item-normal:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-.card-item.zoomed {
+/* Зумированная (выбранная) карточка */
+.card-item-zoomed {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 80%;
+  background-color: #6c757d9c;
+  transform: translate(-50%, -50%);
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.2) !important;
-  backdrop-filter: blur(2px) !important;
+  backdrop-filter: blur(2px);
+  color: #fff;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  transform: scale(1.5);
-  transition: transform 0.5s ease, background 0.5s ease;
+  justify-content: flex-start;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Заголовок карточки */
@@ -117,17 +121,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
+  font-family: "Montserrat";
+  font-size: 15px; /* обновлено (раньше 16px) */
   font-weight: bold;
-  height: 45px;
+  height: 47px;   /* обновлено (раньше 45px) */
+  margin: 0;
+  padding: 0;
 }
 
-.planet-name-card-header {
-  font-size: 80px;
-}
-
-.planet-description-card-header {
-  font-size: 28px;
+/* Заголовок для зумированной карточки */
+.card-item-zoomed .card-header p {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
 }
 
 /* Тело карточки */
@@ -136,22 +143,44 @@
 }
 
 .card-body img {
-  border-radius: 10px;
+  border-radius: 15px; /* обновлено для единообразия */
   cursor: pointer;
   width: 100%;
   height: auto;
 }
 
-/* Описание карточки */
+/* Описание карточки (обычное состояние) */
 .card-description {
   margin-top: 10px;
-  font-size: 14px;
-  color: #ccc;
+  font-size: 18px; /* увеличенный шрифт */
+  color: rgb(255, 218, 150); /* изменённый цвет, как в старом файле */
+  text-align: center; /* добавлено выравнивание по центру */
+}
+
+/* Описание карточки в зумированном состоянии */
+.card-item-zoomed .card-description {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #fff;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px; /* обновлено */
 }
 
 /* Футер карточки */
 .card-footer {
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+}
+
+/* Дополнительные стили для футера зумированной карточки */
+.card-item-zoomed .card-footer {
+  font-size: 20px;
 }
 
 /* Контейнер для кнопок действий */
@@ -160,7 +189,7 @@
 }
 
 .modal-cards-buttons {
-  border-radius: 10px;
+  border-radius: 15px; /* обновлено */
   background: transparent;
   width: 100px;
   height: 35px;
