@@ -5,18 +5,22 @@ import numpy as np
 # import asyncio
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
-
+from routes.UUID_MATRICES import MATRIX_UUIDS
 # FastAPI импорты
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
 
 # PyJWT для токенов
 import jwt
 
 # Исходные импорты из вашего кода
-from services.matrix_service import get_all_matrices, get_matrix_data, get_response_strength
+from services.matrix_service import get_all_matrices, get_matrix_data, get_response_strength, matrix_ids
 from utils.score_counter import calculate_order_score
 from drafts.file_processor import BASE_DIR, process_input_files
+
+from fastapi.middleware.cors import CORSMiddleware
+
 
 # Глобальные настройки для JWT
 SECRET_KEY = "MY_SUPER_SECRET_KEY"
@@ -26,6 +30,25 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 # Создаём FastAPI-приложение и router (аналог Flask app и Blueprint)
 app = FastAPI()
 router = APIRouter()
+
+
+
+
+# Разрешаем CORS, ниже – максимально «открытый» вариант:
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],      # Разрешить со всех доменов (для dev-режима)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+router = APIRouter()
+
+# Ваши эндпоинты и т.д.
+
+app.include_router(router, tags=["Matrix Routes"])
+
 
 # Заменяем session на глобальный словарь: key = имя пользователя, value = данные сессии
 in_memory_sessions: Dict[str, Dict[str, Any]] = {}
@@ -96,6 +119,38 @@ def get_matrices():
 # --------------------
 # /matrix/<int:matrix_id>
 # --------------------
+
+@router.get("/matrix_by_uuid/{uuid}")
+def get_matrix_by_uuid(uuid: str):
+    """
+    Возвращает матрицу (nodes, edges) по UUID карточки.
+    """
+    matrix_name = MATRIX_UUIDS.get(uuid)
+    if not matrix_name:
+        return {"error": "UUID not found"}, 404
+
+    # Ищем matrix_id по matrix_name
+    matrix_id = None
+    for mid, name in matrix_ids.items():
+        if name == matrix_name:
+            matrix_id = mid
+            break
+
+    if matrix_id is None:
+        return {"error": f"Matrix '{matrix_name}' not found"}, 404
+
+    # Получаем данные матрицы
+    matrix_data = get_matrix_data(matrix_id)
+    if not matrix_data:
+        return {"error": f"Matrix data for '{matrix_name}' unavailable"}, 404
+
+    return {
+        "matrix_info": {"matrix_name": matrix_name},
+        "nodes": matrix_data["nodes"],
+        "edges": matrix_data["edges"]
+    }
+
+
 @router.get("/matrix/{matrix_id}")
 def get_matrix_info(matrix_id: int):
     """

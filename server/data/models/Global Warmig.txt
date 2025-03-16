@@ -1,0 +1,14 @@
+	Burning fossil fuels	Deforestation	Farming	Global warming	Sea level rise	Extreme weather events	Electricity consumption	Social pressure	Economic pressure	Renewable energy policies	Policies for improving energy efficiency	Measures in manufacturing industry	Policies for reducing vehicle emissions
+Burning fossil fuels	0	0	0	0.9	0	0	0	0	0	0	0	0	0
+Deforestation	0	0	0	0.6	0	0	0	0	0	0	0	0	0
+Farming	0	0	0	0.5	0	0	0	0	0	0	0	0	0
+Global warming	0	0	0	0	0.6	0.5	0.4	0	0	0	0	0	0
+Sea level rise	0	0	0	0	0	0	0	0.8	0.5	0	0	0	0
+Extreme weather events	0	0	0	0	0	0	0	0.8	0.6	0	0	0	0
+Electricity consumption	0	0	0	0	0	0	0	0.3	0.7	0	0	0	0
+Social pressure	0	0	0	0	0	0	0	0	0	0.7	0.6	0.3	0.7
+Economic pressure	0	0	0	0	0	0	0	0	0	0.6	0.7	0.8	0.4
+Renewable energy policies	-0.9	-0.1	-0.1	0	0	0	0	0	0	0	0	0	0
+Policies for improving energy efficiency	-0.8	-0.1	-0.1	0	0	0	0	0	0	0	0	0	0
+Measures in manufacturing industry	-0.9	-0.1	-0.2	0	0	0	0	0	0	0	0	0	0
+Policies for reducing vehicle emissions	-0.9	-0.1	0	0	0	0	0	0	0	0	0	0	0

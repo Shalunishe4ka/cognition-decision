@@ -9,7 +9,8 @@ import CameraResetter from "./CameraResetter"
 import { Scene } from "./SolarSystemRender/Scene";
 
 
-const SolarSystem = () => {
+const SolarSystem = ({setHeaderShow}) => {
+  setHeaderShow = false
   // eslint-disable-next-line
   const [hoveredPlanet, setHoveredPlanet] = useState(null);
   const [selectedPlanet, setSelectedPlanet] = useState(null);

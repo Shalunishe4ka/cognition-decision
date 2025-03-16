@@ -1,57 +1,72 @@
-// parser.js
-// Этот модуль отвечает за связь между моделью, полученной с сервера, и данными карточек на клиенте.
+// clientServerHub.js
 
-import { cards } from "./cards"; // импорт локальных карточек
-import { v4 as uuidv4 } from "uuid";
+const BASE_URL = "http://127.0.0.1:8000";
 
 /**
- * Функция для получения данных модели с сервера.
- * Предполагается, что сервер возвращает объект вида { matrices: [ { matrix_info, nodes, edges, ... } ] }
+ * Утилита для fetch-запросов. 
+ * Можно доработать её (добавить заголовки Authorization, обработку токенов и т.д.)
  */
-async function fetchModelData() {
-  try {
-    const response = await fetch("/matrix_bp/matrices");
-    if (!response.ok) {
-      throw new Error(`Server error: ${response.status}`);
-    }
-    const data = await response.json();
-    if (!data.matrices || data.matrices.length === 0) {
-      throw new Error("No matrices returned from server");
-    }
-    // Для примера берем первую матрицу
-    return data.matrices[0];
-  } catch (error) {
-    console.error("Error fetching model data:", error);
-    throw error;
+async function fetchJson(url, options = {}) {
+  const res = await fetch(url, {
+    ...options,
+    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+  });
+  if (!res.ok) {
+    throw new Error(`Ошибка fetch: ${res.status} ${res.statusText}`);
   }
+  return res.json();
 }
 
 /**
- * Функция объединения карточек с моделью.
- * @param {Object} mapping - необязательный объект сопоставления, где ключ — index карточки, значение — индекс вершины модели.
- * Если mapping не задан, используется прямая привязка: card.index === vertex index.
+ * 1. Получить список матриц (GET /matrices).
+ * Сервер возвращает объект вида: { matrices: [{ matrix_id, matrix_name, ...}, ...] }
  */
-async function parseCardsAndModels(mapping = {}) {
-  try {
-    const model = await fetchModelData();
-    // Предполагаем, что в модели есть массив nodes (названия или объекты вершин)
-    const vertices = model.nodes;
-    // Выбираем локальный набор карточек (например, для определенной категории)
-    // Здесь можно заменить "Orange" на нужный ключ или параметризовать выбор.
-    const localCards = cards["Orange"];
-    // Объединяем карточки с данными модели по сопоставлению:
-    const unifiedCards = localCards.map((card) => {
-      const vertexIndex = mapping.hasOwnProperty(card.index)
-        ? mapping[card.index]
-        : card.index;
-      const modelVertex = vertices[vertexIndex] || null;
-      return { ...card, modelVertex, id: uuidv4() };
-    });
-    return unifiedCards;
-  } catch (error) {
-    console.error("Error in parsing cards and models:", error);
-    throw error;
-  }
+export async function getAllMatrices() {
+  return await fetchJson(`${BASE_URL}/matrices`);
 }
 
-export { fetchModelData, parseCardsAndModels };
+export async function getMatrixByCardId(cardId) {
+  return fetchJson(`${BASE_URL}/matrix_by_card/${cardId}`);
+}
+
+/**
+ * 2. Получить конкретную матрицу по её ID (GET /matrix/{id}).
+ * Сервер вернёт: { matrix_info: { matrix_name }, nodes, edges }
+ */
+export async function getMatrixById(matrixId) {
+  return await fetchJson(`${BASE_URL}/matrix/${matrixId}`);
+}
+
+/**
+ * 3. Рассчитать очки (POST /calculate_score).
+ * Ожидает { selectedNodes, matrixName } в теле запроса.
+ * Возвращает { turn_score, total_score, turns }.
+ */
+export async function calculateScore(selectedNodes, matrixName) {
+  const body = { selectedNodes, matrixName };
+  return await fetchJson(`${BASE_URL}/calculate_score`, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+/**
+ * 4. Запустить / прочитать научную обработку (POST /science_table).
+ * Ожидает { matrixName } в теле.
+ * Возвращает, например: { x, u, normalized_x, normalized_u, sorted_true_seq, ...}
+ */
+export async function getScienceTable(matrixName) {
+  const body = { matrixName };
+  return await fetchJson(`${BASE_URL}/science_table`, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+/**
+ * 5. Получить матрицу по UUID карточки (GET /matrix_by_uuid/{uuid}).
+ * Сервер вернёт: { matrix_info: { matrix_name }, nodes, edges }
+ */
+export async function getMatrixByUUID(uuid) {
+  return await fetchJson(`${BASE_URL}/matrix_by_uuid/${uuid}`);
+}

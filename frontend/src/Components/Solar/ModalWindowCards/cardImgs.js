@@ -31,7 +31,7 @@ import marketShare from "./imgs/CardImgs/Violet/Market share.png";
 import nonFarmLivelihood from "./imgs/CardImgs/Violet/Non-farm livelihood.png";
 import pipingInstallation from "./imgs/CardImgs/Violet/Piping installation.png";
 import staffKnowledge from "./imgs/CardImgs/Violet/Staff knowledge.png";
-import vehilce from "./imgs/CardImgs/Violet/Vehicle.png";
+import vehicle from "./imgs/CardImgs/Violet/Vehicle.png";
 
 export const images = {
   Green: {
@@ -69,7 +69,7 @@ export const images = {
     nonFarmLivelihood,
     pipingInstallation,
     staffKnowledge,
-    vehilce,
+    vehicle,
   },
 };
 

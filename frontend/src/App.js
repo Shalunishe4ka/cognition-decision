@@ -5,6 +5,7 @@ import Header from "./Components/Header/Header";
 import ChallengeComponent from "./Components/AldafiraWelcome/ChallengeComponent";
 import { useState } from "react";
 import SolarSystem from "./Components/Solar/SolarSystem";
+import GraphPageUUID from "./Components/Graph/GraphPageUUID";
 
 function App() {
   const [headerShow, setHeaderShow] = useState(true);
@@ -17,7 +18,14 @@ function App() {
           path="/challengecomponent"
           element={<ChallengeComponent setHeaderShow={setHeaderShow} />}
         />
-        <Route path="/solar" element={<SolarSystem />} />
+        <Route
+          path="/solar"
+          element={<SolarSystem setHeaderShow={setHeaderShow} />}
+        />
+        <Route
+          path="/matrix_uuid/:uuid"
+          element={<GraphPageUUID setHeaderShow={setHeaderShow} />}
+        />
       </Routes>
     </Router>
   );

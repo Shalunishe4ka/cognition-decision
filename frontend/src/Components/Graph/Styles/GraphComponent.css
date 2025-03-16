@@ -1,0 +1,18 @@
+.graph-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+.graph-planet-info {
+  display: flex;
+  align-items: center;
+  margin: 20px;
+}
+
+.graph-container {
+  height: 700px;
+  width: 100%;
+  background-color: #0b001a;
+}
