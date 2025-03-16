@@ -11,6 +11,7 @@ import { parseCardsAndModels } from "./cleintServerHub";
 
 export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
+  // eslint-disable-next-line
   const [isClosing, setIsClosing] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
   // Новый state для объединённых карточек, полученных через хаб
@@ -46,7 +47,7 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
     setIsClosing(false);
     setTimeout(() => setSelectedCardIndex(null), 300);
   };
-
+  // eslint-disable-next-line
   const handleCardClick = (event) => {
     if (isZoomed) {
       event.stopPropagation();
@@ -67,6 +68,7 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
             <img
               src={cardcreds[selectedPlanet.name].src}
               className="planet-image"
+              alt="Planet img"
             />
             <div>
               <h1
