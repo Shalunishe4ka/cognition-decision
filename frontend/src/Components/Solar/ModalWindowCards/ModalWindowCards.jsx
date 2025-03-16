@@ -104,67 +104,69 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
                 : "card-item-normal"
                 }`}
             >
-              <div className="card-header">
-                <p>{segment.title}</p>
-                {isZoomed && index === selectedCardIndex && (
+              <div className="card-wrapper">
+                <div className="card-header">
+                  <p>{segment.title}</p>
+                  {isZoomed && index === selectedCardIndex && (
 
-                  <button className="close-card-modal-window">
-                    <CloseIcon
-                      fontSize="large"
-                      style={{ color: cardcreds[selectedPlanet.name].color }}
-                      onClick={handleZoomOut}
-                    />
-                  </button>
-                )}
-              </div>
-              <div className="card-body">
-                <img
-                  src={segment.image}
-                  alt={segment.title}
-                  className={index === selectedCardIndex ? 'card-img-zoomed' : 'card-img'}
-                />
-                {isZoomed && index === selectedCardIndex && (
-                  <>
-                    <div className="card-description">
-                      <p>{segment.description}</p>
-                    </div>
-                    <div className="card-footer">
-                      <button
-                        className="modal-cards-buttons choose-card-in-modal-window"
-                        onClick={() => handleZoomWindow(index)}
-                        style={{
-                          borderColor: cardcreds[selectedPlanet.name].color,
-                          cursor: "pointer",
-                          width: "150px",
-                          height: "40px"
-                        }}
-                      >
-                        <Link
-                          to={`/matrix/${selectedCardIndex + 1}`}
-                          state={{ selectedPlanet, selectedCardIndex }}
-                          style={{ color: cardcreds[selectedPlanet.name].color, fontSize: "1.5rem" }}
+                    <button className="close-card-modal-window">
+                      <CloseIcon
+                        fontSize="large"
+                        style={{ color: cardcreds[selectedPlanet.name].color }}
+                        onClick={handleZoomOut}
+                      />
+                    </button>
+                  )}
+                </div>
+                <div className="card-body">
+                  <img
+                    src={segment.image}
+                    alt={segment.title}
+                    className={index === selectedCardIndex ? 'card-img-zoomed' : 'card-img'}
+                  />
+                  {isZoomed && index === selectedCardIndex && (
+                    <>
+                      <div className="card-description">
+                        <p>{segment.description}</p>
+                      </div>
+                      <div className="card-footer">
+                        <button
+                          className="modal-cards-buttons choose-card-in-modal-window"
+                          onClick={() => handleZoomWindow(index)}
+                          style={{
+                            borderColor: cardcreds[selectedPlanet.name].color,
+                            cursor: "pointer",
+                            width: "150px",
+                            height: "40px"
+                          }}
                         >
-                          Играть
-                        </Link>
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-              <div className="card-action">
-                {!isZoomed && (
-                  <button
-                    className="modal-cards-buttons choose-card-in-modal-window"
-                    onClick={() => handleZoomWindow(index)}
-                    style={{
-                      color: cardcreds[selectedPlanet.name].color,
-                      borderColor: cardcreds[selectedPlanet.name].color,
-                      cursor: "pointer"
-                    }}
-                  >
-                    Pick
-                  </button>
-                )}
+                          <Link
+                            to={`/matrix/${selectedCardIndex + 1}`}
+                            state={{ selectedPlanet, selectedCardIndex }}
+                            style={{ color: cardcreds[selectedPlanet.name].color, fontSize: "1.5rem" }}
+                          >
+                            Играть
+                          </Link>
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="card-action">
+                  {!isZoomed && (
+                    <button
+                      className="modal-cards-buttons choose-card-in-modal-window"
+                      onClick={() => handleZoomWindow(index)}
+                      style={{
+                        color: cardcreds[selectedPlanet.name].color,
+                        borderColor: cardcreds[selectedPlanet.name].color,
+                        cursor: "pointer"
+                      }}
+                    >
+                      Pick
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
