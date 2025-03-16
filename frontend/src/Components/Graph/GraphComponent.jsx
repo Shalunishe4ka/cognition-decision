@@ -92,62 +92,54 @@ export default function GraphComponent({
   // Рендер
   // -----------------------
   return (
-    <div className="graph-wrapper">
+    <div className="graph-layout full-height">
       {showCat && <CatAnimation triggerAnimation />}
 
-      <div className="graph-planet-info">
-        <img src={cardcreds[selectedPlanet.name].src} alt="planet" />
-        <h1 style={{ color: cardcreds[selectedPlanet.name].color }}>
-          {cards[selectedPlanet.name][selectedCardIndex]?.title}
-        </h1>
+      {/* Левая колонка: Прогресс */}
+      <div className="graph-side graph-left">
+        <VerticalProgressBar currentTime={elapsedTime} maxTime={600} />
       </div>
 
-      {/* Боковая панель ходов / выбранных узлов */}
-      <MovesSidebar
-        selectedNodes={selectedNodes}
-        clearSelection={handleClearSelection}
-        makeMove={handleMakeMove}
-        disabledNodes={disabledNodes}
-        matrixInfo={matrixInfo}
-        score={score}
-      />
+      {/* Центр: Граф */}
+      <div className="graph-center">
+        <GraphCanvas
+          matrixInfo={matrixInfo}
+          selectedNodes={selectedNodes}
+          setSelectedNodes={setSelectedNodes}
+          selectedEdges={selectedEdges}
+          setSelectedEdges={setSelectedEdges}
+          disabledNodes={disabledNodes}
+          backgroundColor={backgroundColor}
+          positiveEdgeColor={positiveEdgeColor}
+          negativeEdgeColor={negativeEdgeColor}
+          nodeColor={nodeColor}
+          physicsEnabled={physicsEnabled}
+          nodeSize={nodeSize}
+          edgeRoundness={edgeRoundness}
+        />
+      </div>
 
-      {/* Верхняя панель управления (таймер, старт/стоп, счет) */}
-      <GraphControls
-        elapsedTime={elapsedTime}
-        score={score}
-        onStart={handleStart}
-        onStop={handleStop}
-        isRunning={isRunning}
-        openSettings={openSettings}
-      />
+      {/* Правая колонка: Счёт и кнопки */}
+      <div className="graph-side graph-right">
+        <GraphControls
+          elapsedTime={elapsedTime}
+          score={score}
+          onStart={handleStart}
+          onStop={handleStop}
+          isRunning={isRunning}
+          openSettings={openSettings}
+        />
+        <MovesSidebar
+          selectedNodes={selectedNodes}
+          clearSelection={handleClearSelection}
+          makeMove={handleMakeMove}
+          disabledNodes={disabledNodes}
+          matrixInfo={matrixInfo}
+          score={score}
+        />
+      </div>
 
-      {/* Прогресс-бар слева/справа */}
-      <VerticalProgressBar currentTime={elapsedTime} maxTime={600} />
-
-      {/* Модальное окно с настройками графа */}
-      <GraphSettingsModal
-        show={showSettingsModal}
-        onClose={closeSettings}
-      // сюда можно прокинуть props для фона и т.д.
-      />
-
-      {/* Собственно отрисовка графа */}
-      <GraphCanvas
-        matrixInfo={matrixInfo}
-        selectedNodes={selectedNodes}
-        setSelectedNodes={setSelectedNodes}
-        selectedEdges={selectedEdges}
-        setSelectedEdges={setSelectedEdges}
-        disabledNodes={disabledNodes}
-        backgroundColor={backgroundColor}
-        positiveEdgeColor={positiveEdgeColor}
-        negativeEdgeColor={negativeEdgeColor}
-        nodeColor={nodeColor}
-        physicsEnabled={physicsEnabled}
-        nodeSize={nodeSize}
-        edgeRoundness={edgeRoundness}
-      />
+      <GraphSettingsModal show={showSettingsModal} onClose={closeSettings} />
     </div>
   );
 }

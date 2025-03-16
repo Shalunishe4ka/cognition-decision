@@ -1,21 +1,52 @@
-.graph-controls {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(34, 34, 34, 0.85);
+/* ======================================= */
+/*      GraphControls.css                 */
+/* ======================================= */
+
+/* Контейнер таймера/счёта */
+.stopwatch-container {
+  top: 360px;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 32px;
+  border: 3px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.17);
+  height: 600px;
   color: white;
 }
 
-.graph-controls-timer {
-  display: flex;
-  gap: 10px;
-  font-size: 16px;
-}
-
-.graph-controls-buttons {
+/* Кнопки внутри таймера (Start/Stop) */
+.stopwatch-container-buttons {
   margin-top: 10px;
   display: flex;
-  gap: 5px;
+  justify-content: space-evenly;
+}
+
+/* Блок отображения времени */
+.stopwatch-container-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid white;
+  font-size: 28px;
+}
+
+/* Блок отображения очков */
+.stopwatch-container-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid white;
+  font-size: 28px;
+}
+
+/* Если нужно отображать таблицу ходов внутри */
+.stopwatch-container-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid white;
+  font-size: 28px;
+  height: 380px;
 }
