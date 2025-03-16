@@ -1,20 +1,20 @@
-	 Forage	 Garden Crop harvest	 Damage-causing animals outside the park	 Fuzzy boundaries	 Number of Cattle sold	 Cattle in husehold	 Available cash	 Food in household	 Drought	 Cattle deaths	 Cattle theft	 Total parvest	 Poaching	 Use of Zhombwe tubers	 Diseases	  State land-use institutions	 Fees	 Upland Crop harvest	 Vlei Crop harvest
- Forage	0	0	0	0	0	0	0	0	0	-0.75	0	0	0	0	0	0	0	0	0
- Garden Crop harvest	0	0	0	0	0	0	0	0	0	0	0	0.25	0	0	0	0	0	0	0
- Damage-causing animals outside the park	0	0	0	0	0	-0.25	0	0	0	0	0	-0.25	0	0	0.25	0	0	0	0
- Fuzzy boundaries	0	0	0	0	0.25	0	0	0	0	0	0.25	0	0	0	0	0	0	0	0
- Number of Cattle sold	0	0	0	0	0	-0.25	1	0	0	0	0	0	0	0	0	0	0	0	0
- Cattle in husehold	-0.25	0	0	0	0.25	0	0	0.25	0	0	0	0	0	0	0	0	0	0	0
- Available cash	0	0	0	0	0	0.75	0	0.75	0	-0.5	-0.5	0.25	0	0	0	0	0	0	0
- Food in household	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
- Drought	-0.75	0.25	0	0	0.25	0	0	0	0	0	0	0	0	0.5	0.25	0	0	-1	-0.25
- Cattle deaths	0	0	0	0	0	-0.25	0	0	0	0	0	0	0	0	0	0	0	0	0
- Cattle theft	0	0	0	0	0	-0.25	0	0	0	0	0	0	0	0	0	0	0	0	0
- Total parvest	0.25	0	0	0	0	0	0	0.25	0	0	-0.75	0	0	0	0	0	0	0	0
- Poaching	0	0	0	0	0	0	0	0	0	0.25	0	0	0	0	0	0	0	0	0
- Use of Zhombwe tubers	0	0	0	0	0	0	0	0	0	-0.25	0	0	0	0	-0.25	0	0	0	0
- Diseases	0	0	0	0	0	0	0	0	0	0.25	0	0	0	0	0	0	0	0	0
-  State land-use institutions	0	0	0	0	0	0	0	0	0	0	-0.25	0	0.5	0	-0.75	0	-0.25	0.25	0
- Fees	0	0	0	0	0	0	-0.25	0	0	0	0	0	0	0	0	0	0	-0.25	0
- Upland Crop harvest	0	0	0	0	0	0	0	0	0	0	0	0.75	0	0	0	0	0	0	0
- Vlei Crop harvest	0	0	0	0	0	0	0	0	0	0	0	0.25	0	0	0	0	0	0	0
+	Forage	Garden Crop harvest	Damage-causing animals outside the park	Fuzzy boundaries	Number of Cattle sold	Cattle in husehold	Available cash	Food in household	Drought	Cattle deaths	Cattle theft	Total parvest	Poaching	Use of Zhombwe tubers	Diseases	State land-use institutions	Fees	Upland Crop harvest	Vlei Crop harvest
+Forage	0	0	0	0	0	0	0	0	0	-0.75	0	0	0	0	0	0	0	0	0
+Garden Crop harvest	0	0	0	0	0	0	0	0	0	0	0	0.25	0	0	0	0	0	0	0
+Damage-causing animals outside the park	0	0	0	0	0	-0.25	0	0	0	0	0	-0.25	0	0	0.25	0	0	0	0
+Fuzzy boundaries	0	0	0	0	0.25	0	0	0	0	0	0.25	0	0	0	0	0	0	0	0
+Number of Cattle sold	0	0	0	0	0	-0.25	1	0	0	0	0	0	0	0	0	0	0	0	0
+Cattle in husehold	-0.25	0	0	0	0.25	0	0	0.25	0	0	0	0	0	0	0	0	0	0	0
+Available cash	0	0	0	0	0	0.75	0	0.75	0	-0.5	-0.5	0.25	0	0	0	0	0	0	0
+Food in household	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Drought	-0.75	0.25	0	0	0.25	0	0	0	0	0	0	0	0	0.5	0.25	0	0	-1	-0.25
+Cattle deaths	0	0	0	0	0	-0.25	0	0	0	0	0	0	0	0	0	0	0	0	0
+Cattle theft	0	0	0	0	0	-0.25	0	0	0	0	0	0	0	0	0	0	0	0	0
+Total parvest	0.25	0	0	0	0	0	0	0.25	0	0	-0.75	0	0	0	0	0	0	0	0
+Poaching	0	0	0	0	0	0	0	0	0	0.25	0	0	0	0	0	0	0	0	0
+Use of Zhombwe tubers	0	0	0	0	0	0	0	0	0	-0.25	0	0	0	0	-0.25	0	0	0	0
+Diseases	0	0	0	0	0	0	0	0	0	0.25	0	0	0	0	0	0	0	0	0
+State land-use institutions	0	0	0	0	0	0	0	0	0	0	-0.25	0	0.5	0	-0.75	0	-0.25	0.25	0
+Fees	0	0	0	0	0	0	-0.25	0	0	0	0	0	0	0	0	0	0	-0.25	0
+Upland Crop harvest	0	0	0	0	0	0	0	0	0	0	0	0.75	0	0	0	0	0	0	0
+Vlei Crop harvest	0	0	0	0	0	0	0	0	0	0	0	0.25	0	0	0	0	0	0	0

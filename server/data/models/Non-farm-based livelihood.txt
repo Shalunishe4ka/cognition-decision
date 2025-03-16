@@ -1,16 +1,16 @@
-	 Forage	 Garden Crop harvest	 Fuzzy boundaries	 Remittances	 Drought	 Cattle in household	 Off-farm activities	 Available cash	 Food in household	 Donor food 	 Poaching	 Fees	 Total harvest	 State land-use institutions	 Vlei Crop harvest
- Forage	0	0	0	0	0	-0.25	0	0	0	0	0	0	0.25	0	0
- Garden Crop harvest	0	0	0	0	0	0	0	0.25	0	0	0	0	0	0	0
- Fuzzy boundaries	0	0	0	0.5	0	0	0.25	0	0.25	0	0	0	0	0	0
- Remittances	0	0	0	0	0	0	-0.25	0.5	0	-0.5	0	0	0	0	0
- Drought	-0.75	0.25	0	0.25	0	0	0.25	0	0	0	0	0	0	0	-0.5
- Cattle in household	0	0.25	0	0	0	0	0	0	0.25	0	0	0	0	0	0.5
- Off-farm activities	0	0	0	0	0	-0.5	0	0.5	0.25	0	0.25	0	0	0	-0.25
- Available cash	0	0	0	0	0	0	-0.75	0	0.5	0	0	0	0	0	0
- Food in household	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
- Donor food 	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0
- Poaching	0	0	0	0	0	0	0	0.25	0.25	0	0	0	0	0	0
- Fees	0	0	0	0	0	0	0	-1	0	0	0	0	0	0	0
- Total harvest	0.5	0	0	-0.25	0	0	0	0	0.25	-0.5	0	0	0	0	0
- State land-use institutions	0	0	0	0	0	0	0	0	0	0	-0.25	-0.25	0.25	0	0
- Vlei Crop harvest	0	0	0	0	0	0	0	0	0	0	0	0	0.7	0	0
+	Forage	Garden Crop harvest	Fuzzy boundaries	Remittances	Drought	Cattle in household	Off-farm activities	Available cash	Food in household	Donor food	Poaching	Fees	Total harvest	State land-use institutions	Vlei Crop harvest
+Forage	0	0	0	0	0	-0.25	0	0	0	0	0	0	0.25	0	0
+Garden Crop harvest	0	0	0	0	0	0	0	0.25	0	0	0	0	0	0	0
+Fuzzy boundaries	0	0	0	0.5	0	0	0.25	0	0.25	0	0	0	0	0	0
+Remittances	0	0	0	0	0	0	-0.25	0.5	0	-0.5	0	0	0	0	0
+Drought	-0.75	0.25	0	0.25	0	0	0.25	0	0	0	0	0	0	0	-0.5
+Cattle in household	0	0.25	0	0	0	0	0	0	0.25	0	0	0	0	0	0.5
+Off-farm activities	0	0	0	0	0	-0.5	0	0.5	0.25	0	0.25	0	0	0	-0.25
+Available cash	0	0	0	0	0	0	-0.75	0	0.5	0	0	0	0	0	0
+Food in household	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Donor food	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0
+Poaching	0	0	0	0	0	0	0	0.25	0.25	0	0	0	0	0	0
+Fees	0	0	0	0	0	0	0	-1	0	0	0	0	0	0	0
+Total harvest	0.5	0	0	-0.25	0	0	0	0	0.25	-0.5	0	0	0	0	0
+State land-use institutions	0	0	0	0	0	0	0	0	0	0	-0.25	-0.25	0.25	0	0
+Vlei Crop harvest	0	0	0	0	0	0	0	0	0	0	0	0	0.7	0	0

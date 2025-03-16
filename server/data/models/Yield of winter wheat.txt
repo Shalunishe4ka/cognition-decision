@@ -1,11 +1,11 @@
-	 Potential yield level 	 Previous culture	 Soil condition	 Sum of accumulated temperatures	 Moisture stockpile	 Hostile factors	 Fertilizers	 Plant protection products 	 Land cultivation technology	 Qualifcation of the agronomic service
- Potential yield level 	0	0	0	0	0	0	0	0	0	0
- Previous culture	0.2	0	0	0	0.4	0.4	0	0	0	0
- Soil condition	0.6	0	0	0	0	0	0	0	0	0
- Sum of accumulated temperatures	0.6	0	0	0	0	0.4	0	0	0	0
- Moisture stockpile	0.9	0	-0.1	0	0	0.6	0	0	0	0
- Hostile factors	-0.8	0	0	0	0	0	0	0	0	0
- Fertilizers	0.8	0	0.6	0	0	0.6	0	0	0	0
- Plant protection products 	0	0	-0.2	0	0	-0.8	0	0	0	0
- Land cultivation technology	0	0	0.8	0.2	0.4	-0.6	0.8	0.8	0	0
- Qualification of the agronomic service	0	0	0	0	0	0	0.8	0.8	0.9	0
+	Potential yield level	Previous culture	Soil condition	Sum of accumulated temperatures	Moisture stockpile	Hostile factors	Fertilizers	Plant protection products	Land cultivation technology	Qualification of the agronomic service
+Potential yield level	0	0	0	0	0	0	0	0	0	0
+Previous culture	0.2	0	0	0	0.4	0.4	0	0	0	0
+Soil condition	0.6	0	0	0	0	0	0	0	0	0
+Sum of accumulated temperatures	0.6	0	0	0	0	0.4	0	0	0	0
+Moisture stockpile	0.9	0	-0.1	0	0	0.6	0	0	0	0
+Hostile factors	-0.8	0	0	0	0	0	0	0	0	0
+Fertilizers	0.8	0	0.6	0	0	0.6	0	0	0	0
+Plant protection products	0	0	-0.2	0	0	-0.8	0	0	0	0
+Land cultivation technology	0	0	0.8	0.2	0.4	-0.6	0.8	0.8	0	0
+Qualification of the agronomic service	0	0	0	0	0	0	0.8	0.8	0.9	0

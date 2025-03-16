@@ -7,7 +7,7 @@ import { cards, cardcreds } from "./cards";
 import "./ModalWindowCards.css";
 import "./mobileVersion.css";
 // Импорт функции-хаба для объединения карточек с данными модели
-import { parseCardsAndModels } from "./cleintServerHub";
+import { parseCardsAndModels } from "./clientServerHub";
 
 export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);

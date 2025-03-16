@@ -1,19 +1,9 @@
-	 Precipitation intensity, frequency and duration	 Net basin runoff	 Impaired water quality	 Nutrient pollution	 Invasive species	 Ambient air temperature	 Disease and pests	 Wild rice production
- Precipitation intensity, frequency and duration	0	0.9	0	0	0	0	0	0.2
- Net basin runoff	0	0	0.72	0.8	0	0	0	0
- Impaired water quality	0	0	0	0	0	0	0	-0.8
- Nutrient pollution	0	0	0	0	0.2	0	0	0
- Invasive species	0	0	0	0	0	0	0	-0.5
- Ambient air temperature	0	0	0	0	0.5	0	0.5	-0.1
- Disease and pests	0	0	0	0	0	0	0	0.1
- Wild rice production	0	0	0	0	0	0	0	0
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
+	Precipitation intensity, frequency and duration	Net basin runoff	Impaired water quality	Nutrient pollution	Invasive species	Ambient air temperature	Disease and pests	Wild rice production
+Precipitation intensity, frequency and duration	0	0.9	0	0	0	0	0	0.2
+Net basin runoff	0	0	0.72	0.8	0	0	0	0
+Impaired water quality	0	0	0	0	0	0	0	-0.8
+Nutrient pollution	0	0	0	0	0.2	0	0	0
+Invasive species	0	0	0	0	0	0	0	-0.5
+Ambient air temperature	0	0	0	0	0.5	0	0.5	-0.1
+Disease and pests	0	0	0	0	0	0	0	0.1
+Wild rice production	0	0	0	0	0	0	0	0

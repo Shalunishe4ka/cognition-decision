@@ -1,14 +1,14 @@
-	 Precipitation intensity, frequency and duration	 Wetlands, bogs, fens and reeds	 Ambient air temperature	 Net basin runoff	 Changes to lake levels	 Invasive macrophytes	 Water temperature	 Habitat Quality and Availability	 Turbidity	 Primary productivity	 Oxygen deficient zones	 Impaired water quality	 Microbial decomposition
- Precipitation intensity, frequency and duration	0	0.23	0	0.36	0	0	0	0	0.36	0	0	0	0
- Wetlands, bogs, fens and reeds	0	0	0	0	0	0	0	-0.6	0	0	0	0	0
- Ambient air temperature	0	0	0	0.04	0	0	0	0	0	0	0	0	0
- Net basin runoff	0	0	0	0	0.49	0	0	0	0	0	0	0	0
- Changes to lake levels	0	0	0	0	0	-0.35	0	0	0	0	0	0	0
- Invasive macrophytes	0	0	0	0	0	0	0	-0.49	-0.37	0	0	0	0
- Water temperature	0	0.22	0	0	0	0	0	-0.2	0	0.46	0.39	0	0
- Habitat Quality and Availability	0	0	0	0	0	0	0	0	0	0	0	0	0
- Turbidity	0	0	0	0	0	0	0	0	0	-0.37	0	0	0
- Primary productivity	0	0	0	0	0	0	0	0	0	0	0	0	0.35
- Oxygen deficient zones	0	0	0	0	0	0	0	0	0	0	0	0.32	0
- Impaired water quality	0	0	0	0	0	0	0	-0.02	0	0	0	0	0
- Microbial decomposition	0	0	0	0	0	0	0	0	0	0	0.35	0	0
+	Precipitation intensity, frequency and duration	Wetlands, bogs, fens and reeds	Ambient air temperature	Net basin runoff	Changes to lake levels	Invasive macrophytes	Water temperature	Habitat Quality and Availability	Turbidity	Primary productivity	Oxygen deficient zones	Impaired water quality	Microbial decomposition
+Precipitation intensity, frequency and duration	0	0.23	0	0.36	0	0	0	0	0.36	0	0	0	0
+Wetlands, bogs, fens and reeds	0	0	0	0	0	0	0	-0.6	0	0	0	0	0
+Ambient air temperature	0	0	0	0.04	0	0	0	0	0	0	0	0	0
+Net basin runoff	0	0	0	0	0.49	0	0	0	0	0	0	0	0
+Changes to lake levels	0	0	0	0	0	-0.35	0	0	0	0	0	0	0
+Invasive macrophytes	0	0	0	0	0	0	0	-0.49	-0.37	0	0	0	0
+Water temperature	0	0.22	0	0	0	0	0	-0.2	0	0.46	0.39	0	0
+Habitat Quality and Availability	0	0	0	0	0	0	0	0	0	0	0	0	0
+Turbidity	0	0	0	0	0	0	0	0	0	-0.37	0	0	0
+Primary productivity	0	0	0	0	0	0	0	0	0	0	0	0	0.35
+Oxygen deficient zones	0	0	0	0	0	0	0	0	0	0	0	0.32	0
+Impaired water quality	0	0	0	0	0	0	0	-0.02	0	0	0	0	0
+Microbial decomposition	0	0	0	0	0	0	0	0	0	0	0.35	0	0

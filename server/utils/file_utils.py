@@ -8,7 +8,7 @@ def read_matrix_file(file_path, matrix_name):
     try:
         # Читаем матрицу
         matrix_df = pd.read_csv(file_path, sep='\t', index_col=0)
-
+        
         # Создаем узлы
         nodes = [{'id': i + 1, 'name': str(node_name)} for i, node_name in enumerate(matrix_df.columns)]
 

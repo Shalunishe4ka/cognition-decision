@@ -1,16 +1,16 @@
-	 Differentiation capability	 Expansion in new markets	 Organisation and processes flexibility	 Financial market maturity	 Market share	 Microculture state	 Responsiveness to market changes	 Threat of new entrants	 New products	 Technology investment	 Government policy	 Level of internal cost	 Financial market size	 Company profitability	 Employee expertise states
- Differentiation capability	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0
- Expansion in new markets	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0
- Organisation and processes flexibility	-0.8	0	0	0	0	0	0.8	0	0	0.8	0	0	0	0	0
- Financial market maturity	-0.8	0.85	0	0	0	0	0	0	-0.65	0	0	0	0	0	0
- Market share	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0
- Microculture state	0	0	0.65	0	0	0	0	0	0	0.33	0	0	0	0	0
- Responsiveness to market changes	0	1	0	0	0	0	0	0	0.5	0	0	0	0	0	0
- Threat of new entrants	0	0	0	-0.73	-0.65	0	0	0	-0.58	0	0	0	0	0	0
- New products	0	0.73	0	0	1	0	0	0	0	0	0	0.58	0	0	0
- Technology investment	0	0	0	0	0	0	0.8	0	0.5	0	0	0	0	0	0
- Government policy	0	0	0	0	0	0	0	0	0	0	0	-0.85	0	0	0
- Level of internal cost	0	0	0	0	0	0	0	0	0	0	0	0	0	-1	0
- Financial market size	0	0	0	0	0	0	0	0	0	0	0	0	0	0.35	0
- Company profitability	0	0	0	0	0	0	0	0	0	-0.35	0	0	0	0	0.65
- Employee expertise states	0	0	0	0	0	0	1	0	0	0.2	0	0.73	0	0	0
+	Differentiation capability	Expansion in new markets	Organisation and processes flexibility	Financial market maturity	Market share	Microculture state	Responsiveness to market changes	Threat of new entrants	New products	Technology investment	Government policy	Level of internal cost	Financial market size	Company profitability	Employee expertise states
+Differentiation capability	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0
+Expansion in new markets	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0
+Organisation and processes flexibility	-0.8	0	0	0	0	0	0.8	0	0	0.8	0	0	0	0	0
+Financial market maturity	-0.8	0.85	0	0	0	0	0	0	-0.65	0	0	0	0	0	0
+Market share	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0
+Microculture state	0	0	0.65	0	0	0	0	0	0	0.33	0	0	0	0	0
+Responsiveness to market changes	0	1	0	0	0	0	0	0	0.5	0	0	0	0	0	0
+Threat of new entrants	0	0	0	-0.73	-0.65	0	0	0	-0.58	0	0	0	0	0	0
+New products	0	0.73	0	0	1	0	0	0	0	0	0	0.58	0	0	0
+Technology investment	0	0	0	0	0	0	0.8	0	0.5	0	0	0	0	0	0
+Government policy	0	0	0	0	0	0	0	0	0	0	0	-0.85	0	0	0
+Level of internal cost	0	0	0	0	0	0	0	0	0	0	0	0	0	-1	0
+Financial market size	0	0	0	0	0	0	0	0	0	0	0	0	0	0.35	0
+Company profitability	0	0	0	0	0	0	0	0	0	-0.35	0	0	0	0	0.65
+Employee expertise states	0	0	0	0	0	0	1	0	0	0.2	0	0.73	0	0	0

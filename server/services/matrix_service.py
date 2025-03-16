@@ -7,28 +7,38 @@ from utils.file_utils import read_matrix_file
 matrix_ids = {}
 matrix_id_counter = 1
 
-# Инициализация матриц
-for filename in os.listdir(STATIC_MODELS_DIR):
-    if filename.endswith(".txt"):
-        matrix_name = filename[:-4]  # Убираем ".txt"
-        matrix_ids[matrix_id_counter] = matrix_name
-        matrix_id_counter += 1
-
-
 def get_all_matrices():
     matrices = []
-    for matrix_id, matrix_name in matrix_ids.items():
-        matrix_data = get_matrix_data(matrix_id)
-        meta_data = get_meta_data(matrix_name)
-        if matrix_data:
-            matrices.append({
-                'matrix_id': matrix_id,
-                'matrix_name': matrix_name,
-                'node_count': len(matrix_data['nodes']),
-                'edge_count': len(matrix_data['edges']),
-                'meta': meta_data
-            })
+    for idx, filename in enumerate(os.listdir(STATIC_MODELS_DIR), start=1):
+        if filename.endswith(".txt"):
+            matrix_name = filename[:-4]
+            matrix_data = get_matrix_data_by_name(matrix_name)
+            meta_data = get_meta_data(matrix_name)
+            if matrix_data:
+                matrices.append({
+                    'matrix_id': idx,
+                    'matrix_name': matrix_name,
+                    'node_count': len(matrix_data['nodes']),
+                    'edge_count': len(matrix_data['edges']),
+                    'meta': meta_data
+                })
     return matrices
+
+
+def get_matrix_data_by_name(matrix_name):
+    matrix_file_path = os.path.join(STATIC_MODELS_DIR, f"{matrix_name}.txt")
+    matrix_data = read_matrix_file(matrix_file_path, matrix_name)
+    meta_file_path = os.path.join(STATIC_MODELS_META_DIR, f"{matrix_name}.json")
+
+    if os.path.exists(meta_file_path):
+        try:
+            with open(meta_file_path, 'r', encoding='utf-8') as meta_file:
+                meta_data = pd.read_json(meta_file).to_dict()
+                matrix_data['meta'] = meta_data
+        except Exception as e:
+            print(f"Ошибка чтения метафайла для {matrix_name}: {e}")
+    return matrix_data
+
 
 
 def get_matrix_data(matrix_id):
