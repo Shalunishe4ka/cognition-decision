@@ -3,7 +3,7 @@
 /* ======================================= */
 
 /* Контейнер таймера/счёта */
-.stopwatch-container {
+.stopwatch-container{
   top: 360px;
   padding: 10px;
   border-radius: 32px;
@@ -11,42 +11,41 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  /* background-color: rgba(169, 169, 169, 0.65); */
   background-color: rgba(255, 255, 255, 0.17);
+
   height: 600px;
-  color: white;
 }
 
-/* Кнопки внутри таймера (Start/Stop) */
-.stopwatch-container-buttons {
+.stopwatch-container-buttons{
   margin-top: 10px;
   display: flex;
   justify-content: space-evenly;
 }
 
-/* Блок отображения времени */
-.stopwatch-container-time {
+.stopwatch-container-time{
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid white  ;
   font-size: 28px;
 }
 
-/* Блок отображения очков */
-.stopwatch-container-score {
+.stopwatch-container-score{
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid white  ;
   font-size: 28px;
 }
 
-/* Если нужно отображать таблицу ходов внутри */
-.stopwatch-container-table {
+
+
+.stopwatch-container-table{
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid white  ;
   font-size: 28px;
   height: 380px;
 }

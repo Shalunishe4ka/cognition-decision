@@ -150,7 +150,7 @@ export default function GraphCanvas({
       className="graph-container"
       style={{
         height: "700px",
-        width: "100%",
+        width: "90%",
         backgroundColor: backgroundColor
       }}
     />

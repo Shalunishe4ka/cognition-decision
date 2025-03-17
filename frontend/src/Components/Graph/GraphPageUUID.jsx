@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { getMatrixByUUID } from "../Solar/ModalWindowCards/clientServerHub";
 import GraphComponent from "./GraphComponent";
+import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText"
 import "./Styles/GraphControls.css"
 import "./Styles/GraphComponent.css"
 import "./Styles/MovesSidebar.css"
@@ -23,10 +24,15 @@ export default function GraphPageUUID() {
   if (!matrixInfo) return <div>Загрузка графа...</div>;
 
   return (
-    <GraphComponent
-      matrixInfo={matrixInfo}
-      selectedPlanet={selectedPlanet}
-      uuid={uuid}
-    />
+
+    <main>
+      <ChallengeYourMindText />
+      <GraphComponent
+        matrixInfo={matrixInfo}
+        selectedPlanet={selectedPlanet}
+        uuid={uuid}
+      />
+    </main>
+
   );
 }

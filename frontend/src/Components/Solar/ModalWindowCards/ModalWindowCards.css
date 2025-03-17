@@ -33,11 +33,11 @@
 
 /* Заголовок модального окна */
 .modal-header-custom {
+  position: relative; /* Добавлено */
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-bottom: 10px;
-  position: relative;
   border-bottom: 1px solid white;
 }
 
@@ -66,6 +66,7 @@
   cursor: pointer;
   color: #fff;
   font-size: 1.5rem;
+  z-index: 1000; /* Убедитесь, что она поверх контента */
 }
 
 /* Модальное тело с прокруткой */
@@ -117,12 +118,29 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 40px 10px 10px 10px;
+  padding: 40px 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
+}
+
+/* Оболочка для контента карточки */
+.card-item-zoomed .card-wrapper {
+  position: relative; /* Для позиционирования кнопки */
+  max-width: 450px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Обёртка для заголовка и тела */
+.card-item-zoomed .card-header,
+.card-item-zoomed .card-body {
+  background: #2a2a2a;
+  width: 100%;
+  max-width: 450px;
 }
 
 /* Заголовок карточки */
@@ -138,7 +156,8 @@
   padding: 0;
 }
 
-.card-item-zoomed .card-header, .card-body{
+.card-item-zoomed .card-header,
+.card-body {
   background: #2a2a2a;
   max-width: 450px;
   width: 450px;
@@ -156,7 +175,7 @@
   border-top-right-radius: 15px;
 }
 
-.card-item-zoomed .card-body{
+.card-item-zoomed .card-body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -174,19 +193,17 @@
   justify-content: center;
 }
 
-
 /* Кнопка закрытия */
 .close-card-modal-window {
-  position: fixed;
-  left: 61%;
-  display: flex;
+  position: absolute;
+  top: 15px;
+  right: 15px;
   background: transparent;
   border: none;
   cursor: pointer;
   color: #fff;
   font-size: 1.5rem;
-  /* margin-right: -25px; */
-  padding: 0;
+  z-index: 1000;
 }
 
 .card-body {
@@ -223,7 +240,6 @@
   cursor: default;
   width: 400px;
 }
-
 
 /* Футер карточки */
 .card-footer {
