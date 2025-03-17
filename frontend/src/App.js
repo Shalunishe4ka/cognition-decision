@@ -5,7 +5,7 @@ import Header from "./Components/Header/Header";
 import ChallengeComponent from "./Components/AldafiraWelcome/ChallengeComponent";
 import { useState } from "react";
 import SolarSystem from "./Components/Solar/SolarSystem";
-import GraphPageUUID from "./Components/Graph/GraphPageUUID";
+import { GraphMainLayout } from "./Components/Graph/GraphMainLayout";
 
 function App() {
   const [headerShow, setHeaderShow] = useState(true);
@@ -24,7 +24,7 @@ function App() {
         />
         <Route
           path="/matrix_uuid/:uuid"
-          element={<GraphPageUUID setHeaderShow={setHeaderShow} />}
+          element={<GraphMainLayout setHeaderShow={setHeaderShow} />}
         />
       </Routes>
     </Router>

@@ -2,10 +2,16 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { FaStopwatch, FaMedal, FaStar } from 'react-icons/fa';
+import { useCustomStates } from './CustomStates';
 
-const Stopwatch = ({ elapsedTime, score, maxScorePerMove, handleStart, handleStop }) => {
+const Stopwatch = () => {
+
+  const {
+    elapsedTime, score, maxScorePerMove, handleStart, handleStop
+  } = useCustomStates();
+
   return (
-    <div className="stopwatch-container" style={{ right: 75, position: 'absolute', zIndex: 1 }}>
+    <div className="stopwatch-container">
       <h3>Процесс игры</h3>
       <div>
         <div>
@@ -17,7 +23,7 @@ const Stopwatch = ({ elapsedTime, score, maxScorePerMove, handleStart, handleSto
       <div>
         <Button variant="success" onClick={handleStart}>
           Start
-        </Button>{' '}
+        </Button>
         <Button variant="danger" onClick={handleStop}>
           Stop
         </Button>
