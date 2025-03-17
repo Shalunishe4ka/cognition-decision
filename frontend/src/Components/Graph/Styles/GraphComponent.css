@@ -75,3 +75,45 @@
   align-self: center;
   text-align: center;
 }
+
+
+.node-list-container {
+  position: fixed;
+  top: 120px;
+  right: -300px; /* Скрыто изначально */
+  width: 300px;
+  min-height: 435px;
+  max-height: 635px;
+  background-color: #fff;
+  color: black;
+  border-radius: 25px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: right 1.3s ease-in-out;
+  z-index: 999; /* Выше графа */
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.node-list-container.visible {
+  right: 20px; /* Появляется */
+  transition: right 2.3s ease-in-out;
+}
+
+.node-list li {
+  cursor: pointer;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.node-list li:hover {
+  background-color: rgba(0, 123, 255, 0.25);
+}
+
+.local-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}

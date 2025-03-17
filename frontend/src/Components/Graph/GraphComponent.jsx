@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import GraphCanvas from "./GraphCanvas";
 import MovesSidebar from "./MovesSidebar";
 import GraphSettingsModal from "./GraphSettingsModal";
@@ -6,6 +6,10 @@ import VerticalProgressBar from "./VerticalProgressBar";
 import Stopwatch from "./Stopwatch";
 import CatAnimation from "./CatAnimation";
 import { cardcreds, cards } from "../Solar/ModalWindowCards/cards";
+import { Link } from "react-router-dom";
+import { Modal, Button, ListGroup, Card } from "react-bootstrap";
+import InfoIcon from "@mui/icons-material/Info";
+import { useGraphCustomStates } from "./useGraphCustomStates";
 
 export default function GraphComponent({
   matrixInfo,
@@ -19,135 +23,77 @@ export default function GraphComponent({
   selectedPlanet,
   selectedCardIndex
 }) {
-  // Состояния
-  const [selectedNodes, setSelectedNodes] = useState([]);
-  const [selectedEdges, setSelectedEdges] = useState([]);
-  const [score, setScore] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [movesHistory, setMovesHistory] = useState([]);
-  const [disabledNodes, setDisabledNodes] = useState([]);
-  const [showCat, setShowCat] = useState(false);
-  const [showHistoryModal, setShowHistoryModal] = useState(false);
-  const [stopwatchHistory, setStopwatchHistory] = useState([]);
-  const [lockedNodes, setLockedNodes] = useState({});
-  const [moveHistory, setMoveHistory] = useState([]);
-  const [lastIndex, setLastIndex] = useState(0);
-  const [showGameOverModal, setShowGameOverModal] = useState(false);
-  const [userId, setUserId] = useState(localStorage.getItem("currentUser") || "defaultUser");
-  const [showNodeList, setShowNodeList] = useState(false);
+  const {
+    selectedNodes, setSelectedNodes,
+    selectedEdges, setSelectedEdges,
+    score, setScore,
+    isRunning, setIsRunning,
+    elapsedTime, setElapsedTime,
+    movesHistory, setMovesHistory,
+    disabledNodes, setDisabledNodes,
+    showCat, setShowCat,
+    showHistoryModal, setShowHistoryModal,
+    stopwatchHistory, setStopwatchHistory,
+    lockedNodes, setLockedNodes,
+    lastIndex, setLastIndex,
+    showGameOverModal, setShowGameOverModal,
+    userId, setUserId,
+    showNodeList, setShowNodeList,
+    showSettingsModal, setShowSettingsModal,
+    highlightedNode, setHighlightedNode,
+    hoveredNode, setHoveredNode,
+    cursorPosition, setCursorPosition,
+  } = useGraphCustomStates();
 
-  // Звуковые эффекты
   const hoverSoundRef = useRef();
   const gameOverSoundRef = useRef();
   const intervalRef = useRef();
+  const maxTime = 600
 
-  // Логика таймера
   useEffect(() => {
-    const timer = isRunning && setInterval(() => setElapsedTime(t => t + 1), 1000);
-    return () => clearInterval(timer);
-  }, [isRunning]);
-
-  // Проверка времени и GameOver
-  useEffect(() => {
-    if (elapsedTime >= 600 && isRunning) {
-      handleGameOver();
-    }
-    if (elapsedTime >= 300 && !showCat) {
-      setShowCat(true);
-    }
-  }, [elapsedTime, showCat]);
-
-  // Инициализация пользователя
-  useEffect(() => {
-    const user = localStorage.getItem("currentUser");
-    user && setUserId(user);
+    hoverSoundRef.current = new Audio("/sounds/clearSection.mp3");
+    hoverSoundRef.current.volume = 0.05;
+    gameOverSoundRef.current = new Audio("/sounds/gameOver.mp3");
+    gameOverSoundRef.current.volume = 0.2;
   }, []);
 
-  // Загрузка пользовательских настроек
-  const loadUserCoordinates = async () => {
-    try {
-      const matrixName = encodeURIComponent(matrixInfo.matrix_info.matrix_name);
-      const response = await fetch(`http://localhost:8000/${userId}/load-graph-settings/${matrixName}`);
-      if (response.ok) {
-        const data = await response.json();
-        applyCoordinates(data);
-      }
-    } catch (e) { console.error(e); }
-  };
-
-  // Загрузка дефолтных настроек
-  const loadDefaultCoordinates = () => {
-    const matrixName = encodeURIComponent(matrixInfo.matrix_info.matrix_name);
-    fetch(`http://localhost:8000/load-graph-settings/${matrixName}`)
-      .then(res => res.json())
-      .then(data => applyCoordinates(data))
-      .catch(() => console.error("Failed to load default settings"));
-  };
-
-  // Применение координат
-  const applyCoordinates = (data) => {
-    if (data.graph_settings) {
-      // Применение позиции и масштаба
+  useEffect(() => {
+    if (isRunning) {
+      intervalRef.current = setInterval(() => {
+        setElapsedTime(prev => prev + 1);
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
     }
-    if (data.node_coordinates) {
-      // Применение координат узлов
-    }
-  };
+    return () => clearInterval(intervalRef.current);
+  }, [isRunning]);
 
-  // Сохранение настроек
-  const saveGraphSettings = async () => {
-    // Реализация сохранения через GraphCanvas
-  };
-
-  // Обработка GameOver
-  const handleGameOver = () => {
-    setIsRunning(false);
-    setShowGameOverModal(true);
-    gameOverSoundRef.current?.play();
-    const bgAudio = document.getElementById("backgroundMusic");
-    bgAudio && bgAudio.pause();
-  };
-
-  // Логика ходов
-  const handleMakeMove = async (calculatedScore) => {
-    try {
-      const selectedNodesDict = createSelectedNodesDictionary(selectedNodes, lastIndex);
-      const response = await fetch("http://localhost:5000/calculate_score", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          selectedNodes: selectedNodesDict,
-          matrixName: matrixInfo.matrix_info.matrix_name
-        })
-      });
-      const data = await response.json();
-      if (data) {
-        setScore(prev => prev + data.turn_score);
-        setMovesHistory(prev => [...prev, { nodes: selectedNodes, score: data.turn_score }]);
-        setDisabledNodes(prev => [...prev, ...selectedNodes]);
-        handleClearSelection();
-        setLastIndex(prev => prev + selectedNodes.length);
+  useEffect(() => {
+    if (elapsedTime >= maxTime && isRunning) {
+      setIsRunning(false);
+      handleClearSelection();
+      setShowGameOverModal(true);
+      if (gameOverSoundRef.current) {
+        gameOverSoundRef.current.currentTime = 0;
+        gameOverSoundRef.current.play().catch(err => console.error("Game Over звук:", err));
       }
-    } catch (e) { console.error(e); }
-  };
+      const bgAudio = document.getElementById("backgroundMusic");
+      if (bgAudio) bgAudio.pause();
+    }
+    if (elapsedTime >= maxTime / 2 && !showCat) {
+      setShowCat(true);
+    }
+  }, [elapsedTime, isRunning, showCat]);
 
-  // Создание словаря для ходов
-  const createSelectedNodesDictionary = (nodes, startIndex) => {
-    return nodes.reduce((acc, node, i) => {
-      acc[startIndex + i + 1] = node;
-      return acc;
-    }, {});
-  };
-
-  // Очистка выбора
   const handleClearSelection = () => {
+    if (hoverSoundRef.current) {
+      hoverSoundRef.current.currentTime = 0;
+      hoverSoundRef.current.play().catch(err => console.error("Звук hover:", err));
+    }
     setSelectedNodes([]);
     setSelectedEdges([]);
   };
 
-  // Старт/Стоп
   const handleStart = () => {
     setIsRunning(true);
     setElapsedTime(0);
@@ -158,40 +104,76 @@ export default function GraphComponent({
 
   const handleStop = () => {
     setIsRunning(false);
-    setStopwatchHistory([...stopwatchHistory, {
-      time: elapsedTime,
-      score,
-      moves: movesHistory
-    }]);
+    setStopwatchHistory(prev => [...prev, { time: elapsedTime, score, moves: movesHistory }]);
   };
 
-  // Обработчики для GraphCanvas
-  const handleNodeClick = (nodes, edges) => {
-    // Реализация выбора узлов/ребер через GraphCanvas
+  const createSelectedNodesDictionary = (nodes, startIndex) => {
+    return nodes.reduce((acc, node, i) => {
+      acc[startIndex + i + 1] = node;
+      return acc;
+    }, {});
   };
 
-  // Звуковые эффекты
-  useEffect(() => {
-    hoverSoundRef.current = new Audio("/sounds/clearSection.mp3");
-    hoverSoundRef.current.volume = 0.05;
-    gameOverSoundRef.current = new Audio("/sounds/gameOver.mp3");
-    gameOverSoundRef.current.volume = 0.2;
-  }, []);
+  const handleMakeMove = async () => {
+    const availableNodesCount = matrixInfo?.nodes?.length - disabledNodes.length;
+    const minRequired = availableNodesCount < 3 ? availableNodesCount : 3;
+    if (selectedNodes.length < minRequired) {
+      alert(`Нужно минимум ${minRequired} вершин.`);
+      return;
+    }
+    const selectedDict = createSelectedNodesDictionary(selectedNodes, lastIndex);
+    try {
+      const response = await fetch("http://localhost:8000/calculate_score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          selectedNodes: selectedDict,
+          matrixName: matrixInfo.matrix_info.matrix_name
+        })
+      });
+      if (!response.ok) throw new Error(`Ошибка: ${response.status}`);
+      const data = await response.json();
+      if (data) {
+        const { turn_score, total_score } = data;
+        setMovesHistory(prev => [...prev, { nodes: selectedNodes, score: turn_score }]);
+        setScore(total_score);
+        setDisabledNodes(prev => [...prev, ...selectedNodes]);
+        handleClearSelection();
+        setLastIndex(prev => prev + selectedNodes.length);
+        setShowHistoryModal(true);
+      }
+    } catch (error) {
+      console.error("Ошибка хода:", error);
+    }
+  };
 
-  // Рендер
+  const buttonStyle = {
+    border: `1px solid ${selectedPlanet ? cardcreds[selectedPlanet.name].color : "#fff"}`,
+    color: "black",
+    backgroundColor: selectedPlanet ? cardcreds[selectedPlanet.name].color : "#fff",
+  };
+
   return (
     <div className="graph-layout full-height">
-      {showCat && <CatAnimation triggerAnimation />}
-      {showGameOverModal && (
-        <div className="game-over-modal">
-          <h2>Game Over</h2>
-          <p>Score: {score}</p>
-          <button onClick={() => setShowGameOverModal(false)}>OK</button>
-        </div>
-      )}
-      <div className="graph-side graph-left">
-        <VerticalProgressBar currentTime={elapsedTime} maxTime={600} />
+      {showCat && <CatAnimation triggerAnimation={true} />}
+
+      {/* Game Over Modal */}
+      <Modal show={showGameOverModal} centered onHide={() => setShowGameOverModal(false)}>
+        <Modal.Header><Modal.Title>Game Over</Modal.Title></Modal.Header>
+        <Modal.Body><h3>Score: {Math.max(0, score)}</h3></Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => setShowGameOverModal(false)} style={buttonStyle}>OK</Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Панель кнопок */}
+      <div style={{ position: "relative", zIndex: 1000, marginBottom: "10px" }}>
+        <ul className="Button-Group" style={{ display: "flex", gap: "10px", listStyle: "none", padding: 0 }}>
+          <li><button className="game-button" onClick={() => setShowSettingsModal(true)}><InfoIcon /> Details</button></li>
+          <li><Link to={"/science"} state={{ selectedPlanet, selectedCardIndex }}><button className="game-button" disabled={isRunning}>Science</button></Link></li>
+        </ul>
       </div>
+
       <div className="graph-center">
         <GraphCanvas
           matrixInfo={matrixInfo}
@@ -200,9 +182,6 @@ export default function GraphComponent({
           selectedEdges={selectedEdges}
           setSelectedEdges={setSelectedEdges}
           disabledNodes={disabledNodes}
-          onNodeClick={handleNodeClick}
-          loadUserCoordinates={loadUserCoordinates}
-          saveGraphSettings={saveGraphSettings}
           backgroundColor={backgroundColor}
           positiveEdgeColor={positiveEdgeColor}
           negativeEdgeColor={negativeEdgeColor}
@@ -210,34 +189,40 @@ export default function GraphComponent({
           physicsEnabled={physicsEnabled}
           nodeSize={nodeSize}
           edgeRoundness={edgeRoundness}
+          hoverSoundRef={hoverSoundRef}
+          setShowNodeList={setShowNodeList}
+          setHighlightedNode={setHighlightedNode}
+          setHoveredNode={setHoveredNode}
+          setCursorPosition={setCursorPosition}
         />
       </div>
+
+      <div className="graph-side graph-left">
+        <VerticalProgressBar currentTime={elapsedTime} maxTime={maxTime} />
+      </div>
+
       <div className="graph-side graph-right">
-        <Stopwatch
-          elapsedTime={elapsedTime}
-          score={score}
-          onStart={handleStart}
-          onStop={handleStop}
-          isRunning={isRunning}
-          openSettings={() => setShowSettingsModal(true)}
-        />
-        <MovesSidebar
-          selectedNodes={selectedNodes}
-          clearSelection={handleClearSelection}
-          makeMove={handleMakeMove}
-          disabledNodes={disabledNodes}
-          score={score}
-          movesHistory={movesHistory}
-          showHistoryModal={showHistoryModal}
-          toggleHistory={() => setShowHistoryModal(!showHistoryModal)}
-        />
+        <Stopwatch elapsedTime={elapsedTime} score={score} onStart={handleStart} onStop={handleStop} isRunning={isRunning} />
+        <MovesSidebar selectedNodes={selectedNodes} clearSelection={handleClearSelection} makeMove={handleMakeMove} disabledNodes={disabledNodes} score={score} movesHistory={movesHistory} showHistoryModal={showHistoryModal} toggleHistory={() => setShowHistoryModal(!showHistoryModal)} />
       </div>
-      <GraphSettingsModal 
-        show={showSettingsModal}
-        onClose={() => setShowSettingsModal(false)}
-        onSave={saveGraphSettings}
-        onReset={loadDefaultCoordinates}
-      />
+
+      <GraphSettingsModal show={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
+
+      {/* Панель списка узлов */}
+      {showNodeList && (
+        <div className={`node-list-container visible`}>
+          <div className="local-header">
+            <h4>Инфо об узле</h4>
+            <button onClick={() => setShowNodeList(false)}>X</button>
+          </div>
+          {/* Вставь сюда содержимое, что хочешь видеть по узлу */}
+          <ul className="node-list">
+            {selectedNodes.map((nodeId, idx) => (
+              <li key={idx}>{`Узел ID: ${nodeId}`}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

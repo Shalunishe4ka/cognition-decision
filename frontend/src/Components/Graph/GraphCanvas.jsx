@@ -15,7 +15,9 @@ export default function GraphCanvas({
   nodeColor,
   physicsEnabled,
   nodeSize,
-  edgeRoundness
+  edgeRoundness,
+  onNodeClick,
+  setShowNodeList
 }) {
   const networkRef = useRef(null);
   const [graphData, setGraphData] = useState(null);
@@ -114,7 +116,12 @@ export default function GraphCanvas({
     }
     const network = new Network(container, graphData, options);
     networkRef.current = network;
-
+    network.on("hoverNode", function (params) {
+      setShowNodeList(true);
+    });
+    network.on("blurNode", function (params) {
+      setShowNodeList(false);
+    });
     // Обработчик клика на узлы/рёбра
     network.on("click", (params) => {
       const clickedNodes = params.nodes;
@@ -143,6 +150,8 @@ export default function GraphCanvas({
       }
     });
   }, [graphData, physicsEnabled, nodeSize, edgeRoundness]);
+
+
 
   return (
     <div
