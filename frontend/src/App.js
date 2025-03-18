@@ -8,36 +8,44 @@ import SolarSystem from "./Components/Solar/SolarSystem";
 import { GraphMainLayout } from "./Components/Graph/GraphMainLayout";
 import { SignUp } from "./Components/UserCreds/SignUp";
 import { SignIn } from "./Components/UserCreds/SignIn";
+import { CustomStatesProvider } from "./Components/Graph/CustomStates";
 
 function App() {
   const [headerShow, setHeaderShow] = useState(true);
   return (
-    <Router>
-      <Header headerShow={headerShow} />
-      <Routes>
-        <Route path="/" element={<StartPage setHeaderShow={setHeaderShow} />} />
-        <Route
-          path="/challengecomponent"
-          element={<ChallengeComponent setHeaderShow={setHeaderShow} />}
-        />
-        <Route
-          path="/solar"
-          element={<SolarSystem setHeaderShow={setHeaderShow} />}
-        />
-        <Route
-          path="/matrix_uuid/:uuid"
-          element={<GraphMainLayout setHeaderShow={setHeaderShow} />}
-        />
-        <Route
-          path="/sign-up"
-          element={<SignUp setHeaderShow={setHeaderShow} />}
-        />
-        <Route
-          path="/sign-in"
-          element={<SignIn setHeaderShow={setHeaderShow} />}
-        />
-      </Routes>
-    </Router>
+    <CustomStatesProvider>
+      {" "}
+      {/* 🚀 ОБЁРТКА ЗДЕСЬ */}
+      <Router>
+        <Header headerShow={headerShow} />
+        <Routes>
+          <Route
+            path="/"
+            element={<StartPage setHeaderShow={setHeaderShow} />}
+          />
+          <Route
+            path="/challengecomponent"
+            element={<ChallengeComponent setHeaderShow={setHeaderShow} />}
+          />
+          <Route
+            path="/solar"
+            element={<SolarSystem setHeaderShow={setHeaderShow} />}
+          />
+          <Route
+            path="/matrix_uuid/:uuid"
+            element={<GraphMainLayout setHeaderShow={setHeaderShow} />}
+          />
+          <Route
+            path="/sign-up"
+            element={<SignUp setHeaderShow={setHeaderShow} />}
+          />
+          <Route
+            path="/sign-in"
+            element={<SignIn setHeaderShow={setHeaderShow} />}
+          />
+        </Routes>
+      </Router>
+    </CustomStatesProvider>
   );
 }
 

@@ -70,7 +70,7 @@ export const Buttons = ({
     <div className="buttons-container">
       <ul className="buttons-group" id="pills-tab" role="tablist">
         <li>
-          <button className="game-button" onClick={handleOpenModal}>
+          <button id="details-button" className="game-button" onClick={handleOpenModal}>
             <InfoIcon /> Details
           </button>
         </li>

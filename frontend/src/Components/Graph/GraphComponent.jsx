@@ -8,42 +8,18 @@ import { Buttons } from './Buttons'
 export const GraphComponent = (props) => {
   const {
     graphData, setGraphData,
-    highlightedNode, setHighlightedNode,
-    selectedNodes, setSelectedNodes,
+    setHighlightedNode,
+    setSelectedNodes,
     selectedEdges, setSelectedEdges,
-    isRunning, setIsRunning,
-
-    stopwatchHistory, setStopwatchHistory,
-    showNodeList, setShowNodeList,
-    lockedNodes, setLockedNodes,
-    showHistoryModal, setShowHistoryModal,
-    moveHistory, setMoveHistory,
-    lastIndex, setLastIndex,
-    hoveredNode, setHoveredNode,
-    cursorPosition, setCursorPosition,
-    showModal, setShowModal,
-    serverResponseData, setServerResponseData,
-    score, setScore,
-    maxScorePerMove, setMaxScorePerMove,
-    isClosing, setIsClosing,
-    showGameOverModal, setShowGameOverModal,
-    movesHistory, setMovesHistory,
-    disabledNodes, setDisabledNodes,
-    matrixInfo, setMatrixInfo,
-    positiveEdgeColor, setPositiveEdgeColor,
-    negativeEdgeColor, setNegativeEdgeColor,
-    physicsEnabled, setPhysicsEnabled,
-    nodeSize, setNodeSize,
-    edgeRoundness, setEdgeRoundness,
-    hoverSoundRef, gameOverSoundRef,
-    intervalRef, networkRef,
-    location, selectedPlanetLocal,
-    uuid,
-    nodeColor, setNodeColor,
-    // backgroundColor, // Если хочешь динамически, придётся либо CSS variable, либо вернуть inline
-
-    // Функции загрузки настроек из CustomStates
-    handleLoadCoordinates,
+    isRunning, setCurrentTime,
+    setShowNodeList, lockedNodes,
+    setHoveredNode, handleLoadCoordinates,
+    disabledNodes, matrixInfo,
+    positiveEdgeColor, negativeEdgeColor,
+    physicsEnabled, nodeSize,
+    edgeRoundness, intervalRef,
+    networkRef, selectedPlanetLocal,
+    uuid, nodeColor,
   } = props
 
   const planetColor = cardcreds[selectedPlanetLocal.name]?.color || "white";
@@ -84,7 +60,7 @@ export const GraphComponent = (props) => {
     }
 
     // Если matrixInfo загружена и граф уже проинициализирован
-    if (!didLoadCoordsRef.current && matrixInfo && networkRef.current){
+    if (!didLoadCoordsRef.current && matrixInfo && networkRef.current) {
       handleLoadCoordinates(uuid, applyCoordinates);
       didLoadCoordsRef.current = true;
     }

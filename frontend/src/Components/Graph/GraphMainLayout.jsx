@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { GraphComponent } from './GraphComponent';
 import { useCustomStates } from './CustomStates';
 import { useLocation, useParams } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { getMatrixByUUID } from '../../clientServerHub';
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText"
 import "./Styles/GraphStyles.css"
 
-export const GraphMainLayout = ({setHeaderShow}) => {
+export const GraphMainLayout = ({ setHeaderShow }) => {
   setHeaderShow(true)
   const {
     graphData, setGraphData,
@@ -14,7 +14,7 @@ export const GraphMainLayout = ({setHeaderShow}) => {
     selectedNodes, setSelectedNodes,
     selectedEdges, setSelectedEdges,
     isRunning, setIsRunning,
-
+    currentTime, setCurrentTime,
     stopwatchHistory, setStopwatchHistory,
     showNodeList, setShowNodeList,
     lockedNodes, setLockedNodes,
@@ -37,13 +37,10 @@ export const GraphMainLayout = ({setHeaderShow}) => {
     physicsEnabled, setPhysicsEnabled,
     nodeSize, setNodeSize,
     edgeRoundness, setEdgeRoundness,
-    isLoading, setIsLoading, error, setError, handleLoadCoordinates
+    isLoading, setIsLoading, error, setError, handleLoadCoordinates,
+    hoverSoundRef, gameOverSoundRef,
+    intervalRef, networkRef,
   } = useCustomStates();
-
-  const hoverSoundRef = useRef(null);
-  const gameOverSoundRef = useRef(null);
-  const intervalRef = useRef();
-  const networkRef = useRef(null);
 
   const location = useLocation();
   const selectedPlanetLocal = location.state?.selectedPlanet;
@@ -81,7 +78,7 @@ export const GraphMainLayout = ({setHeaderShow}) => {
     selectedNodes, setSelectedNodes,
     selectedEdges, setSelectedEdges,
     isRunning, setIsRunning,
-
+    currentTime, setCurrentTime,
     stopwatchHistory, setStopwatchHistory,
     showNodeList, setShowNodeList,
     lockedNodes, setLockedNodes,

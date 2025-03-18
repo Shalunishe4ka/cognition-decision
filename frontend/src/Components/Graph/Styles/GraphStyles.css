@@ -15,6 +15,7 @@
   justify-content: space-between;
   background-color: rgba(255, 255, 255, 0.17);
   height: calc(620px - 26px);
+  width: 350px;
 }
 
 /* Кнопки/контейнеры внутри stopwatch */
@@ -50,20 +51,22 @@
    Общие кнопки (.game-button)
 ---------------------------------- */
 .game-button {
-  background-color: #342B41 !important;
+  background-color: #342b41 !important;
   border-radius: 15px !important;
   border: 3px solid white !important;
-  padding-left: 30px !important;
-  padding-right: 30px !important;
+  /* padding-left: 30px !important; */
+  /* padding-right: 30px !important; */
   height: 52px;
   width: 10em;
   color: white;
+  cursor: pointer;
 }
 .game-button:disabled {
   background-color: #ccc;
   color: #999;
   cursor: not-allowed;
   opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* ----------------------------------
@@ -98,6 +101,8 @@
   display: flex;
   flex-direction: column;
   padding-left: 20px;
+  position: relative;
+  gap: 30px;
 }
 .graph-component-row {
   display: flex;
@@ -110,23 +115,16 @@
 /* ----------------------------------
    Кнопки-контейнер (Buttons.jsx)
 ---------------------------------- */
-.buttons-container {
-  position: relative;
-  flex: 1;
-  padding-right: 20px;
-}
 .buttons-group {
   display: flex;
   padding: 0;
   text-decoration: none;
   list-style: none;
-  top: -30px;
-  position: absolute;
-  z-index: 1;
-  left: 10%;
+  margin: 0;
+  align-items: center;
 }
-/* Отдельный класс, если нужен для детали:
-.button-icon {
+/* Отдельный класс, если нужен для детали: */
+#details-button {
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -134,7 +132,6 @@
   justify-content: center;
   z-index: 1000;
 }
-*/
 
 /* ----------------------------------
    VerticalProgressBar

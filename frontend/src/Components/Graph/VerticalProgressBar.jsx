@@ -3,19 +3,17 @@ import { useCustomStates } from './CustomStates';
 
 const VerticalProgressBar = () => {
   const {
-    currentTime, maxTime, progress, setProgress
+    currentTime, maxTime
   } = useCustomStates();
 
-  useEffect(() => {
-    const percentage = (currentTime / maxTime) * 100;
-    setProgress(percentage > 100 ? 100 : percentage);
-  }, [currentTime, maxTime, setProgress]);
+
+  const percentage = Math.min((currentTime / maxTime) * 100, 100);
 
   return (
     <div className="vertical-progress-bar">
       <div
         className="vertical-progress-bar-fill"
-        style={{ height: `${progress}%` }}
+        style={{ height: `${percentage}%` }}
       />
     </div>
   );

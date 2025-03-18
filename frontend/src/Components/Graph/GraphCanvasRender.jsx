@@ -20,7 +20,6 @@ export const GraphCanvasRender = ({
   setSelectedNodes,
   setSelectedEdges,
   networkRef,
-  // backgroundColor, // Если хочешь динамически, придётся решать иначе
 }) => {
   const localNetworkRef = useRef(null);
 
@@ -84,9 +83,8 @@ export const GraphCanvasRender = ({
               to: toId,
               rawValue: value,
               width: 1,
-              title: `При увеличении ${oldnodes[fromId - 1].name} ${
-                value > 0 ? "увеличивается" : "уменьшается"
-              } ${oldnodes[toId - 1].name} на ${value}`,
+              title: `При увеличении ${oldnodes[fromId - 1].name} ${value > 0 ? "увеличивается" : "уменьшается"
+                } ${oldnodes[toId - 1].name} на ${value}`,
               label: value.toString(),
               smooth: { type: "continues", roundness: edgeRoundness },
               color: {

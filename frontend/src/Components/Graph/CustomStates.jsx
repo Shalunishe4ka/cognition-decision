@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { jwtDecode } from "jwt-decode";
+import {createContext, useContext, useEffect, useRef, useState } from 'react'
+
 import {
   getUserUuidFromToken,
   loadDefaultCoordinatesAPI,
@@ -7,8 +7,10 @@ import {
   saveGraphSettingsDefaultAPI,
   saveUserGraphSettingsAPI,
 } from "../../clientServerHub"
+const CustomStatesContext = createContext();
+export const useCustomStates = () => useContext(CustomStatesContext);
 
-export const useCustomStates = () => {
+export const CustomStatesProvider = ({ children }) => {
   const [graphData, setGraphData] = useState(null);
   const [highlightedNode, setHighlightedNode] = useState(null);
   const [selectedNodes, setSelectedNodes] = useState([]);
@@ -49,7 +51,7 @@ export const useCustomStates = () => {
   // Для VerticalProgressBar
   const [currentTime, setCurrentTime] = useState(0);
   // maxTime — допущение, что это время на раунд/уровень
-  const [maxTime, setMaxTime] = useState(600);
+  const maxTime = 600;
   const [progress, setProgress] = useState(0);
 
   // Пара планетных состояний
@@ -61,13 +63,18 @@ export const useCustomStates = () => {
   // --- Инициализация userUuid ---
   const [userUuid, setUserUuid] = useState(getUserUuidFromToken());
 
+  const hoverSoundRef = useRef(null);
+  const gameOverSoundRef = useRef(null);
+  const intervalRef = useRef();
+  const networkRef = useRef(null);
+
   // При загрузке компонента — обновим userUuid, если токен сменился
   useEffect(() => {
     const uuidFromToken = getUserUuidFromToken();
     if (uuidFromToken && uuidFromToken !== userUuid) {
       setUserUuid(uuidFromToken);
     }
-  }, []);
+  }, [userUuid]);
 
 
 
@@ -78,12 +85,46 @@ export const useCustomStates = () => {
 
   // Примитивный старт/стоп для Stopwatch
   const handleStart = () => {
+    if (intervalRef.current) return; // уже работает
     setIsRunning(true);
-    // Логику таймера можно делать через useEffect + setInterval
+    setCurrentTime(0);
+    setScore(0);
+    setLastIndex(0);
+    setMoveHistory([]);
+    setLockedNodes({});
+
+    intervalRef.current = setInterval(() => {
+      setCurrentTime(prev => prev + 1);
+    }, 1000);
   };
+
   const handleStop = () => {
     setIsRunning(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    setStopwatchHistory(prev => [
+      ...prev,
+      {
+        currentTime,
+        startTime: new Date(),
+        selectedNodes: [...moveHistory],
+        resscore: score,
+      },
+    ]);
+    setCurrentTime(0);
   };
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
 
   // ==============================
   // Функции для загрузки/сохранения настроек (через uuid)
@@ -102,7 +143,7 @@ export const useCustomStates = () => {
       return null;
     }
   };
-  
+
 
   /**
    * Загрузка пользовательских настроек (для конкретного userUuid), по uuid.
@@ -188,56 +229,65 @@ export const useCustomStates = () => {
     await saveGraphSettingsDefault(uuid, settings);
   };
 
-  return {
-    // Состояния
-    graphData, setGraphData,
-    highlightedNode, setHighlightedNode,
-    selectedNodes, setSelectedNodes,
-    selectedEdges, setSelectedEdges,
-    isRunning, setIsRunning,
-    stopwatchHistory, setStopwatchHistory,
-    showNodeList, setShowNodeList,
-    lockedNodes, setLockedNodes,
-    showHistoryModal, setShowHistoryModal,
-    moveHistory, setMoveHistory,
-    lastIndex, setLastIndex,
-    hoveredNode, setHoveredNode,
-    cursorPosition, setCursorPosition,
-    showModal, setShowModal,
-    serverResponseData, setServerResponseData,
-    score, setScore,
-    maxScorePerMove, setMaxScorePerMove,
-    isClosing, setIsClosing,
-    showGameOverModal, setShowGameOverModal,
-    movesHistory, setMovesHistory,
-    disabledNodes, setDisabledNodes,
-    matrixInfo, setMatrixInfo,
-    positiveEdgeColor, setPositiveEdgeColor,
-    negativeEdgeColor, setNegativeEdgeColor,
-    physicsEnabled, setPhysicsEnabled,
-    nodeSize, setNodeSize,
-    edgeRoundness, setEdgeRoundness,
-    userUuid, setUserUuid,
-    nodeColor, setNodeColor,
-    isLoading, setIsLoading,
-    error, setError,
-    currentTime, setCurrentTime,
-    maxTime, setMaxTime,
-    progress, setProgress,
-    selectedPlanet, setSelectedPlanet,
-    hoveredPlanet, setHoveredPlanet,
+  return (
+    <CustomStatesContext.Provider value={{
+      // Состояния
+      graphData, setGraphData,
+      highlightedNode, setHighlightedNode,
+      selectedNodes, setSelectedNodes,
+      selectedEdges, setSelectedEdges,
+      isRunning, setIsRunning,
+      stopwatchHistory, setStopwatchHistory,
+      showNodeList, setShowNodeList,
+      lockedNodes, setLockedNodes,
+      showHistoryModal, setShowHistoryModal,
+      moveHistory, setMoveHistory,
+      lastIndex, setLastIndex,
+      hoveredNode, setHoveredNode,
+      cursorPosition, setCursorPosition,
+      showModal, setShowModal,
+      serverResponseData, setServerResponseData,
+      score, setScore,
+      maxScorePerMove, setMaxScorePerMove,
+      isClosing, setIsClosing,
+      showGameOverModal, setShowGameOverModal,
+      movesHistory, setMovesHistory,
+      disabledNodes, setDisabledNodes,
+      matrixInfo, setMatrixInfo,
+      positiveEdgeColor, setPositiveEdgeColor,
+      negativeEdgeColor, setNegativeEdgeColor,
+      physicsEnabled, setPhysicsEnabled,
+      nodeSize, setNodeSize,
+      edgeRoundness, setEdgeRoundness,
+      userUuid, setUserUuid,
+      nodeColor, setNodeColor,
+      isLoading, setIsLoading,
+      error, setError,
+      currentTime, setCurrentTime,
+      maxTime, progress, setProgress,
+      selectedPlanet, setSelectedPlanet,
+      hoveredPlanet, setHoveredPlanet,
 
-    // Допфункции
-    handleOpenModal,
-    handleStart,
-    handleStop,
+      // Рефы
+      hoverSoundRef,
+      gameOverSoundRef,
+      intervalRef,
+      networkRef,
 
-    // Методы для работы с координатами
-    loadDefaultCoordinates,
-    loadUserCoordinates,
-    handleLoadCoordinates,
-    handleResetCoordinates,
-    handleSaveUserView,
-    handleSaveDefaultView,
-  }
+      // Допфункции
+      handleOpenModal,
+      handleStart,
+      handleStop,
+
+      // Методы для работы с координатами
+      loadDefaultCoordinates,
+      loadUserCoordinates,
+      handleLoadCoordinates,
+      handleResetCoordinates,
+      handleSaveUserView,
+      handleSaveDefaultView
+    }}>
+      {children}
+    </CustomStatesContext.Provider>
+  )
 }
