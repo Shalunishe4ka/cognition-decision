@@ -1,5 +1,4 @@
 import { images } from "./cardImgs";
-
 export const modelcards = {
   "3d005563-3a2a-4e7c-9717-b7e00c2ad60f": "South Korea financial crisis",
   "dffd4a9f-ed6d-4953-9d11-4106af5ba401": "Non-farm-based livelihood",

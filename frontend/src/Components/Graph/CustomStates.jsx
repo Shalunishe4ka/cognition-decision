@@ -36,6 +36,8 @@ export const useCustomStates = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [currentTime, setCurrentTime] = useState(0)
     const [progress, setProgress] = useState(0);
+    const [selectedPlanet, setSelectedPlanet] = useState(null);
+    const [hoveredPlanet, setHoveredPlanet] = useState(null);
 
 
 
@@ -74,7 +76,8 @@ export const useCustomStates = () => {
         error, setError,
         currentTime, setCurrentTime,
         progress, setProgress,
-
+        selectedPlanet, setSelectedPlanet,
+        hoveredPlanet, setHoveredPlanet
     }
 }
 

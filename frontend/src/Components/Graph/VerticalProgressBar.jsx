@@ -13,7 +13,7 @@ const VerticalProgressBar = () => {
   return (
     <div
       style={{
-        height: '550px', // Фиксированная высота
+        height: 'calc(620px - 4px)', // Фиксированная высота
         width: '50px',  // Фиксированная ширина
         border: '2px solid white', // Бордер с фиксированной шириной
         borderRadius: '10px', // Скругленные углы бордера

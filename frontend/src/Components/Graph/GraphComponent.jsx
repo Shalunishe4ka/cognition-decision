@@ -2,7 +2,8 @@
 import { GraphCanvasRender } from './GraphCanvasRender'
 import Stopwatch from './Stopwatch'
 import VerticalProgressBar from './VerticalProgressBar'
-
+import { cards, cardcreds } from '../Solar/ModalWindowCards/cards';
+import { Buttons } from './Buttons';
 
 export const GraphComponent = ({
 
@@ -37,11 +38,28 @@ export const GraphComponent = ({
     hoverSoundRef, gameOverSoundRef,
     intervalRef, networkRef,
     location, selectedPlanetLocal,
-    selectedCardIndexLocal, uuid,
-    nodeColor, setNodeColor,
-    backgroundColor
+    uuid, nodeColor,
+    setNodeColor, backgroundColor
+
 }) => {
-    console.log("GraphConponent MatrixInfo: ", matrixInfo)
+    const planetColor = cardcreds[selectedPlanetLocal.name].color
+    const planetName = selectedPlanetLocal.name
+    const currentCard = cards[planetName].find(card => card.uuid === uuid)
+    const modelName = currentCard?.title;
+    const planetImg = currentCard?.image
+
+    const resetNodeCoordinates = () => {
+        loadDefaultCoordinates().then((data) => {
+          if (data) {
+            applyCoordinates(data);
+            alert("Дефолтные настройки графа загружены.");
+          } else {
+            alert("Дефолтные настройки графа не найдены.");
+          }
+        });
+      };
+    
+
     const graphCanvasProps = {
         matrixInfo,
         disabledNodes,
@@ -61,13 +79,33 @@ export const GraphComponent = ({
         setSelectedNodes,
         setSelectedEdges,
         backgroundColor,
+
     }
 
+
     return (
-        <div style={{ display: "flex", color: "white", alignItems: "center", justifyContent: "space-between" }}>
-            <VerticalProgressBar />
-            <GraphCanvasRender {...graphCanvasProps} />
-            <Stopwatch />
+        <div>
+            <div style={{display: "flex", paddingLeft: "80px", alignItems: "center"}}>
+                <div style={{display: "flex"}}>
+                <img style={{width: "150px", height: "150px", borderRadius: "15px"}} src={planetImg}/>
+                <h1 style={{ position: "relative", color: planetColor }}>{modelName}</h1>
+                <Buttons />
+                </div>
+            </div>
+            <div
+                style={{
+                    display: "flex",
+                    color: "white",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "15px 80px",
+                    position: "relative",
+                    // top: "-20px",
+                }}>
+                <VerticalProgressBar />
+                <GraphCanvasRender {...graphCanvasProps} />
+                <Stopwatch />
+            </div>
         </div>
     )
 }

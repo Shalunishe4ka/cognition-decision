@@ -7,14 +7,15 @@ import "./SolarSystem.css"; // Import the CSS file for styling
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText";
 import CameraResetter from "./CameraResetter"
 import { Scene } from "./SolarSystemRender/Scene";
+import { useCustomStates } from "../Graph/CustomStates";
 
 
 const SolarSystem = ({setHeaderShow}) => {
   setHeaderShow = false
-  // eslint-disable-next-line
-  const [hoveredPlanet, setHoveredPlanet] = useState(null);
-  const [selectedPlanet, setSelectedPlanet] = useState(null);
 
+  const {
+    setHoveredPlanet, selectedPlanet, setSelectedPlanet
+  } = useCustomStates();
   const sunRef = useRef();
 
   // eslint-disable-next-line

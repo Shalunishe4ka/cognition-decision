@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { FaStopwatch, FaMedal, FaStar } from 'react-icons/fa';
 import { useCustomStates } from './CustomStates';
+import "./Styles/Stopwatch.css"
 
 const Stopwatch = () => {
 

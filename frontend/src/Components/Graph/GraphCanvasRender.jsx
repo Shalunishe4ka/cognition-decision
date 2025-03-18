@@ -12,7 +12,15 @@ export const GraphCanvasRender = ({
     graphData,
     selectedEdges,
     physicsEnabled,
-    nodeSize, setHighlightedNode, setShowNodeList, setHoveredNode, lockedNodes, setSelectedNodes, setSelectedEdges, backgroundColor
+    nodeSize,
+    setHighlightedNode,
+    setShowNodeList,
+    setHoveredNode,
+    lockedNodes,
+    setSelectedNodes,
+    setSelectedEdges,
+    backgroundColor,
+
 }) => {
     const networkRef = useRef(null);
 
@@ -179,14 +187,14 @@ export const GraphCanvasRender = ({
             }
 
             const newNetwork = new Network(container, graphData, options);
-            newNetwork.moveTo({
-                position: { x: -100, y: -350 },
-                scale: 0.85,
-                animation: {
-                    duration: 1000,
-                    easingFunction: "easeInOutQuad",
-                },
-            });
+            // newNetwork.moveTo({
+            //     position: { x: -100, y: -350 },
+            //     scale: 0.85,
+            //     animation: {
+            //         duration: 1000,
+            //         easingFunction: "easeInOutQuad",
+            //     },
+            // });
             newNetwork.on("click", handleNodeClick);
             newNetwork.on("hoverNode", (event) => {
                 setHighlightedNode(event.node);
@@ -272,14 +280,17 @@ export const GraphCanvasRender = ({
                 <div
                     id="graph-container"
                     style={{
-                        height: "670px",
+                        height: "620px",
                         width: "100%",
-                        position: "absolute",
+                        position: "relative",
+                        margin: "0 20px",
                         left: 0,
                         zIndex: 1,
                         backgroundColor: backgroundColor,
                         color: "white",
                         overflow: "hidden",
+                        border: "1px solid white",
+                        borderRadius: "20px"
                     }}
                 ></div>
             )}

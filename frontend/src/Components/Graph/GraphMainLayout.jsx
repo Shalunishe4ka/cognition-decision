@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from 'react'
 import { GraphComponent } from './GraphComponent';
 import { useCustomStates } from './CustomStates';
 import { useLocation, useParams } from 'react-router-dom';
-import { getAllMatrices, getMatrixByUUID } from '../Solar/ModalWindowCards/clientServerHub';
+import { getMatrixByUUID } from '../Solar/ModalWindowCards/clientServerHub';
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText"
+
+
 export const GraphMainLayout = () => {
     const {
         graphData, setGraphData,
@@ -43,7 +45,7 @@ export const GraphMainLayout = () => {
     const networkRef = useRef(null);
     const location = useLocation();
     const selectedPlanetLocal = location.state?.selectedPlanet;
-    const selectedCardIndexLocal = location.state?.selectedCardIndex;
+
     const { uuid } = useParams();
 
     useEffect(() => {
@@ -112,12 +114,14 @@ export const GraphMainLayout = () => {
         hoverSoundRef, gameOverSoundRef,
         intervalRef, networkRef,
         location, selectedPlanetLocal,
-        selectedCardIndexLocal, uuid
+        uuid
 
     }
     return (
         <div>
-            <ChallengeYourMindText />
+            <div style={{position: "relative", top: "-20px"}}>
+                <ChallengeYourMindText />
+            </div>
             <GraphComponent {...graphProps} />
         </div>
     )

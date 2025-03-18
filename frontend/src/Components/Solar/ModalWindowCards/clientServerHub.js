@@ -70,3 +70,7 @@ export async function getScienceTable(matrixName) {
 export async function getMatrixByUUID(uuid) {
   return await fetchJson(`${BASE_URL}/matrix_by_uuid/${uuid}`);
 }
+
+export async function load(params) {
+  
+}

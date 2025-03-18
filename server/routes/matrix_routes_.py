@@ -2,174 +2,200 @@ import os
 import json
 import pathlib
 import numpy as np
+# import asyncio
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
+from routes.UUID_MATRICES import MATRIX_UUIDS
+# FastAPI импорты
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
+
+# PyJWT для токенов
 import jwt
 
-# Заменяем на твой путь к словарю UUID->matrix_name
-from routes.UUID_MATRICES import MATRIX_UUIDS
-
-from services.matrix_service import get_all_matrices, get_matrix_data
+# Исходные импорты из вашего кода
+from services.matrix_service import get_all_matrices, get_matrix_data, get_response_strength, matrix_ids
 from utils.score_counter import calculate_order_score
 from drafts.file_processor import BASE_DIR, process_input_files
+
 from fastapi.middleware.cors import CORSMiddleware
 
-# ===============================
-# Глобальные настройки и инициализация
-# ===============================
+
+# Глобальные настройки для JWT
 SECRET_KEY = "MY_SUPER_SECRET_KEY"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
-CURRENT_BASE_DIR = pathlib.Path(__file__).parent.resolve()
 
+# Создаём FastAPI-приложение и router (аналог Flask app и Blueprint)
 app = FastAPI()
 router = APIRouter()
 
+
+
+
+# Разрешаем CORS, ниже – максимально «открытый» вариант:
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],      # Разрешить со всех доменов (для dev-режима)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 router = APIRouter()
+
+# Ваши эндпоинты и т.д.
+
 app.include_router(router, tags=["Matrix Routes"])
 
+
+# Заменяем session на глобальный словарь: key = имя пользователя, value = данные сессии
 in_memory_sessions: Dict[str, Dict[str, Any]] = {}
 
-# ===============================
+# ===================================
 # JWT Вспомогательные функции
-# ===============================
+# ===================================
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
+    """
+    Генерирует JWT-токен с временем жизни (по умолчанию 30 минут).
+    """
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
 
 def decode_access_token(token: str) -> dict:
+    """
+    Декодирует JWT-токен, проверяет подпись и срок годности.
+    """
     try:
-        return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token has expired")
     except jwt.JWTError:
         raise HTTPException(status_code=401, detail="Could not validate token")
 
+# Зависимость для FastAPI — проверяем заголовок Authorization, декодируем токен
 oauth2_scheme = HTTPBearer()
 
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)) -> str:
-    token = credentials.credentials
+    """
+    Извлекает username из валидного Bearer-токена.
+    """
+    token = credentials.credentials  # сам JWT без "Bearer "
     payload = decode_access_token(token)
     username: str = payload.get("sub")
     if not username:
         raise HTTPException(status_code=401, detail="Invalid token: no 'sub'")
     return username
 
-# ===============================
-# Утилита для загрузки эталонной последовательности
-# ===============================
-TRUE_SEQ_DIR = CURRENT_BASE_DIR / "../data/processed_files/True_Seq"
+# ===================================
+# ОРИГИНАЛЬНЫЕ ЭНДПОИНТЫ
+# ===================================
 
-def load_true_sequence(matrix_name: str) -> Dict[int, float]:
-    """
-    Загружает эталонную последовательность для данной матрицы по её имени
-    из файла JSON (например, 'South Korea financial crisis.json').
-    """
-    json_path = TRUE_SEQ_DIR / f"{matrix_name}.json"
-    if not json_path.exists():
-        raise FileNotFoundError(f"True sequence file not found: {json_path}")
-    with open(json_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    return {int(k): float(v) for k, v in data.items()}
+CURRENT_BASE_DIR = pathlib.Path(__file__).parent.resolve()
 
-# Вспомогательная функция: найти uuid для матрицы
-def get_uuid_by_matrix_name(matrix_name: str) -> Optional[str]:
-    for uuid_key, name in MATRIX_UUIDS.items():
-        if name == matrix_name:
-            return uuid_key
-    return None
-
-# ===============================
-# ЭНДПОИНТЫ
-# ===============================
-
+# --------------------
+# /matrices [GET]
+# --------------------
 @router.get("/matrices")
 def get_matrices():
     """
-    Возвращает список всех матриц, доступных на сервере,
-    вместе с их uuid (если он есть в словаре MATRIX_UUIDS).
+    Возвращает список доступных матриц.
     """
     try:
-        matrices = get_all_matrices()  # [{'matrix_id', 'matrix_name', 'node_count', 'edge_count', 'meta'} ... ]
-        result = []
-        for m in matrices:
-            matrix_name = m.get("matrix_name")
-            matrix_uuid = get_uuid_by_matrix_name(matrix_name)
-            m["uuid"] = matrix_uuid  # Вставляем uuid, если нашли (или None)
-            # Если нужно, фильтруй матрицы без uuid, либо возвращай как есть
-            result.append(m)
-        return {"matrices": result}
+        matrices = get_all_matrices()
+        return {"matrices": matrices}
     except Exception as e:
         return {"error": str(e)}
+
+# --------------------
+# /matrix/<int:matrix_id>
+# --------------------
 
 @router.get("/matrix_by_uuid/{uuid}")
 def get_matrix_by_uuid(uuid: str):
     """
-    Возвращает данные матрицы по её uuid.
+    Возвращает матрицу (nodes, edges) по UUID карточки.
     """
     matrix_name = MATRIX_UUIDS.get(uuid)
     if not matrix_name:
-        return {"error": f"UUID '{uuid}' not found in MATRIX_UUIDS"}, 404
+        return {"error": "UUID not found"}, 404
 
-    # Берём данные матрицы через имя
-    matrix_data = get_matrix_data_by_name(matrix_name)
+    # Ищем matrix_id по matrix_name
+    matrix_id = None
+    for mid, name in matrix_ids.items():
+        if name == matrix_name:
+            matrix_id = mid
+            break
+
+    if matrix_id is None:
+        return {"error": f"Matrix '{matrix_name}' not found"}, 404
+
+    # Получаем данные матрицы
+    matrix_data = get_matrix_data(matrix_id)
     if not matrix_data:
         return {"error": f"Matrix data for '{matrix_name}' unavailable"}, 404
 
     return {
-        "matrix_info": {"matrix_name": matrix_name, "uuid": uuid},
+        "matrix_info": {"matrix_name": matrix_name},
         "nodes": matrix_data["nodes"],
         "edges": matrix_data["edges"]
     }
 
-def get_matrix_data_by_name(matrix_name: str) -> Dict[str, Any]:
-    """
-    Обёртка над get_matrix_data, если нужно. Или сразу get_matrix_data_by_name
-    из services.matrix_service. Здесь, если нужно, можно адаптировать логику.
-    """
-    # У тебя в matrix_service есть метод get_matrix_data_by_name; можно напрямую.
-    # Или, если нуждается в ID, убери ID и делай прямое чтение файла. Пример:
-    from services.matrix_service import get_matrix_data_by_name
-    return get_matrix_data_by_name(matrix_name)
 
+@router.get("/matrix/{matrix_id}")
+def get_matrix_info(matrix_id: int):
+    """
+    Возвращает информацию о конкретной матрице по её ID.
+    """
+    try:
+        matrix_data = get_matrix_data(matrix_id)
+        if matrix_data:
+            return {
+                "matrix_info": {"matrix_name": matrix_data["matrix_name"]},
+                "nodes": matrix_data["nodes"],
+                "edges": matrix_data["edges"],
+            }
+        else:
+            return {"error": f"Matrix with ID '{matrix_id}' not found."}
+    except Exception as e:
+        return {"error": str(e)}
+
+# --------------------
+# /calculate_score [POST]
+# --------------------
 @router.post("/calculate_score")
 async def calculate_score(request: Request):
     """
-    Рассчитывает очки за ход на основе uuid матрицы (вместо matrix_id или "имя"_result).
+    Эндпоинт для расчета очков игрока с учетом порядка выбранных вершин.
     """
     try:
         body = await request.json()
         nodes = body.get('selectedNodes', {})
-        matrix_uuid = body.get('uuid')
+        matrix_name = body.get('matrixName')
 
-        if not matrix_uuid:
-            return {"error": "Matrix UUID is required"}, 400
-
-        matrix_name = f"{MATRIX_UUIDS.get(matrix_uuid)}_result"
         if not matrix_name:
-            return {"error": "Matrix UUID not found in MATRIX_UUIDS"}, 404
+            return {"error": "Matrix name is required"}, 400
 
-        try:
-            matrix_order = load_true_sequence(matrix_name)
-        except FileNotFoundError:
-            return {"error": f"True sequence for '{matrix_name}' not found"}, 404
+        # Получение словаря с откликами
+        response_strength = get_response_strength(matrix_name)
+        if response_strength is None:
+            return {"error": f"Matrix '{matrix_name}' not found"}, 404
 
+        # Преобразуем словарь в список вершин
         node_values = list(nodes.values())
-        user_id = "anonymous"  # При желании можешь получать user из токена
 
+        # Здесь вместо Flask session используем глобальный словарь in_memory_sessions.
+        # В оригинальном коде не было авторизации, поэтому используем фиктивное имя пользователя "anonymous".
+        user_id = "anonymous"  
         if user_id not in in_memory_sessions:
             in_memory_sessions[user_id] = {
                 "turns": [],
@@ -179,21 +205,26 @@ async def calculate_score(request: Request):
 
         session_data = in_memory_sessions[user_id]
 
-        # Проверка: не используем ли уже выбранные вершины
+        # Проверка на повторение вершин
         if any(node in session_data['used_nodes'] for node in node_values):
             return {"error": "Some nodes have already been used in previous turns"}, 400
 
-        # Считаем очки
-        order_score = calculate_order_score(node_values, matrix_order)
+        # Сохранение текущего хода
+        order_score = calculate_order_score(node_values, response_strength)
+
+        # Защита от некорректных значений
         if not isinstance(order_score, (int, float)) or np.isnan(order_score) or order_score < 0:
             order_score = 0
 
-        # Сохраняем результат хода
         session_data['turns'].append({
             'nodes': node_values,
             'score': order_score
         })
+
+        # Обновляем общий счет
         session_data['total_score'] = max(0, session_data['total_score'] + order_score)
+
+        # Обновляем список использованных вершин
         session_data['used_nodes'].extend(node_values)
 
         return {
@@ -205,7 +236,6 @@ async def calculate_score(request: Request):
     except Exception as e:
         return {"error": str(e)}, 500
 
-
 # --------------------
 # /science_table [POST]
 # --------------------
@@ -213,22 +243,17 @@ async def calculate_score(request: Request):
 async def get_science_table(request: Request):
     """
     Эндпоинт, который обрабатывает report.txt (или вызывает Fortran при его отсутствии).
-    Теперь тоже берём matrix_uuid из тела, конвертим в matrix_name и ищем report.txt
     """
     try:
         body = await request.json()
-        matrix_uuid = body.get('matrixUuid')  # или 'uuid'
-        if not matrix_uuid:
-            return {"error": "Matrix uuid is required"}, 400
-
-        matrix_name = MATRIX_UUIDS.get(matrix_uuid)
+        matrix_name = body.get('matrixName')
         if not matrix_name:
-            return {"error": f"UUID '{matrix_uuid}' not found in MATRIX_UUIDS"}, 404
+            return {"error": "Matrix name is required"}, 400
 
-        # Формируем путь к report.txt
+        # Определяем путь к файлу report.txt
         report_file_path = BASE_DIR / "Vadimka" / f"{matrix_name}_report.txt"
 
-        # Проверяем наличие report.txt
+        # Проверяем, существует ли report.txt
         if not report_file_path.exists():
             print(f"[INFO] Файл {report_file_path} не найден. Запускаем процесс обработки Fortran.")
             process_input_files(
@@ -237,14 +262,14 @@ async def get_science_table(request: Request):
                 BASE_DIR / "edited_mils.f90"
             )
 
-        # Снова проверяем после обработки
+        # Читаем report.txt после выполнения Fortran, если оно было выполнено
         if report_file_path.exists():
             with open(report_file_path, "r") as report:
                 lines = report.readlines()
         else:
             return {"error": "report.txt not found"}, 404
 
-        # Читаем данные
+        # Обрабатываем данные
         u = [float(line[12:-1]) for line in lines if len(line) <= 23]
         x = [float(line[1:10]) for line in lines if len(line) <= 23]
 
@@ -274,8 +299,8 @@ async def get_science_table(request: Request):
     except Exception as e:
         return {"error": str(e)}, 500
 
-
 # ===================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====================
+
 def ensure_dir(directory):
     """Создает директорию, если она не существует."""
     os.makedirs(directory, exist_ok=True)
@@ -309,20 +334,16 @@ def get_user_creds_filepath(username):
 
 # ===================== ЭНДПОИНТЫ ДЛЯ НАСТРОЕК ГРАФА =====================
 
-@router.post("/save-graph-settings/{matrix_uuid}")
-async def save_graph_settings(matrix_uuid: str, request: Request):
+# 1. Настройки графа по умолчанию
+@router.post("/save-graph-settings/{matrix_name}")
+async def save_graph_settings(matrix_name: str, request: Request):
     """
-    Сохраняет настройки графа по умолчанию в JSON-файл (уже через uuid).
+    Сохраняет настройки графа по умолчанию в JSON-файл.
     """
     try:
         data = await request.json()
         if not data:
             return {"error": "No data provided"}, 400
-
-        matrix_name = MATRIX_UUIDS.get(matrix_uuid)
-        if not matrix_name:
-            return {"error": f"UUID '{matrix_uuid}' not found in MATRIX_UUIDS"}, 404
-
         filepath = get_default_settings_filepath(matrix_name)
         save_json(filepath, data)
         print(f"[INFO] Default settings saved at {filepath}.")
@@ -331,92 +352,61 @@ async def save_graph_settings(matrix_uuid: str, request: Request):
         print(f"[ERROR] Ошибка при сохранении файла: {e}")
         return {"error": "Ошибка при сохранении файла."}, 500
 
-@router.get("/load-graph-settings/{matrix_uuid}")
-def load_graph_settings(matrix_uuid: str):
+@router.get("/load-graph-settings/{matrix_name}")
+def load_graph_settings(matrix_name: str):
     """
-    Загружает настройки графа по умолчанию из JSON-файла (уже через uuid).
+    Загружает настройки графа по умолчанию из JSON-файла.
     """
     try:
-        matrix_name = MATRIX_UUIDS.get(matrix_uuid)
-        if not matrix_name:
-            return {"error": f"UUID '{matrix_uuid}' not found in MATRIX_UUIDS"}, 404
-
         filepath = get_default_settings_filepath(matrix_name)
         if not os.path.exists(filepath):
             return {"error": f"Файл настроек для '{matrix_name}' не найден."}, 404
-
         data = load_json(filepath)
         print(f"[INFO] Default settings loaded from {filepath}.")
         return data, 200
     except Exception as e:
         print(f"[ERROR] Ошибка загрузки файла: {e}")
         return {"error": "Ошибка загрузки файла."}, 500
+@router.get("/load-graph-settings-uuid/{uuid}")
 
 
 
-# ===================== ЭНДПОИНТЫ ДЛЯ ПОЛЬЗОВАТЕЛЬСКИХ НАСТРОЕК ГРАФА =====================
-
-def get_user_settings_filepath(user_id: str, matrix_name: str) -> str:
+# 2. Пользовательские настройки графа (координат)
+@router.post("/{user_id}/save-graph-settings/{matrix_name}")
+async def save_user_graph_settings(user_id: str, matrix_name: str, request: Request):
     """
-    Возвращает путь к файлу настроек для пользователя user_id и матрицы matrix_name.
-    Например:  users/<user_id>/user_settings/<matrix_name>_settings.json
-
-    Если хочешь хранить через uuid, сделай, например:
-      return os.path.join(folder, f"{matrix_uuid}_settings.json")
-    """
-    folder = os.path.join("users", user_id, "user_settings")
-    ensure_dir(folder)
-    return os.path.join(folder, f"{matrix_name}_settings.json")
-
-
-@router.post("/{user_id}/save-graph-settings/{matrix_uuid}")
-async def save_user_graph_settings(user_id: str, matrix_uuid: str, request: Request):
-    """
-    Сохраняет настройки графа для пользователя user_id.
-    Принимает uuid матрицы, маппит на matrix_name, и сохраняет настройки в:
+    Сохраняет настройки графа для пользователя.
+    Сохраняет данные в:
       users/<user_id>/user_settings/<matrix_name>_settings.json
     """
     try:
         data = await request.json()
         if not data:
             return {"error": "No data provided"}, 400
-
-        matrix_name = MATRIX_UUIDS.get(matrix_uuid)
-        if not matrix_name:
-            return {"error": f"UUID '{matrix_uuid}' not found in MATRIX_UUIDS"}, 404
-
         filepath = get_user_settings_filepath(user_id, matrix_name)
         save_json(filepath, data)
-        print(f"[INFO] Settings for user '{user_id}' and matrix '{matrix_name}' saved at {filepath}.")
+        print(f"[INFO] Settings for user '{user_id}' saved at {filepath}.")
         return {"message": "Настройки графа успешно сохранены."}, 200
     except Exception as e:
-        print(f"[ERROR] Ошибка при сохранении файла для user '{user_id}': {e}")
+        print(f"[ERROR] Ошибка при сохранении файла for user '{user_id}': {e}")
         return {"error": "Ошибка при сохранении файла."}, 500
 
-
-@router.get("/{user_id}/load-graph-settings/{matrix_uuid}")
-def load_user_graph_settings(user_id: str, matrix_uuid: str):
+@router.get("/{user_id}/load-graph-settings/{matrix_name}")
+def load_user_graph_settings(user_id: str, matrix_name: str):
     """
-    Загружает настройки графа для пользователя user_id.
-    Принимает uuid матрицы, маппит на matrix_name, и ищет файл:
+    Загружает настройки графа для пользователя из файла:
       users/<user_id>/user_settings/<matrix_name>_settings.json
     """
     try:
-        matrix_name = MATRIX_UUIDS.get(matrix_uuid)
-        if not matrix_name:
-            return {"error": f"UUID '{matrix_uuid}' not found in MATRIX_UUIDS"}, 404
-
         filepath = get_user_settings_filepath(user_id, matrix_name)
         if not os.path.exists(filepath):
             return {"error": f"Файл настроек для '{matrix_name}' пользователя '{user_id}' не найден."}, 404
-
         data = load_json(filepath)
-        print(f"[INFO] Settings for user '{user_id}' and matrix '{matrix_name}' loaded from {filepath}.")
+        print(f"[INFO] Settings for user '{user_id}' loaded from {filepath}.")
         return data, 200
     except Exception as e:
-        print(f"[ERROR] Ошибка загрузки файла для user '{user_id}': {e}")
+        print(f"[ERROR] Ошибка загрузки файла for user '{user_id}': {e}")
         return {"error": "Ошибка загрузки файла."}, 500
-
 
 # ===================== ЭНДПОИНТЫ ДЛЯ АВТОРИЗАЦИИ =====================
 
@@ -425,16 +415,13 @@ async def sign_up(request: Request):
     """
     Роутер для регистрации пользователя.
     Ожидает JSON с полями: username, email, password.
-    Данные сохраняются в:  ./users/<username>/user_creds/<username>.json
-
-    В продакшене пароль НЕ хранится в открытом виде, используется хэширование (bcrypt, argon2 и т.д.).
+    Данные сохраняются в: ./users/<username>/user_creds/<username>.json
     """
     try:
         data = await request.json()
         username = data.get("username")
         email = data.get("email")
         password = data.get("password")
-
         if not username or not email or not password:
             return {"error": "username, email и password обязательны"}, 400
 
@@ -448,28 +435,26 @@ async def sign_up(request: Request):
         user_data = {
             "username": username,
             "email": email,
-            # Здесь желательно хранить ХЭШ пароля, а не сам пароль
-            "password": password
+            "password": password  # Пароль хранится в открытом виде (не рекомендуется для продакшена)
         }
         save_json(creds_filepath, user_data)
-        print(f"[INFO] User '{username}' registered with credentials at {creds_filepath}.")
+        print(f"[INFO] User '{username}' registered with credentials stored at {creds_filepath}.")
         return {"message": "Пользователь успешно зарегистрирован"}, 201
     except Exception as e:
         return {"error": str(e)}, 500
-
 
 @router.post("/sign-in")
 async def sign_in(request: Request):
     """
     Роутер для входа пользователя.
     Ожидает JSON с полями: username и password.
-    При успешной аутентификации создаёт JWT-токен (access_token).
+    При успешной аутентификации имя пользователя сохраняется в "сессии" — 
+    однако в данном FastAPI-примере вместо session используется JWT-токен.
     """
     try:
         data = await request.json()
         username = data.get("username")
         password = data.get("password")
-
         if not username or not password:
             return {"error": "username и password обязательны"}, 400
 
@@ -481,7 +466,6 @@ async def sign_in(request: Request):
         if user_data.get("password") != password:
             return {"error": "Неверный пароль"}, 401
 
-        # Создаем токен
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(
             data={"sub": username},
@@ -496,7 +480,12 @@ async def sign_in(request: Request):
     except Exception as e:
         return {"error": str(e)}, 500
 
-# ===============================
-# Регистрация роутера
-# ===============================
+# ====================================
+# РЕГИСТРАЦИЯ РОУТЕРА И ЗАПУСК ПРИЛОЖЕНИЯ
+# ====================================
 app.include_router(router, tags=["Matrix Routes"])
+
+# Если хотите запускать напрямую (например, python main.py):
+# if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
