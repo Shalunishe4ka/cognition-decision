@@ -1,18 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { jwtDecode } from "jwt-decode";
 import {
+  getUserUuidFromToken,
   loadDefaultCoordinatesAPI,
   loadUserCoordinatesAPI,
   saveGraphSettingsDefaultAPI,
   saveUserGraphSettingsAPI,
-} from "../Solar/ModalWindowCards/clientServerHub"
+} from "../../clientServerHub"
 
 export const useCustomStates = () => {
   const [graphData, setGraphData] = useState(null);
   const [highlightedNode, setHighlightedNode] = useState(null);
   const [selectedNodes, setSelectedNodes] = useState([]);
   const [selectedEdges, setSelectedEdges] = useState([]);
-  const [isRunning, setIsRunning] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false)
   const [stopwatchHistory, setStopwatchHistory] = useState([]);
   const [showNodeList, setShowNodeList] = useState(false);
   const [lockedNodes, setLockedNodes] = useState({});
@@ -37,7 +38,7 @@ export const useCustomStates = () => {
   const [edgeRoundness, setEdgeRoundness] = useState(0.15);
 
   // Текущий юзер
-  const [userUuid, setuserUuid] = useState(localStorage.getItem("currentUser") || "defaultUser");
+  // const [userUuid, setuserUuid] = useState(localStorage.getItem("currentUser") || "defaultUser");
   // Цвет узлов
   const [nodeColor, setNodeColor] = useState("#0b001a");
 
@@ -56,6 +57,19 @@ export const useCustomStates = () => {
   const [hoveredPlanet, setHoveredPlanet] = useState(null);
 
   // ----- Дописанные функции-заглушки -----
+
+  // --- Инициализация userUuid ---
+  const [userUuid, setUserUuid] = useState(getUserUuidFromToken());
+
+  // При загрузке компонента — обновим userUuid, если токен сменился
+  useEffect(() => {
+    const uuidFromToken = getUserUuidFromToken();
+    if (uuidFromToken && uuidFromToken !== userUuid) {
+      setUserUuid(uuidFromToken);
+    }
+  }, []);
+
+
 
   // Если нужна модалка Details
   const handleOpenModal = () => {
@@ -81,12 +95,14 @@ export const useCustomStates = () => {
   const loadDefaultCoordinates = async (uuid) => {
     try {
       const data = await loadDefaultCoordinatesAPI(uuid);
-      return data; // { graph_settings, node_coordinates }
+      const payload = Array.isArray(data) ? data[0] : data;
+      return payload;
     } catch (error) {
       console.error("Ошибка при загрузке дефолтных настроек:", error);
       return null;
     }
   };
+  
 
   /**
    * Загрузка пользовательских настроек (для конкретного userUuid), по uuid.
@@ -94,7 +110,9 @@ export const useCustomStates = () => {
   const loadUserCoordinates = async (uuid) => {
     try {
       const data = await loadUserCoordinatesAPI(uuid, userUuid);
-      return data; // { graph_settings, node_coordinates }
+      // Если ответ массив, берем первый элемент
+      const payload = Array.isArray(data) ? data[0] : data;
+      return payload; // { graph_settings, node_coordinates }
     } catch (error) {
       console.error("Ошибка загрузки пользовательских настроек:", error);
       return null;
@@ -177,7 +195,6 @@ export const useCustomStates = () => {
     selectedNodes, setSelectedNodes,
     selectedEdges, setSelectedEdges,
     isRunning, setIsRunning,
-    elapsedTime, setElapsedTime,
     stopwatchHistory, setStopwatchHistory,
     showNodeList, setShowNodeList,
     lockedNodes, setLockedNodes,
@@ -200,7 +217,7 @@ export const useCustomStates = () => {
     physicsEnabled, setPhysicsEnabled,
     nodeSize, setNodeSize,
     edgeRoundness, setEdgeRoundness,
-    userUuid, setuserUuid,
+    userUuid, setUserUuid,
     nodeColor, setNodeColor,
     isLoading, setIsLoading,
     error, setError,

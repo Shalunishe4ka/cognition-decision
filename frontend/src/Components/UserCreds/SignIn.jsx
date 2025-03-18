@@ -1,94 +1,61 @@
 import React, { useState } from 'react';
-import { jwtDecode } from "jwt-decode";
+import { loginUser, getUserUuidFromToken } from '../../clientServerHub';  // Импорт из хаба
+import './UserCreds.css';
 
 export const SignIn = ({ setHeaderShow }) => {
-    setHeaderShow(true)
+  setHeaderShow(true);
 
-    const getUserUUIDFromToken = (token) => {
-        try {
-            const decoded = jwtDecode(token); // декодируем payload
-            return decoded.uuid || null; // достаём user_uuid
-        } catch (error) {
-            console.error("Ошибка декодирования токена:", error);
-            return null;
-        }
+  const [form, setForm] = useState({ username: '', password: '' });
+  const [error, setError] = useState(null);
+  const [successMsg, setSuccessMsg] = useState('');
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccessMsg('');
+
+    try {
+      const response = await loginUser(form.username, form.password);
+      setSuccessMsg(response.message || 'Вход выполнен успешно');
+
+      // Извлекаем токен из localStorage и декодируем user_uuid
+      const token = localStorage.getItem('access_token');
+      const user_uuid = getUserUuidFromToken(token);
+      console.log("user_uuid из токена:", user_uuid);
+    } catch (err) {
+      console.error('Ошибка входа:', err);
+      setError(err.message);
     }
+  };
 
-    const [form, setForm] = useState({
-        username: '',
-        password: ''
-    });
-    const [error, setError] = useState(null);
-    const [successMsg, setSuccessMsg] = useState('');
+  return (
+    <div className="auth-container">
+      <h2>Вход</h2>
+      {error && <p className="auth-error">{error}</p>}
+      {successMsg && <p className="auth-success">{successMsg}</p>}
 
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            setError(null);
-            setSuccessMsg('');
-
-            const response = await fetch('http://localhost:8000/sign-in', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form)
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                setError(data.error || 'Ошибка при входе');
-            } else {
-                // Успешный вход -> получаем токен
-                setSuccessMsg(data.message || 'Вход выполнен успешно');
-                if (data.access_token) {
-                    localStorage.setItem('access_token', data.access_token);
-                    const user_uuid = getUserUUIDFromToken(data.access_token);
-                    console.log("user_uuid из токена:", user_uuid);
-                    // Можешь сохранить в state или использовать сразу
-                }
-            }
-        } catch (err) {
-            console.error('Ошибка авторизации:', err);
-            setError('Не удалось выполнить вход');
-        }
-    };
-
-    return (
-        <div>
-            <h2>Sign In</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
-
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Username:</label>
-                    <input
-                        name="username"
-                        value={form.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={form.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <button type="submit">Войти</button>
-            </form>
-        </div>
-    );
-}
-
+      <form onSubmit={handleSubmit} className="auth-form">
+        <input
+          name="username"
+          placeholder="Имя пользователя"
+          value={form.username}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Пароль"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
+        <button type="submit">Войти</button>
+      </form>
+    </div>
+  );
+};

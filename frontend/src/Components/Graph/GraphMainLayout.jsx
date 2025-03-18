@@ -2,18 +2,19 @@ import React, { useEffect, useRef } from 'react'
 import { GraphComponent } from './GraphComponent';
 import { useCustomStates } from './CustomStates';
 import { useLocation, useParams } from 'react-router-dom';
-import { getMatrixByUUID } from '../Solar/ModalWindowCards/clientServerHub';
+import { getMatrixByUUID } from '../../clientServerHub';
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText"
 import "./Styles/GraphStyles.css"
 
-export const GraphMainLayout = () => {
+export const GraphMainLayout = ({setHeaderShow}) => {
+  setHeaderShow(true)
   const {
     graphData, setGraphData,
     highlightedNode, setHighlightedNode,
     selectedNodes, setSelectedNodes,
     selectedEdges, setSelectedEdges,
     isRunning, setIsRunning,
-    elapsedTime, setElapsedTime,
+
     stopwatchHistory, setStopwatchHistory,
     showNodeList, setShowNodeList,
     lockedNodes, setLockedNodes,
@@ -36,7 +37,7 @@ export const GraphMainLayout = () => {
     physicsEnabled, setPhysicsEnabled,
     nodeSize, setNodeSize,
     edgeRoundness, setEdgeRoundness,
-    isLoading, setIsLoading, error, setError
+    isLoading, setIsLoading, error, setError, handleLoadCoordinates
   } = useCustomStates();
 
   const hoverSoundRef = useRef(null);
@@ -80,7 +81,7 @@ export const GraphMainLayout = () => {
     selectedNodes, setSelectedNodes,
     selectedEdges, setSelectedEdges,
     isRunning, setIsRunning,
-    elapsedTime, setElapsedTime,
+
     stopwatchHistory, setStopwatchHistory,
     showNodeList, setShowNodeList,
     lockedNodes, setLockedNodes,
@@ -106,7 +107,7 @@ export const GraphMainLayout = () => {
     hoverSoundRef, gameOverSoundRef,
     intervalRef, networkRef,
     location, selectedPlanetLocal,
-    uuid
+    uuid, handleLoadCoordinates
   };
 
   return (

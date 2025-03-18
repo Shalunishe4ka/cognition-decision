@@ -1,29 +1,23 @@
 import os
 import json
 import pathlib
+import logging
 import numpy as np
+from uuid import uuid4
 from datetime import datetime, timedelta
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.middleware.cors import CORSMiddleware
 import jwt
-from uuid import uuid4
-# Заменяем на твой путь к словарю UUID->matrix_name
-from routes.UUID_MATRICES import MATRIX_UUIDS
 
-from services.matrix_service import get_all_matrices, get_matrix_data
+# Внешние импорты
+from services.matrix_service import get_all_matrices, get_matrix_data_by_name
 from utils.score_counter import calculate_order_score
 from drafts.file_processor import BASE_DIR, process_input_files
-from fastapi.middleware.cors import CORSMiddleware
+from routes.UUID_MATRICES import MATRIX_UUIDS
 
-# ===============================
-# Глобальные настройки и инициализация
-# ===============================
-SECRET_KEY = "MY_SUPER_SECRET_KEY"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-CURRENT_BASE_DIR = pathlib.Path(__file__).parent.resolve()
-
+# =============================== Инициализация ===============================
 app = FastAPI()
 router = APIRouter()
 
@@ -35,81 +29,144 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-router = APIRouter()
-app.include_router(router, tags=["Matrix Routes"])
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("matrix_routes")
+
+CURRENT_DIR = pathlib.Path(__file__).parent.resolve()
+USERS_ROOT = (CURRENT_DIR / "../users").resolve()
+TRUE_SEQ_DIR = (CURRENT_DIR / "../data/processed_files/True_Seq").resolve()
+
+SECRET_KEY = "MY_SUPER_SECRET_KEY"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+oauth2_scheme = HTTPBearer()
 
 in_memory_sessions: Dict[str, Dict[str, Any]] = {}
 
-# ===============================
-# JWT Вспомогательные функции
-# ===============================
+# =============================== Утилиты ===============================
+def ensure_dir(path: pathlib.Path) -> pathlib.Path:
+    path.mkdir(parents=True, exist_ok=True)
+    return path
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
+def save_json(filepath: pathlib.Path, data):
+    with open(filepath, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2)
+
+def load_json(filepath: pathlib.Path):
+    with open(filepath, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+def get_user_creds_filepath(username: str) -> pathlib.Path:
+    return (USERS_ROOT / username / "user_creds" / f"{username}.json").resolve()
+
+def get_user_uuid_creds_path(user_uuid: str) -> pathlib.Path:
+    return (USERS_ROOT / user_uuid / "user_creds" / f"{user_uuid}.json").resolve()
+
+def get_user_settings_filepath(user_uuid: str, matrix_name: str) -> pathlib.Path:
+    path = USERS_ROOT / user_uuid / "user_settings"
+    ensure_dir(path)
+    return (path / f"{matrix_name}_settings.json").resolve()
+
+def get_default_settings_filepath(matrix_name: str) -> pathlib.Path:
+    path = CURRENT_DIR / "graph_settings"
+    ensure_dir(path)
+    return (path / f"{matrix_name}_graph_settings.json").resolve()
+
+def load_true_sequence(matrix_name: str) -> Dict[int, float]:
+    path = TRUE_SEQ_DIR / f"{matrix_name}.json"
+    if not path.exists():
+        raise FileNotFoundError(f"True sequence not found: {path}")
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return {int(k): float(v) for k, v in data.items()}
+
+# =============================== JWT ===============================
+def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     to_encode = data.copy()
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-def decode_access_token(token: str) -> dict:
+def decode_access_token(token: str):
     try:
         return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token has expired")
+        raise HTTPException(status_code=401, detail="Token expired")
     except jwt.JWTError:
-        raise HTTPException(status_code=401, detail="Could not validate token")
+        raise HTTPException(status_code=401, detail="Invalid token")
 
-oauth2_scheme = HTTPBearer()
-
-def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)) -> str:
+def get_current_user_uuid(credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)) -> str:
     token = credentials.credentials
     payload = decode_access_token(token)
-    username: str = payload.get("sub")
-    if not username:
-        raise HTTPException(status_code=401, detail="Invalid token: no 'sub'")
-    return username
+    user_uuid = payload.get("uuid")
+    if not user_uuid:
+        raise HTTPException(status_code=401, detail="Token missing uuid")
+    return user_uuid
 
-# ===============================
-# Утилита для загрузки эталонной последовательности
-# ===============================
-TRUE_SEQ_DIR = CURRENT_BASE_DIR / "../data/processed_files/True_Seq"
+# =============================== Эндпоинты: Регистрация и Вход ===============================
+@router.post("/sign-up")
+async def sign_up(request: Request):
+    try:
+        data = await request.json()
+        username, email, password = data.get("username"), data.get("email"), data.get("password")
+        if not username or not email or not password:
+            return {"error": "username, email и password обязательны"}, 400
 
-def load_true_sequence(matrix_name: str) -> Dict[int, float]:
-    """
-    Загружает эталонную последовательность для данной матрицы по её имени
-    из файла JSON (например, 'South Korea financial crisis.json').
-    """
-    json_path = TRUE_SEQ_DIR / f"{matrix_name}.json"
-    if not json_path.exists():
-        raise FileNotFoundError(f"True sequence file not found: {json_path}")
-    with open(json_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    return {int(k): float(v) for k, v in data.items()}
+        creds_path = get_user_creds_filepath(username)
+        if creds_path.exists():
+            return {"error": "Пользователь с таким именем уже существует"}, 400
 
-# Вспомогательная функция: найти uuid для матрицы
-def get_uuid_by_matrix_name(matrix_name: str) -> Optional[str]:
-    for uuid_key, name in MATRIX_UUIDS.items():
-        if name == matrix_name:
-            return uuid_key
-    return None
+        user_uuid = str(uuid4())
+        user_data = {"username": username, "email": email, "password": password, "user_uuid": user_uuid}
 
-# ===============================
-# ЭНДПОИНТЫ
-# ===============================
+        ensure_dir(creds_path.parent)
+        save_json(creds_path, user_data)
 
+        uuid_creds_path = get_user_uuid_creds_path(user_uuid)
+        ensure_dir(uuid_creds_path.parent)
+        save_json(uuid_creds_path, user_data)
+
+        ensure_dir(USERS_ROOT / user_uuid / "user_settings")
+        log.info(f"[REGISTER] user_uuid: {user_uuid}")
+        return {"message": "Регистрация успешна", "user_uuid": user_uuid}, 201
+    except Exception as e:
+        log.error(f"[REGISTER ERROR]: {e}")
+        return {"error": str(e)}, 500
+
+@router.post("/sign-in")
+async def sign_in(request: Request):
+    try:
+        data = await request.json()
+        username, password = data.get("username"), data.get("password")
+        if not username or not password:
+            return {"error": "username и password обязательны"}, 400
+
+        creds_path = get_user_creds_filepath(username)
+        if not creds_path.exists():
+            return {"error": "Пользователь не найден"}, 404
+
+        user_data = load_json(creds_path)
+        if user_data.get("password") != password:
+            return {"error": "Неверный пароль"}, 401
+
+        user_uuid = user_data.get("user_uuid")
+        token = create_access_token({"sub": username, "uuid": user_uuid})
+        log.info(f"[LOGIN] user_uuid: {user_uuid}")
+        return {"message": "Вход выполнен", "access_token": token, "token_type": "bearer"}, 200
+    except Exception as e:
+        log.error(f"[LOGIN ERROR]: {e}")
+        return {"error": str(e)}, 500
+
+# =============================== Эндпоинты: Матрицы ===============================
 @router.get("/matrices")
 def get_matrices():
-    """
-    Возвращает список всех матриц, доступных на сервере,
-    вместе с их uuid (если он есть в словаре MATRIX_UUIDS).
-    """
     try:
-        matrices = get_all_matrices()  # [{'matrix_id', 'matrix_name', 'node_count', 'edge_count', 'meta'} ... ]
+        matrices = get_all_matrices()
         result = []
         for m in matrices:
             matrix_name = m.get("matrix_name")
-            matrix_uuid = get_uuid_by_matrix_name(matrix_name)
-            m["uuid"] = matrix_uuid  # Вставляем uuid, если нашли (или None)
-            # Если нужно, фильтруй матрицы без uuid, либо возвращай как есть
+            uuid = next((k for k, v in MATRIX_UUIDS.items() if v == matrix_name), None)
+            m["uuid"] = uuid
             result.append(m)
         return {"matrices": result}
     except Exception as e:
@@ -117,39 +174,21 @@ def get_matrices():
 
 @router.get("/matrix_by_uuid/{uuid}")
 def get_matrix_by_uuid(uuid: str):
-    """
-    Возвращает данные матрицы по её uuid.
-    """
     matrix_name = MATRIX_UUIDS.get(uuid)
     if not matrix_name:
-        return {"error": f"UUID '{uuid}' not found in MATRIX_UUIDS"}, 404
-
-    # Берём данные матрицы через имя
-    matrix_data = get_matrix_data_by_name(matrix_name)
-    if not matrix_data:
-        return {"error": f"Matrix data for '{matrix_name}' unavailable"}, 404
-
+        return {"error": f"UUID '{uuid}' не найден"}, 404
+    data = get_matrix_data_by_name(matrix_name)
+    if not data:
+        return {"error": f"Данные матрицы недоступны"}, 404
     return {
         "matrix_info": {"matrix_name": matrix_name, "uuid": uuid},
-        "nodes": matrix_data["nodes"],
-        "edges": matrix_data["edges"]
+        "nodes": data["nodes"],
+        "edges": data["edges"]
     }
 
-def get_matrix_data_by_name(matrix_name: str) -> Dict[str, Any]:
-    """
-    Обёртка над get_matrix_data, если нужно. Или сразу get_matrix_data_by_name
-    из services.matrix_service. Здесь, если нужно, можно адаптировать логику.
-    """
-    # У тебя в matrix_service есть метод get_matrix_data_by_name; можно напрямую.
-    # Или, если нуждается в ID, убери ID и делай прямое чтение файла. Пример:
-    from services.matrix_service import get_matrix_data_by_name
-    return get_matrix_data_by_name(matrix_name)
-
+# =============================== calculate_score ===============================
 @router.post("/calculate_score")
 async def calculate_score(request: Request):
-    """
-    Рассчитывает очки за ход на основе uuid матрицы (вместо matrix_id или "имя"_result).
-    """
     try:
         body = await request.json()
         nodes = body.get('selectedNodes', {})
@@ -158,9 +197,11 @@ async def calculate_score(request: Request):
         if not matrix_uuid:
             return {"error": "Matrix UUID is required"}, 400
 
-        matrix_name = f"{MATRIX_UUIDS.get(matrix_uuid)}_result"
-        if not matrix_name:
-            return {"error": "Matrix UUID not found in MATRIX_UUIDS"}, 404
+        matrix_name_raw = MATRIX_UUIDS.get(matrix_uuid)
+        if not matrix_name_raw:
+            return {"error": "Matrix UUID not found"}, 404
+
+        matrix_name = f"{matrix_name_raw}_result"
 
         try:
             matrix_order = load_true_sequence(matrix_name)
@@ -168,32 +209,22 @@ async def calculate_score(request: Request):
             return {"error": f"True sequence for '{matrix_name}' not found"}, 404
 
         node_values = list(nodes.values())
-        user_id = "anonymous"  # При желании можешь получать user из токена
+        user_id = "anonymous"  # Или из токена при необходимости
 
-        if user_id not in in_memory_sessions:
-            in_memory_sessions[user_id] = {
-                "turns": [],
-                "total_score": 0,
-                "used_nodes": []
-            }
-
-        session_data = in_memory_sessions[user_id]
-
-        # Проверка: не используем ли уже выбранные вершины
-        if any(node in session_data['used_nodes'] for node in node_values):
-            return {"error": "Some nodes have already been used in previous turns"}, 400
-
-        # Считаем очки
-        order_score = calculate_order_score(node_values, matrix_order)
-        if not isinstance(order_score, (int, float)) or np.isnan(order_score) or order_score < 0:
-            order_score = 0
-
-        # Сохраняем результат хода
-        session_data['turns'].append({
-            'nodes': node_values,
-            'score': order_score
+        session_data = in_memory_sessions.setdefault(user_id, {
+            "turns": [],
+            "total_score": 0,
+            "used_nodes": []
         })
-        session_data['total_score'] = max(0, session_data['total_score'] + order_score)
+
+        if any(node in session_data['used_nodes'] for node in node_values):
+            return {"error": "Некоторые вершины уже использовались"}, 400
+
+        order_score = calculate_order_score(node_values, matrix_order)
+        order_score = max(0, order_score if isinstance(order_score, (int, float)) and not np.isnan(order_score) else 0)
+
+        session_data['turns'].append({'nodes': node_values, 'score': order_score})
+        session_data['total_score'] += order_score
         session_data['used_nodes'].extend(node_values)
 
         return {
@@ -205,305 +236,143 @@ async def calculate_score(request: Request):
     except Exception as e:
         return {"error": str(e)}, 500
 
-
-# --------------------
-# /science_table [POST]
-# --------------------
+# =============================== science_table ===============================
 @router.post("/science_table")
 async def get_science_table(request: Request):
-    """
-    Эндпоинт, который обрабатывает report.txt (или вызывает Fortran при его отсутствии).
-    Теперь тоже берём matrix_uuid из тела, конвертим в matrix_name и ищем report.txt
-    """
     try:
         body = await request.json()
-        matrix_uuid = body.get('matrixUuid')  # или 'uuid'
+        matrix_uuid = body.get('matrixUuid')
         if not matrix_uuid:
-            return {"error": "Matrix uuid is required"}, 400
+            return {"error": "Matrix UUID is required"}, 400
 
         matrix_name = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name:
-            return {"error": f"UUID '{matrix_uuid}' not found in MATRIX_UUIDS"}, 404
+            return {"error": "Matrix UUID not found"}, 404
 
-        # Формируем путь к report.txt
         report_file_path = BASE_DIR / "Vadimka" / f"{matrix_name}_report.txt"
-
-        # Проверяем наличие report.txt
         if not report_file_path.exists():
-            print(f"[INFO] Файл {report_file_path} не найден. Запускаем процесс обработки Fortran.")
+            log.info(f"Report not found: {report_file_path}. Processing...")
             process_input_files(
                 str(BASE_DIR / "../data/models"),
                 str(BASE_DIR / "processed_files"),
                 BASE_DIR / "edited_mils.f90"
             )
 
-        # Снова проверяем после обработки
-        if report_file_path.exists():
-            with open(report_file_path, "r") as report:
-                lines = report.readlines()
-        else:
+        if not report_file_path.exists():
             return {"error": "report.txt not found"}, 404
 
-        # Читаем данные
+        with open(report_file_path, "r") as f:
+            lines = f.readlines()
+
         u = [float(line[12:-1]) for line in lines if len(line) <= 23]
         x = [float(line[1:10]) for line in lines if len(line) <= 23]
 
-        # Вычисляем квадраты и нормализацию
         sq_u = [num ** 2 for num in u]
         sum_sq_u = sum(sq_u)
-        normalized_u = [round(value / sum_sq_u, 4) for value in sq_u] if sum_sq_u != 0 else []
+        normalized_u = [round(v / sum_sq_u, 4) for v in sq_u] if sum_sq_u else []
         normalized_x = [num ** 2 for num in x]
-        true_seq = {i + 1: value for i, value in enumerate(normalized_u)}
-        sorted_true_seq = sorted(true_seq.items(), key=lambda x: x[1], reverse=True)
 
-        print("\ntrue_seq:\t", true_seq, "\n")
-        print("sorted_true_seq:\t", sorted_true_seq, "\n")
+        true_seq = {i + 1: v for i, v in enumerate(normalized_u)}
+        sorted_seq = sorted(true_seq.items(), key=lambda item: item[1], reverse=True)
 
-        result = {
+        return {
             "x": x,
             "u": u,
             "normalized_x": normalized_x,
             "normalized_u": normalized_u,
             "matrix_name": matrix_name,
-            "sorted_true_seq": sorted_true_seq
-        }
-        return result, 200
+            "sorted_true_seq": sorted_seq
+        }, 200
 
-    except FileNotFoundError:
-        return {"error": "report.txt not found"}, 404
     except Exception as e:
         return {"error": str(e)}, 500
 
-
-# ===================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====================
-def ensure_dir(directory):
-    """Создает директорию, если она не существует."""
-    os.makedirs(directory, exist_ok=True)
-    return directory
-
-def save_json(filepath, data):
-    """Сохраняет data в виде JSON в указанный filepath."""
-    with open(filepath, 'w', encoding='utf-8') as file:
-        json.dump(data, file, indent=2)
-
-def load_json(filepath):
-    """Читает JSON из указанного filepath."""
-    with open(filepath, 'r', encoding='utf-8') as file:
-        return json.load(file)
-
-def get_default_settings_filepath(matrix_name):
-    """Возвращает путь для сохранения настроек графа по умолчанию."""
-    folder = os.path.join(CURRENT_BASE_DIR, "graph_settings")
-    ensure_dir(folder)
-    return os.path.join(folder, f"{matrix_name}_graph_settings.json")
-
-def get_user_settings_filepath(user_id, matrix_name):
-    """Возвращает путь для сохранения настроек графа для пользователя."""
-    folder = os.path.join(CURRENT_BASE_DIR, "users", user_id, "user_settings")
-    ensure_dir(folder)
-    return os.path.join(folder, f"{matrix_name}_settings.json")
-
-def get_user_creds_filepath(username):
-    """Возвращает путь к файлу учетных данных пользователя без создания папок."""
-    return os.path.join(CURRENT_BASE_DIR, "users", username, "user_creds", f"{username}.json")
-
-# ===================== ЭНДПОИНТЫ ДЛЯ НАСТРОЕК ГРАФА =====================
+# =============================== graph settings ===============================
 
 @router.post("/save-graph-settings/{matrix_uuid}")
-async def save_graph_settings(matrix_uuid: str, request: Request):
+async def save_default_graph_settings(matrix_uuid: str, request: Request):
     """
-    Сохраняет настройки графа по умолчанию в JSON-файл (уже через uuid).
+    Сохраняет дефолтные настройки графа по UUID матрицы.
     """
     try:
         data = await request.json()
         if not data:
-            return {"error": "No data provided"}, 400
+            return {"error": "Нет данных для сохранения"}, 400
 
         matrix_name = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name:
-            return {"error": f"UUID '{matrix_uuid}' not found in MATRIX_UUIDS"}, 404
+            return {"error": "UUID не найден"}, 404
 
         filepath = get_default_settings_filepath(matrix_name)
         save_json(filepath, data)
-        print(f"[INFO] Default settings saved at {filepath}.")
-        return {"message": "Настройки графа успешно сохранены."}, 200
+        log.info(f"[SAVE DEFAULT] {filepath}")
+        return {"message": "Дефолтные настройки сохранены"}, 200
     except Exception as e:
-        print(f"[ERROR] Ошибка при сохранении файла: {e}")
-        return {"error": "Ошибка при сохранении файла."}, 500
+        log.error(f"[SAVE DEFAULT ERROR]: {e}")
+        return {"error": str(e)}, 500
 
 @router.get("/load-graph-settings/{matrix_uuid}")
-def load_graph_settings(matrix_uuid: str):
+def load_default_graph_settings(matrix_uuid: str):
     """
-    Загружает настройки графа по умолчанию из JSON-файла (уже через uuid).
+    Загружает дефолтные настройки графа по UUID матрицы.
     """
     try:
         matrix_name = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name:
-            return {"error": f"UUID '{matrix_uuid}' not found in MATRIX_UUIDS"}, 404
+            return {"error": "UUID не найден"}, 404
 
         filepath = get_default_settings_filepath(matrix_name)
-        if not os.path.exists(filepath):
-            return {"error": f"Файл настроек для '{matrix_name}' не найден."}, 404
+        if not filepath.exists():
+            return {"error": "Файл настроек не найден"}, 404
 
         data = load_json(filepath)
-        print(f"[INFO] Default settings loaded from {filepath}.")
+        log.info(f"[LOAD DEFAULT] {filepath}")
         return data, 200
     except Exception as e:
-        print(f"[ERROR] Ошибка загрузки файла: {e}")
-        return {"error": "Ошибка загрузки файла."}, 500
+        log.error(f"[LOAD DEFAULT ERROR]: {e}")
+        return {"error": str(e)}, 500
+    
 
 
-
-# ===================== ЭНДПОИНТЫ ДЛЯ ПОЛЬЗОВАТЕЛЬСКИХ НАСТРОЕК ГРАФА =====================
-
-def get_user_settings_filepath(user_id: str, matrix_name: str) -> str:
+@router.post("/{user_uuid}/save-graph-settings/{matrix_uuid}")
+async def save_user_graph_settings(user_uuid: str, matrix_uuid: str, request: Request):
     """
-    Возвращает путь к файлу настроек для пользователя user_id и матрицы matrix_name.
-    Например:  users/<user_id>/user_settings/<matrix_name>_settings.json
-
-    Если хочешь хранить через uuid, сделай, например:
-      return os.path.join(folder, f"{matrix_uuid}_settings.json")
-    """
-    folder = os.path.join("users", user_id, "user_settings")
-    ensure_dir(folder)
-    return os.path.join(folder, f"{matrix_name}_settings.json")
-
-
-@router.post("/{user_id}/save-graph-settings/{matrix_uuid}")
-async def save_user_graph_settings(user_id: str, matrix_uuid: str, request: Request):
-    """
-    Сохраняет настройки графа для пользователя user_id.
-    Принимает uuid матрицы, маппит на matrix_name, и сохраняет настройки в:
-      users/<user_id>/user_settings/<matrix_name>_settings.json
+    Сохраняет пользовательские настройки графа.
     """
     try:
         data = await request.json()
         if not data:
-            return {"error": "No data provided"}, 400
+            return {"error": "Нет данных для сохранения"}, 400
 
         matrix_name = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name:
-            return {"error": f"UUID '{matrix_uuid}' not found in MATRIX_UUIDS"}, 404
+            return {"error": "UUID не найден"}, 404
 
-        filepath = get_user_settings_filepath(user_id, matrix_name)
+        filepath = get_user_settings_filepath(user_uuid, matrix_name)
         save_json(filepath, data)
-        print(f"[INFO] Settings for user '{user_id}' and matrix '{matrix_name}' saved at {filepath}.")
-        return {"message": "Настройки графа успешно сохранены."}, 200
+        log.info(f"[SAVE USER] {filepath}")
+        return {"message": "Настройки пользователя сохранены"}, 200
     except Exception as e:
-        print(f"[ERROR] Ошибка при сохранении файла для user '{user_id}': {e}")
-        return {"error": "Ошибка при сохранении файла."}, 500
+        log.error(f"[SAVE USER ERROR]: {e}")
+        return {"error": str(e)}, 500
 
-
-@router.get("/{user_id}/load-graph-settings/{matrix_uuid}")
-def load_user_graph_settings(user_id: str, matrix_uuid: str):
+@router.get("/{user_uuid}/load-graph-settings/{matrix_uuid}")
+def load_user_graph_settings(user_uuid: str, matrix_uuid: str):
     """
-    Загружает настройки графа для пользователя user_id.
-    Принимает uuid матрицы, маппит на matrix_name, и ищет файл:
-      users/<user_id>/user_settings/<matrix_name>_settings.json
+    Загружает пользовательские настройки графа.
     """
     try:
         matrix_name = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name:
-            return {"error": f"UUID '{matrix_uuid}' not found in MATRIX_UUIDS"}, 404
+            return {"error": "UUID не найден"}, 404
 
-        filepath = get_user_settings_filepath(user_id, matrix_name)
-        if not os.path.exists(filepath):
-            return {"error": f"Файл настроек для '{matrix_name}' пользователя '{user_id}' не найден."}, 404
+        filepath = get_user_settings_filepath(user_uuid, matrix_name)
+        if not filepath.exists():
+            return {"error": "Файл настроек не найден"}, 404
 
         data = load_json(filepath)
-        print(f"[INFO] Settings for user '{user_id}' and matrix '{matrix_name}' loaded from {filepath}.")
+        log.info(f"[LOAD USER] {filepath}")
         return data, 200
     except Exception as e:
-        print(f"[ERROR] Ошибка загрузки файла для user '{user_id}': {e}")
-        return {"error": "Ошибка загрузки файла."}, 500
-
-
-# ===================== ЭНДПОИНТЫ ДЛЯ АВТОРИЗАЦИИ =====================
-
-@router.post("/sign-up")
-async def sign_up(request: Request):
-    """
-    Роутер для регистрации пользователя.
-    Ожидает JSON с полями: username, email, password.
-    Данные сохраняются в:  ./users/<username>/user_creds/<username>.json
-
-    В продакшене пароль НЕ хранится в открытом виде, используется хэширование (bcrypt, argon2 и т.д.).
-    """
-    try:
-        data = await request.json()
-        username = data.get("username")
-        email = data.get("email")
-        password = data.get("password")
-
-        if not username or not email or not password:
-            return {"error": "username, email и password обязательны"}, 400
-
-        creds_filepath = get_user_creds_filepath(username)
-        if os.path.exists(creds_filepath):
-            return {"error": "Пользователь с таким именем уже существует"}, 400
-
-        folder = os.path.dirname(creds_filepath)
-        os.makedirs(folder, exist_ok=True)
-
-        user_data = {
-            "username": username,
-            "email": email,
-            # Здесь желательно хранить ХЭШ пароля, а не сам пароль
-            "password": password
-        }
-        save_json(creds_filepath, user_data)
-        print(f"[INFO] User '{username}' registered with credentials at {creds_filepath}.")
-        return {"message": "Пользователь успешно зарегистрирован"}, 201
-    except Exception as e:
+        log.error(f"[LOAD USER ERROR]: {e}")
         return {"error": str(e)}, 500
-
-
-@router.post("/sign-up")
-async def sign_up(request: Request):
-    try:
-        data = await request.json()
-        username = data.get("username")
-        email = data.get("email")
-        password = data.get("password")
-
-        if not username or not email or not password:
-            return {"error": "username, email и password обязательны"}, 400
-
-        # Проверяем: существует ли такой username?
-        creds_filepath = get_user_creds_filepath(username)
-        if os.path.exists(creds_filepath):
-            return {"error": "Пользователь с таким именем уже существует"}, 400
-
-        user_uuid = str(uuid4())
-
-        user_data = {
-            "username": username,
-            "email": email,
-            "password": password,
-            "user_uuid": user_uuid
-        }
-
-        folder = os.path.dirname(creds_filepath)
-        os.makedirs(folder, exist_ok=True)
-        save_json(creds_filepath, user_data)
-
-        # Создаём папку под user_uuid
-        user_folder = CURRENT_BASE_DIR / "users" / user_uuid
-        os.makedirs(user_folder / "user_settings", exist_ok=True)
-        os.makedirs(user_folder / "user_creds", exist_ok=True)
-
-        # Дублируем креды в папку UUID (чтобы все запросы шли через uuid)
-        uuid_creds_path = user_folder / "user_creds" / f"{user_uuid}.json"
-        save_json(uuid_creds_path, user_data)
-
-        return {
-            "message": "Пользователь успешно зарегистрирован",
-            "user_uuid": user_uuid
-        }, 201
-    except Exception as e:
-        return {"error": str(e)}, 500
-
-# ===============================
-# Регистрация роутера
-# ===============================
-app.include_router(router, tags=["Matrix Routes"])

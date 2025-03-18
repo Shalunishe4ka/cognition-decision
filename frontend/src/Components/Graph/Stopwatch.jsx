@@ -6,7 +6,7 @@ import { useCustomStates } from './CustomStates';
 
 const Stopwatch = () => {
   const {
-    elapsedTime,
+    currentTime,
     score,
     maxScorePerMove,
     handleStart,
@@ -17,7 +17,7 @@ const Stopwatch = () => {
     <div className="stopwatch-container">
       <h3>Процесс игры</h3>
       <div className="stopwatch-container-time">
-        <p><FaStopwatch /> {`Elapsed Time: ${elapsedTime} seconds`}</p>
+        <p><FaStopwatch /> {`Elapsed Time: ${currentTime} seconds`}</p>
       </div>
       <div className="stopwatch-container-score">
         <p><FaMedal /> {`Score: ${score}`}</p>

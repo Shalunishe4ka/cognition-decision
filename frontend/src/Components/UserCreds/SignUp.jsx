@@ -1,95 +1,65 @@
 import React, { useState } from 'react';
+import { registerUser } from '../../clientServerHub';  // Импорт из хаба
+import './UserCreds.css';
 
-export const SignUp = ({setHeaderShow}) => {
-    setHeaderShow(true)
-  const [form, setForm] = useState({
-    username: '',
-    email: '',
-    password: ''
-  });
+export const SignUp = ({ setHeaderShow }) => {
+  setHeaderShow(true);
+
+  const [form, setForm] = useState({ username: '', email: '', password: '' });
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState('');
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // чтобы не перезагружать страницу
+    e.preventDefault();
+    setError(null);
+    setSuccessMsg('');
 
     try {
-      setError(null);
-      setSuccessMsg('');
-
-      const response = await fetch('http://localhost:8000/sign-up', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // например, 400/500
-        setError(data.error || 'Ошибка регистрации');
-      } else {
-        // Успешная регистрация (201)
-        setSuccessMsg(data.message || 'Регистрация успешна');
-
-        if (data.user_uuid) {
-          // Сохраняем uuid в localStorage (или в Redux), если нужно
-          localStorage.setItem('user_uuid', data.user_uuid);
-        }
-      }
+      const response = await registerUser(form.username, form.email, form.password);
+      setSuccessMsg(response.message || 'Регистрация успешна');
+      // После регистрации можно автоматически перенаправить на вход или другую страницу
     } catch (err) {
-      console.error('Ошибка запроса:', err);
-      setError('Произошла ошибка при отправке запроса');
+      console.error('Ошибка регистрации:', err);
+      setError(err.message);
     }
   };
 
   return (
-    <div>
-      <h2>Sign Up</h2>
-      {error && <p style={{color: 'red'}}>{error}</p>}
-      {successMsg && <p style={{color: 'green'}}>{successMsg}</p>}
+    <div className="auth-container">
+      <h2>Регистрация</h2>
+      {error && <p className="auth-error">{error}</p>}
+      {successMsg && <p className="auth-success">{successMsg}</p>}
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
-          <input 
-            name="username"
-            value={form.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input 
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input 
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <form onSubmit={handleSubmit} className="auth-form">
+        <input
+          name="username"
+          placeholder="Имя пользователя"
+          value={form.username}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Пароль"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
         <button type="submit">Зарегистрироваться</button>
       </form>
     </div>
   );
-}
-
-
+};

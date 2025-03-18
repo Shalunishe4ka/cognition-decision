@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { GraphCanvasRender } from './GraphCanvasRender'
 import Stopwatch from './Stopwatch'
 import VerticalProgressBar from './VerticalProgressBar'
 import { cards, cardcreds } from '../Solar/ModalWindowCards/cards'
 import { Buttons } from './Buttons'
-
 
 export const GraphComponent = (props) => {
   const {
@@ -13,7 +12,7 @@ export const GraphComponent = (props) => {
     selectedNodes, setSelectedNodes,
     selectedEdges, setSelectedEdges,
     isRunning, setIsRunning,
-    elapsedTime, setElapsedTime,
+
     stopwatchHistory, setStopwatchHistory,
     showNodeList, setShowNodeList,
     lockedNodes, setLockedNodes,
@@ -42,26 +41,23 @@ export const GraphComponent = (props) => {
     uuid,
     nodeColor, setNodeColor,
     // backgroundColor, // Если хочешь динамически, придётся либо CSS variable, либо вернуть inline
-  } = props
 
-  // Если планета не задана - сделаем проверку
-  if (!selectedPlanetLocal) {
-    return <div>Нет выбранной планеты</div>;
-  }
+    // Функции загрузки настроек из CustomStates
+    handleLoadCoordinates,
+  } = props
 
   const planetColor = cardcreds[selectedPlanetLocal.name]?.color || "white";
   const planetName = selectedPlanetLocal.name;
   const currentCard = cards[planetName].find((card) => card.uuid === uuid);
   const modelName = currentCard?.title;
   const planetImg = currentCard?.image;
-
-  // Пример функции применения координат
+  const didLoadCoordsRef = useRef(false); // флаг
+  // Функция, которая применяется для обновления графа
   const applyCoordinates = (data) => {
+    console.log("applyCoordinates called with data:", data);
     if (!data || !networkRef?.current) return;
     const { graph_settings, node_coordinates } = data;
     const visNetwork = networkRef.current.body;
-
-    // Проставляем координаты
     if (node_coordinates) {
       Object.entries(node_coordinates).forEach(([nodeId, coords]) => {
         if (visNetwork.nodes[nodeId]) {
@@ -70,8 +66,6 @@ export const GraphComponent = (props) => {
         }
       });
     }
-
-    // Применяем позицию/масштаб
     if (graph_settings && networkRef.current.moveTo) {
       networkRef.current.moveTo({
         position: graph_settings.position || { x: 0, y: 0 },
@@ -82,7 +76,33 @@ export const GraphComponent = (props) => {
     networkRef.current.redraw();
   };
 
-  // Настраиваем пропсы для рендера графа
+  // // Добавляем useEffect, который при загрузке графа вызывает handleLoadCoordinates.
+  useEffect(() => {
+    // Если планета не задана - сделаем проверку
+    if (!selectedPlanetLocal) {
+      return <div>Нет выбранной планеты</div>;
+    }
+
+    // Если matrixInfo загружена и граф уже проинициализирован
+    if (!didLoadCoordsRef.current && matrixInfo && networkRef.current){
+      handleLoadCoordinates(uuid, applyCoordinates);
+      didLoadCoordsRef.current = true;
+    }
+  }, [matrixInfo, networkRef, uuid, handleLoadCoordinates]);
+
+  // --- Логика запуска/остановки таймера ---
+  useEffect(() => {
+    if (isRunning) {
+      intervalRef.current = setInterval(() => {
+        setCurrentTime((prevTime) => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+    return () => clearInterval(intervalRef.current);
+  }, [isRunning]);
+
+
   const graphCanvasProps = {
     matrixInfo,
     disabledNodes,
@@ -117,11 +137,15 @@ export const GraphComponent = (props) => {
             <h1 style={{ position: "relative", color: planetColor }}>
               {modelName}
             </h1>
-            <Buttons />
+            <Buttons
+              matrixUuid={uuid}                // передаём uuid
+              applyCoordinates={applyCoordinates}  // передаём функцию для обновления графа
+              matrixInfo={matrixInfo}
+              networkRef={networkRef}
+            />
           </div>
         </div>
       </div>
-
       <div className="graph-component-row">
         <VerticalProgressBar />
         <GraphCanvasRender {...graphCanvasProps} />

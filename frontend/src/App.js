@@ -33,7 +33,7 @@ function App() {
           element={<SignUp setHeaderShow={setHeaderShow} />}
         />
         <Route
-          path="/sign-id"
+          path="/sign-in"
           element={<SignIn setHeaderShow={setHeaderShow} />}
         />
       </Routes>
