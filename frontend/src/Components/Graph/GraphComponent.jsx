@@ -1,12 +1,13 @@
-// import React, { useEffect } from 'react'
+import React from 'react'
 import { GraphCanvasRender } from './GraphCanvasRender'
 import Stopwatch from './Stopwatch'
 import VerticalProgressBar from './VerticalProgressBar'
-import { cards, cardcreds } from '../Solar/ModalWindowCards/cards';
-import { Buttons } from './Buttons';
+import { cards, cardcreds } from '../Solar/ModalWindowCards/cards'
+import { Buttons } from './Buttons'
 
-export const GraphComponent = ({
 
+export const GraphComponent = (props) => {
+  const {
     graphData, setGraphData,
     highlightedNode, setHighlightedNode,
     selectedNodes, setSelectedNodes,
@@ -38,74 +39,94 @@ export const GraphComponent = ({
     hoverSoundRef, gameOverSoundRef,
     intervalRef, networkRef,
     location, selectedPlanetLocal,
-    uuid, nodeColor,
-    setNodeColor, backgroundColor
+    uuid,
+    nodeColor, setNodeColor,
+    // backgroundColor, // Если хочешь динамически, придётся либо CSS variable, либо вернуть inline
+  } = props
 
-}) => {
-    const planetColor = cardcreds[selectedPlanetLocal.name].color
-    const planetName = selectedPlanetLocal.name
-    const currentCard = cards[planetName].find(card => card.uuid === uuid)
-    const modelName = currentCard?.title;
-    const planetImg = currentCard?.image
+  // Если планета не задана - сделаем проверку
+  if (!selectedPlanetLocal) {
+    return <div>Нет выбранной планеты</div>;
+  }
 
-    const resetNodeCoordinates = () => {
-        loadDefaultCoordinates().then((data) => {
-          if (data) {
-            applyCoordinates(data);
-            alert("Дефолтные настройки графа загружены.");
-          } else {
-            alert("Дефолтные настройки графа не найдены.");
-          }
-        });
-      };
-    
+  const planetColor = cardcreds[selectedPlanetLocal.name]?.color || "white";
+  const planetName = selectedPlanetLocal.name;
+  const currentCard = cards[planetName].find((card) => card.uuid === uuid);
+  const modelName = currentCard?.title;
+  const planetImg = currentCard?.image;
 
-    const graphCanvasProps = {
-        matrixInfo,
-        disabledNodes,
-        nodeColor,
-        edgeRoundness,
-        positiveEdgeColor,
-        negativeEdgeColor,
-        setGraphData,
-        graphData,
-        selectedEdges,
-        physicsEnabled,
-        nodeSize,
-        setHighlightedNode,
-        setShowNodeList,
-        setHoveredNode,
-        lockedNodes,
-        setSelectedNodes,
-        setSelectedEdges,
-        backgroundColor,
+  // Пример функции применения координат
+  const applyCoordinates = (data) => {
+    if (!data || !networkRef?.current) return;
+    const { graph_settings, node_coordinates } = data;
+    const visNetwork = networkRef.current.body;
 
+    // Проставляем координаты
+    if (node_coordinates) {
+      Object.entries(node_coordinates).forEach(([nodeId, coords]) => {
+        if (visNetwork.nodes[nodeId]) {
+          visNetwork.nodes[nodeId].x = coords.x;
+          visNetwork.nodes[nodeId].y = coords.y;
+        }
+      });
     }
 
+    // Применяем позицию/масштаб
+    if (graph_settings && networkRef.current.moveTo) {
+      networkRef.current.moveTo({
+        position: graph_settings.position || { x: 0, y: 0 },
+        scale: graph_settings.scale || 1,
+        animation: { duration: 1000, easingFunction: "easeInOutQuad" },
+      });
+    }
+    networkRef.current.redraw();
+  };
 
-    return (
-        <div>
-            <div style={{display: "flex", paddingLeft: "80px", alignItems: "center"}}>
-                <div style={{display: "flex"}}>
-                <img style={{width: "150px", height: "150px", borderRadius: "15px"}} src={planetImg}/>
-                <h1 style={{ position: "relative", color: planetColor }}>{modelName}</h1>
-                <Buttons />
-                </div>
-            </div>
-            <div
-                style={{
-                    display: "flex",
-                    color: "white",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "15px 80px",
-                    position: "relative",
-                    // top: "-20px",
-                }}>
-                <VerticalProgressBar />
-                <GraphCanvasRender {...graphCanvasProps} />
-                <Stopwatch />
-            </div>
+  // Настраиваем пропсы для рендера графа
+  const graphCanvasProps = {
+    matrixInfo,
+    disabledNodes,
+    nodeColor,
+    edgeRoundness,
+    positiveEdgeColor,
+    negativeEdgeColor,
+    setGraphData,
+    graphData,
+    selectedEdges,
+    physicsEnabled,
+    nodeSize,
+    setHighlightedNode,
+    setShowNodeList,
+    setHoveredNode,
+    lockedNodes,
+    setSelectedNodes,
+    setSelectedEdges,
+    networkRef,
+  };
+
+  return (
+    <div>
+      <div className="graph-component-header">
+        <div style={{ display: "flex" }}>
+          <img
+            src={planetImg}
+            alt="planet"
+            style={{ width: "150px", height: "150px", borderRadius: "15px" }}
+          />
+          <div className="graph-component-inner">
+            <h1 style={{ position: "relative", color: planetColor }}>
+              {modelName}
+            </h1>
+            <Buttons />
+          </div>
         </div>
-    )
+      </div>
+
+      <div className="graph-component-row">
+        <VerticalProgressBar />
+        <GraphCanvasRender {...graphCanvasProps} />
+        <Stopwatch />
+      </div>
+    </div>
+  )
 }

@@ -1,42 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useCustomStates } from './CustomStates';
 
 const VerticalProgressBar = () => {
   const {
     currentTime, maxTime, progress, setProgress
   } = useCustomStates();
+
   useEffect(() => {
     const percentage = (currentTime / maxTime) * 100;
-    setProgress(percentage > 100 ? 100 : percentage); // Прогресс не может быть больше 100%
-  }, [currentTime, maxTime]);
+    setProgress(percentage > 100 ? 100 : percentage);
+  }, [currentTime, maxTime, setProgress]);
 
   return (
-    <div
-      style={{
-        height: 'calc(620px - 4px)', // Фиксированная высота
-        width: '50px',  // Фиксированная ширина
-        border: '2px solid white', // Бордер с фиксированной шириной
-        borderRadius: '10px', // Скругленные углы бордера
-        display: 'flex',
-        flexDirection: 'column-reverse', // Заполнение снизу вверх
-        justifyContent: 'flex-start', // Прогресс начинает с нижней части
-        overflow: 'hidden', // Прогресс не выходит за пределы контейнера
-        // backgroundColor: 'rgba(169, 169, 169, 0.8)', // Фон контейнера
-        backgroundColor: 'rgba(255, 255, 255, 0.17)'
-      }}
-    >
+    <div className="vertical-progress-bar">
       <div
-        style={{
-          height: `${progress}%`, // Высота зависит от прогресса
-          width: '100%',
-          // backgroundColor: '#342B41',
-          backgroundColor: "rgba(169, 169, 169, 0.8)",
-          transition: 'height 0.1s ease', // Плавный переход изменения высоты
-        }}
+        className="vertical-progress-bar-fill"
+        style={{ height: `${progress}%` }}
       />
     </div>
   );
 };
-
 
 export default VerticalProgressBar;

@@ -1,27 +1,32 @@
-// Stopwatch.js
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { FaStopwatch, FaMedal, FaStar } from 'react-icons/fa';
 import { useCustomStates } from './CustomStates';
-import "./Styles/Stopwatch.css"
+
 
 const Stopwatch = () => {
-
   const {
-    elapsedTime, score, maxScorePerMove, handleStart, handleStop
+    elapsedTime,
+    score,
+    maxScorePerMove,
+    handleStart,
+    handleStop
   } = useCustomStates();
 
   return (
     <div className="stopwatch-container">
       <h3>Процесс игры</h3>
-      <div>
-        <div>
-          <p><FaStopwatch />{`Elapsed Time: ${elapsedTime} seconds`}</p>
-          <p><FaMedal /> {`Score: ${score}`}</p>
-          <p><FaStar /> {`Max Score Per Move: ${maxScorePerMove}`}</p>
-        </div>
+      <div className="stopwatch-container-time">
+        <p><FaStopwatch /> {`Elapsed Time: ${elapsedTime} seconds`}</p>
       </div>
-      <div>
+      <div className="stopwatch-container-score">
+        <p><FaMedal /> {`Score: ${score}`}</p>
+      </div>
+      <div className="stopwatch-container-table">
+        <p><FaStar /> {`Max Score Per Move: ${maxScorePerMove}`}</p>
+        {/* Можешь сюда таблицу ходов вставлять и т.д. */}
+      </div>
+      <div className="stopwatch-container-buttons">
         <Button variant="success" onClick={handleStart}>
           Start
         </Button>

@@ -4,125 +4,115 @@ import { useCustomStates } from './CustomStates';
 import { useLocation, useParams } from 'react-router-dom';
 import { getMatrixByUUID } from '../Solar/ModalWindowCards/clientServerHub';
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText"
-
+import "./Styles/GraphStyles.css"
 
 export const GraphMainLayout = () => {
-    const {
-        graphData, setGraphData,
-        highlightedNode, setHighlightedNode,
-        selectedNodes, setSelectedNodes,
-        selectedEdges, setSelectedEdges,
-        isRunning, setIsRunning,
-        elapsedTime, setElapsedTime,
-        stopwatchHistory, setStopwatchHistory,
-        showNodeList, setShowNodeList,
-        lockedNodes, setLockedNodes,
-        showHistoryModal, setShowHistoryModal,
-        moveHistory, setMoveHistory,
-        lastIndex, setLastIndex,
-        hoveredNode, setHoveredNode,
-        cursorPosition, setCursorPosition,
-        showModal, setShowModal,
-        serverResponseData, setServerResponseData,
-        score, setScore,
-        maxScorePerMove, setMaxScorePerMove,
-        isClosing, setIsClosing,
-        showGameOverModal, setShowGameOverModal,
-        movesHistory, setMovesHistory,
-        disabledNodes, setDisabledNodes,
-        matrixInfo, setMatrixInfo,
-        positiveEdgeColor, setPositiveEdgeColor,
-        negativeEdgeColor, setNegativeEdgeColor,
-        physicsEnabled, setPhysicsEnabled,
-        nodeSize, setNodeSize,
-        edgeRoundness, setEdgeRoundness,
-        isLoading, setIsLoading, error, setError
+  const {
+    graphData, setGraphData,
+    highlightedNode, setHighlightedNode,
+    selectedNodes, setSelectedNodes,
+    selectedEdges, setSelectedEdges,
+    isRunning, setIsRunning,
+    elapsedTime, setElapsedTime,
+    stopwatchHistory, setStopwatchHistory,
+    showNodeList, setShowNodeList,
+    lockedNodes, setLockedNodes,
+    showHistoryModal, setShowHistoryModal,
+    moveHistory, setMoveHistory,
+    lastIndex, setLastIndex,
+    hoveredNode, setHoveredNode,
+    cursorPosition, setCursorPosition,
+    showModal, setShowModal,
+    serverResponseData, setServerResponseData,
+    score, setScore,
+    maxScorePerMove, setMaxScorePerMove,
+    isClosing, setIsClosing,
+    showGameOverModal, setShowGameOverModal,
+    movesHistory, setMovesHistory,
+    disabledNodes, setDisabledNodes,
+    matrixInfo, setMatrixInfo,
+    positiveEdgeColor, setPositiveEdgeColor,
+    negativeEdgeColor, setNegativeEdgeColor,
+    physicsEnabled, setPhysicsEnabled,
+    nodeSize, setNodeSize,
+    edgeRoundness, setEdgeRoundness,
+    isLoading, setIsLoading, error, setError
+  } = useCustomStates();
 
-    } = useCustomStates();
-    const hoverSoundRef = useRef(null);
-    const gameOverSoundRef = useRef(null);
-    const intervalRef = useRef();
-    const networkRef = useRef(null);
-    const location = useLocation();
-    const selectedPlanetLocal = location.state?.selectedPlanet;
+  const hoverSoundRef = useRef(null);
+  const gameOverSoundRef = useRef(null);
+  const intervalRef = useRef();
+  const networkRef = useRef(null);
 
-    const { uuid } = useParams();
+  const location = useLocation();
+  const selectedPlanetLocal = location.state?.selectedPlanet;
+  const { uuid } = useParams();
 
-    useEffect(() => {
-        const fetchMatrixData = async () => {
-            try {
-                if (!uuid) return;
+  useEffect(() => {
+    const fetchMatrixData = async () => {
+      try {
+        if (!uuid) return;
+        setIsLoading(true);
+        setError(null);
 
-                setIsLoading(true);
-                setError(null);
+        const matrixData = await getMatrixByUUID(uuid);
+        console.log("Matrix data received:", matrixData);
+        setMatrixInfo(matrixData);
 
-                // Получаем сразу распарсенные данные
-                const matrixData = await getMatrixByUUID(uuid);
-                console.log("Matrix data received:", matrixData);
+      } catch (err) {
+        console.error("Ошибка загрузки матрицы:", err);
+        setError(err.message);
+        setMatrixInfo(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchMatrixData();
+  }, [uuid, setMatrixInfo, setIsLoading, setError]);
 
-                setMatrixInfo(matrixData);
+  if (isLoading) return <div className="loading-status">Загрузка графа...</div>;
+  if (error) return <div className="error-status">Ошибка: {error}</div>;
+  if (!matrixInfo) return <div className="error-status">Данные матрицы не найдены</div>;
 
-            } catch (err) {
-                console.error("Ошибка загрузки матрицы:", err);
-                setError(err.message);
-                setMatrixInfo(null);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+  const graphProps = {
+    graphData, setGraphData,
+    highlightedNode, setHighlightedNode,
+    selectedNodes, setSelectedNodes,
+    selectedEdges, setSelectedEdges,
+    isRunning, setIsRunning,
+    elapsedTime, setElapsedTime,
+    stopwatchHistory, setStopwatchHistory,
+    showNodeList, setShowNodeList,
+    lockedNodes, setLockedNodes,
+    showHistoryModal, setShowHistoryModal,
+    moveHistory, setMoveHistory,
+    lastIndex, setLastIndex,
+    hoveredNode, setHoveredNode,
+    cursorPosition, setCursorPosition,
+    showModal, setShowModal,
+    serverResponseData, setServerResponseData,
+    score, setScore,
+    maxScorePerMove, setMaxScorePerMove,
+    isClosing, setIsClosing,
+    showGameOverModal, setShowGameOverModal,
+    movesHistory, setMovesHistory,
+    disabledNodes, setDisabledNodes,
+    matrixInfo, setMatrixInfo,
+    positiveEdgeColor, setPositiveEdgeColor,
+    negativeEdgeColor, setNegativeEdgeColor,
+    physicsEnabled, setPhysicsEnabled,
+    nodeSize, setNodeSize,
+    edgeRoundness, setEdgeRoundness,
+    hoverSoundRef, gameOverSoundRef,
+    intervalRef, networkRef,
+    location, selectedPlanetLocal,
+    uuid
+  };
 
-        fetchMatrixData();
-    }, [uuid, setMatrixInfo, setIsLoading, setError]);
-
-    // Состояния загрузки и ошибок
-    if (isLoading) return <div className="loading-status">Загрузка графа...</div>;
-    if (error) return <div className="error-status">Ошибка: {error}</div>;
-    if (!matrixInfo) return <div className="error-status">Данные матрицы не найдены</div>;
-
-
-
-
-    const graphProps = {
-        graphData, setGraphData,
-        highlightedNode, setHighlightedNode,
-        selectedNodes, setSelectedNodes,
-        selectedEdges, setSelectedEdges,
-        isRunning, setIsRunning,
-        elapsedTime, setElapsedTime,
-        stopwatchHistory, setStopwatchHistory,
-        showNodeList, setShowNodeList,
-        lockedNodes, setLockedNodes,
-        showHistoryModal, setShowHistoryModal,
-        moveHistory, setMoveHistory,
-        lastIndex, setLastIndex,
-        hoveredNode, setHoveredNode,
-        cursorPosition, setCursorPosition,
-        showModal, setShowModal,
-        serverResponseData, setServerResponseData,
-        score, setScore,
-        maxScorePerMove, setMaxScorePerMove,
-        isClosing, setIsClosing,
-        showGameOverModal, setShowGameOverModal,
-        movesHistory, setMovesHistory,
-        disabledNodes, setDisabledNodes,
-        matrixInfo, setMatrixInfo,
-        positiveEdgeColor, setPositiveEdgeColor,
-        negativeEdgeColor, setNegativeEdgeColor,
-        physicsEnabled, setPhysicsEnabled,
-        nodeSize, setNodeSize,
-        edgeRoundness, setEdgeRoundness,
-        hoverSoundRef, gameOverSoundRef,
-        intervalRef, networkRef,
-        location, selectedPlanetLocal,
-        uuid
-
-    }
-    return (
-        <div>
-            <div style={{position: "relative", top: "-20px"}}>
-                <ChallengeYourMindText />
-            </div>
-            <GraphComponent {...graphProps} />
-        </div>
-    )
+  return (
+    <div className="layout-challenge-container">
+      <ChallengeYourMindText />
+      <GraphComponent {...graphProps} />
+    </div>
+  )
 }

@@ -1,0 +1,175 @@
+/* Готовим все классы для тех мест, где были инлайн-стили, 
+   плюс то, что ты уже дал в сниппете для stopwatch-container и game-button.
+   По желанию можно разбить на несколько CSS, но здесь всё вместе. */
+
+/* ----------------------------------
+   Стили для Stopwatch (ранее .stopwatch-container)
+---------------------------------- */
+.stopwatch-container {
+  top: 360px; /* Если хочешь реально фиксировать расположение, оставь. Иначе можно убрать */
+  padding: 10px;
+  border-radius: 32px;
+  border: 3px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.17);
+  height: calc(620px - 26px);
+}
+
+/* Кнопки/контейнеры внутри stopwatch */
+.stopwatch-container-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.stopwatch-container-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid white;
+  font-size: 28px;
+}
+.stopwatch-container-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid white;
+  font-size: 28px;
+}
+.stopwatch-container-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid white;
+  font-size: 28px;
+  height: 380px;
+}
+
+/* ----------------------------------
+   Общие кнопки (.game-button)
+---------------------------------- */
+.game-button {
+  background-color: #342B41 !important;
+  border-radius: 15px !important;
+  border: 3px solid white !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+  height: 52px;
+  width: 10em;
+  color: white;
+}
+.game-button:disabled {
+  background-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ----------------------------------
+   Контейнер графа (GraphCanvasRender)
+---------------------------------- */
+.graph-container {
+  height: 620px;
+  width: 100%;
+  position: relative;
+  margin: 0 20px;
+  left: 0;
+  z-index: 1;
+  color: white;
+  overflow: hidden;
+  border: 1px solid white;
+  border-radius: 20px;
+  /* Прежний inline backgroundColor.
+     Если нужен статичный фон, раскомментируй:
+     background-color: #1f1f1f;
+  */
+}
+
+/* ----------------------------------
+   Горизонтальный layout в GraphComponent
+---------------------------------- */
+.graph-component-header {
+  display: flex;
+  padding-left: 80px;
+  align-items: center;
+}
+.graph-component-inner {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+}
+.graph-component-row {
+  display: flex;
+  color: white;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 80px;
+}
+
+/* ----------------------------------
+   Кнопки-контейнер (Buttons.jsx)
+---------------------------------- */
+.buttons-container {
+  position: relative;
+  flex: 1;
+  padding-right: 20px;
+}
+.buttons-group {
+  display: flex;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  top: -30px;
+  position: absolute;
+  z-index: 1;
+  left: 10%;
+}
+/* Отдельный класс, если нужен для детали:
+.button-icon {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+*/
+
+/* ----------------------------------
+   VerticalProgressBar
+---------------------------------- */
+.vertical-progress-bar {
+  height: calc(620px - 4px);
+  width: 50px;
+  border: 2px solid white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.17);
+}
+.vertical-progress-bar-fill {
+  width: 100%;
+  transition: height 0.1s ease;
+  background-color: rgba(169, 169, 169, 0.8);
+}
+
+/* ----------------------------------
+   GraphMainLayout (ChallengeYourMindText)
+---------------------------------- */
+.layout-challenge-container {
+  position: relative;
+  top: -20px;
+}
+
+/* Стили для статусов (loading / error) */
+.loading-status {
+  color: yellow;
+  font-size: 18px;
+}
+.error-status {
+  color: red;
+  font-size: 18px;
+}

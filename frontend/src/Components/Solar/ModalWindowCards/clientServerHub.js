@@ -74,3 +74,42 @@ export async function getMatrixByUUID(uuid) {
 export async function load(params) {
   
 }
+
+
+/**
+ * Загрузить дефолтные настройки для графа (без учёта userUuid).
+ * Ожидается эндпоинт: GET /load-graph-settings/{matrix_uuid}
+ * Возвращает объект: { graph_settings, node_coordinates }
+ */
+export async function loadDefaultCoordinatesAPI(uuid) {
+  return fetchJson(`${BASE_URL}/load-graph-settings/${uuid}`);
+}
+
+/**
+ * Загрузить пользовательские настройки (учитывая userUuid).
+ * Ожидается эндпоинт: GET /{user_id}/load-graph-settings/{matrix_uuid}
+ */
+export async function loadUserCoordinatesAPI(uuid, userUuid) {
+  return fetchJson(`${BASE_URL}/${userUuid}/load-graph-settings/${uuid}`);
+}
+
+/**
+ * Сохранить дефолтные настройки (POST /save-graph-settings/{matrix_uuid}).
+ * Принимает объект { graph_settings, node_coordinates }
+ */
+export async function saveGraphSettingsDefaultAPI(uuid, settings) {
+  return fetchJson(`${BASE_URL}/save-graph-settings/${uuid}`, {
+    method: "POST",
+    body: JSON.stringify(settings),
+  });
+}
+
+/**
+ * Сохранить пользовательские настройки (POST /{user_id}/save-graph-settings/{matrix_uuid})
+ */
+export async function saveUserGraphSettingsAPI(uuid, userUuid, settings) {
+  return fetchJson(`${BASE_URL}/${userUuid}/save-graph-settings/${uuid}`, {
+    method: "POST",
+    body: JSON.stringify(settings),
+  });
+}

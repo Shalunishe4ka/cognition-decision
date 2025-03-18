@@ -7,7 +7,7 @@ from typing import Dict, Any, Optional
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import jwt
-
+from uuid import uuid4
 # Заменяем на твой путь к словарю UUID->matrix_name
 from routes.UUID_MATRICES import MATRIX_UUIDS
 
@@ -458,41 +458,48 @@ async def sign_up(request: Request):
         return {"error": str(e)}, 500
 
 
-@router.post("/sign-in")
-async def sign_in(request: Request):
-    """
-    Роутер для входа пользователя.
-    Ожидает JSON с полями: username и password.
-    При успешной аутентификации создаёт JWT-токен (access_token).
-    """
+@router.post("/sign-up")
+async def sign_up(request: Request):
     try:
         data = await request.json()
         username = data.get("username")
+        email = data.get("email")
         password = data.get("password")
 
-        if not username or not password:
-            return {"error": "username и password обязательны"}, 400
+        if not username or not email or not password:
+            return {"error": "username, email и password обязательны"}, 400
 
+        # Проверяем: существует ли такой username?
         creds_filepath = get_user_creds_filepath(username)
-        if not os.path.exists(creds_filepath):
-            return {"error": "Пользователь не найден"}, 404
+        if os.path.exists(creds_filepath):
+            return {"error": "Пользователь с таким именем уже существует"}, 400
 
-        user_data = load_json(creds_filepath)
-        if user_data.get("password") != password:
-            return {"error": "Неверный пароль"}, 401
+        user_uuid = str(uuid4())
 
-        # Создаем токен
-        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-        access_token = create_access_token(
-            data={"sub": username},
-            expires_delta=access_token_expires
-        )
-        print(f"[INFO] User '{username}' logged in successfully.")
+        user_data = {
+            "username": username,
+            "email": email,
+            "password": password,
+            "user_uuid": user_uuid
+        }
+
+        folder = os.path.dirname(creds_filepath)
+        os.makedirs(folder, exist_ok=True)
+        save_json(creds_filepath, user_data)
+
+        # Создаём папку под user_uuid
+        user_folder = CURRENT_BASE_DIR / "users" / user_uuid
+        os.makedirs(user_folder / "user_settings", exist_ok=True)
+        os.makedirs(user_folder / "user_creds", exist_ok=True)
+
+        # Дублируем креды в папку UUID (чтобы все запросы шли через uuid)
+        uuid_creds_path = user_folder / "user_creds" / f"{user_uuid}.json"
+        save_json(uuid_creds_path, user_data)
+
         return {
-            "message": "Вход выполнен успешно",
-            "access_token": access_token,
-            "token_type": "bearer"
-        }, 200
+            "message": "Пользователь успешно зарегистрирован",
+            "user_uuid": user_uuid
+        }, 201
     except Exception as e:
         return {"error": str(e)}, 500
 

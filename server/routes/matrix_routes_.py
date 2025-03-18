@@ -322,9 +322,8 @@ def get_default_settings_filepath(matrix_name):
     ensure_dir(folder)
     return os.path.join(folder, f"{matrix_name}_graph_settings.json")
 
-def get_user_settings_filepath(user_id, matrix_name):
-    """Возвращает путь для сохранения настроек графа для пользователя."""
-    folder = os.path.join(CURRENT_BASE_DIR, "users", user_id, "user_settings")
+def get_user_settings_filepath(user_uuid: str, matrix_name: str) -> str:
+    folder = os.path.join(CURRENT_BASE_DIR, "users", user_uuid, "user_settings")
     ensure_dir(folder)
     return os.path.join(folder, f"{matrix_name}_settings.json")
 
@@ -372,8 +371,8 @@ def load_graph_settings(matrix_name: str):
 
 
 # 2. Пользовательские настройки графа (координат)
-@router.post("/{user_id}/save-graph-settings/{matrix_name}")
-async def save_user_graph_settings(user_id: str, matrix_name: str, request: Request):
+@router.post("/{user_uuid}/save-graph-settings/{matrix_name}")
+async def save_user_graph_settings(user_uuid: str, matrix_name: str, request: Request):
     """
     Сохраняет настройки графа для пользователя.
     Сохраняет данные в:
@@ -383,29 +382,29 @@ async def save_user_graph_settings(user_id: str, matrix_name: str, request: Requ
         data = await request.json()
         if not data:
             return {"error": "No data provided"}, 400
-        filepath = get_user_settings_filepath(user_id, matrix_name)
+        filepath = get_user_settings_filepath(user_uuid, matrix_name)
         save_json(filepath, data)
-        print(f"[INFO] Settings for user '{user_id}' saved at {filepath}.")
+        print(f"[INFO] Settings for user '{user_uuid}' saved at {filepath}.")
         return {"message": "Настройки графа успешно сохранены."}, 200
     except Exception as e:
-        print(f"[ERROR] Ошибка при сохранении файла for user '{user_id}': {e}")
+        print(f"[ERROR] Ошибка при сохранении файла for user '{user_uuid}': {e}")
         return {"error": "Ошибка при сохранении файла."}, 500
 
-@router.get("/{user_id}/load-graph-settings/{matrix_name}")
-def load_user_graph_settings(user_id: str, matrix_name: str):
+@router.get("/{user_uuid}/load-graph-settings/{matrix_name}")
+def load_user_graph_settings(user_uuid: str, matrix_name: str):
     """
     Загружает настройки графа для пользователя из файла:
-      users/<user_id>/user_settings/<matrix_name>_settings.json
+      users/<user_uuid>/user_settings/<matrix_name>_settings.json
     """
     try:
-        filepath = get_user_settings_filepath(user_id, matrix_name)
+        filepath = get_user_settings_filepath(user_uuid, matrix_name)
         if not os.path.exists(filepath):
-            return {"error": f"Файл настроек для '{matrix_name}' пользователя '{user_id}' не найден."}, 404
+            return {"error": f"Файл настроек для '{matrix_name}' пользователя '{user_uuid}' не найден."}, 404
         data = load_json(filepath)
-        print(f"[INFO] Settings for user '{user_id}' loaded from {filepath}.")
+        print(f"[INFO] Settings for user '{user_uuid}' loaded from {filepath}.")
         return data, 200
     except Exception as e:
-        print(f"[ERROR] Ошибка загрузки файла for user '{user_id}': {e}")
+        print(f"[ERROR] Ошибка загрузки файла for user '{user_uuid}': {e}")
         return {"error": "Ошибка загрузки файла."}, 500
 
 # ===================== ЭНДПОИНТЫ ДЛЯ АВТОРИЗАЦИИ =====================
@@ -483,7 +482,7 @@ async def sign_in(request: Request):
 # ====================================
 # РЕГИСТРАЦИЯ РОУТЕРА И ЗАПУСК ПРИЛОЖЕНИЯ
 # ====================================
-app.include_router(router, tags=["Matrix Routes"])
+# app.include_router(router, tags=["Matrix Routes"])
 
 # Если хотите запускать напрямую (например, python main.py):
 # if __name__ == "__main__":
