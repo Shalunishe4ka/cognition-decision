@@ -464,10 +464,12 @@ async def sign_in(request: Request):
         user_data = load_json(creds_filepath)
         if user_data.get("password") != password:
             return {"error": "Неверный пароль"}, 401
+        
+        user_uuid = user_data.get("user_uuid")  # достаём uuid из файла
 
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(
-            data={"sub": username},
+            data={"sub": username, "uuid": user_uuid},  # 👈 кладём в токен
             expires_delta=access_token_expires
         )
         print(f"[INFO] User '{username}' logged in successfully.")

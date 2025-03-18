@@ -6,6 +6,8 @@ import ChallengeComponent from "./Components/AldafiraWelcome/ChallengeComponent"
 import { useState } from "react";
 import SolarSystem from "./Components/Solar/SolarSystem";
 import { GraphMainLayout } from "./Components/Graph/GraphMainLayout";
+import { SignUp } from "./Components/UserCreds/SignUp";
+import { SignIn } from "./Components/UserCreds/SignIn";
 
 function App() {
   const [headerShow, setHeaderShow] = useState(true);
@@ -25,6 +27,14 @@ function App() {
         <Route
           path="/matrix_uuid/:uuid"
           element={<GraphMainLayout setHeaderShow={setHeaderShow} />}
+        />
+        <Route
+          path="/sign-up"
+          element={<SignUp setHeaderShow={setHeaderShow} />}
+        />
+        <Route
+          path="/sign-id"
+          element={<SignIn setHeaderShow={setHeaderShow} />}
         />
       </Routes>
     </Router>
