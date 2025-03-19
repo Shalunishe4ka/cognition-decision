@@ -9,6 +9,7 @@ import { GraphMainLayout } from "./Components/Graph/GraphMainLayout";
 import { SignUp } from "./Components/UserCreds/SignUp";
 import { SignIn } from "./Components/UserCreds/SignIn";
 import { CustomStatesProvider } from "./Components/Graph/CustomStates";
+import { SciencePage } from "./Components/Science/SciencePage";
 
 function App() {
   const [headerShow, setHeaderShow] = useState(true);
@@ -30,6 +31,10 @@ function App() {
           <Route
             path="/solar"
             element={<SolarSystem setHeaderShow={setHeaderShow} />}
+          />
+          <Route
+            path="/science/:uuid"
+            element={<SciencePage setHeaderShow={setHeaderShow} />}
           />
           <Route
             path="/matrix_uuid/:uuid"

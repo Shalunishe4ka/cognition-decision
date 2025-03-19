@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useRef, useState } from 'react'
+import {createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 
 import {
   getUserUuidFromToken,
@@ -68,13 +68,15 @@ export const CustomStatesProvider = ({ children }) => {
   const intervalRef = useRef();
   const networkRef = useRef(null);
 
+
+  
   // При загрузке компонента — обновим userUuid, если токен сменился
   useEffect(() => {
     const uuidFromToken = getUserUuidFromToken();
     if (uuidFromToken && uuidFromToken !== userUuid) {
       setUserUuid(uuidFromToken);
     }
-  }, [userUuid]);
+  }, []);
 
 
 
@@ -229,6 +231,48 @@ export const CustomStatesProvider = ({ children }) => {
     await saveGraphSettingsDefault(uuid, settings);
   };
 
+
+
+  // Функция, которая применяется для обновления графа
+  const applyCoordinates = useCallback((data) => {
+    console.log(data)
+    if (!data || data.error || !networkRef?.current) {
+      console.warn("Нет корректных координат для применения:", data);
+      return;
+    }
+  
+    const { graph_settings, node_coordinates } = data;
+  
+    if (
+      !graph_settings ||
+      !node_coordinates ||
+      typeof node_coordinates !== 'object'
+    ) {
+      console.warn("Данные координат неполные или некорректные:", data);
+      return;
+    }
+  
+    const visNetwork = networkRef.current.body;
+  
+    Object.entries(node_coordinates).forEach(([nodeId, coords]) => {
+      if (visNetwork.nodes[nodeId]) {
+        visNetwork.nodes[nodeId].x = coords.x;
+        visNetwork.nodes[nodeId].y = coords.y;
+      }
+    });
+  
+    if (graph_settings && networkRef.current.moveTo) {
+      networkRef.current.moveTo({
+        position: graph_settings.position || { x: 0, y: 0 },
+        scale: graph_settings.scale || 1,
+        animation: { duration: 1000, easingFunction: "easeInOutQuad" },
+      });
+    }
+  
+    networkRef.current.redraw();
+    console.log("Координаты применены!");
+  }, [networkRef]);
+
   return (
     <CustomStatesContext.Provider value={{
       // Состояния
@@ -285,7 +329,8 @@ export const CustomStatesProvider = ({ children }) => {
       handleLoadCoordinates,
       handleResetCoordinates,
       handleSaveUserView,
-      handleSaveDefaultView
+      handleSaveDefaultView,
+      applyCoordinates
     }}>
       {children}
     </CustomStatesContext.Provider>

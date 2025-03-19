@@ -39,7 +39,7 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     edgeRoundness, setEdgeRoundness,
     isLoading, setIsLoading, error, setError, handleLoadCoordinates,
     hoverSoundRef, gameOverSoundRef,
-    intervalRef, networkRef,
+    intervalRef, networkRef, applyCoordinates
   } = useCustomStates();
 
   const location = useLocation();
@@ -54,7 +54,7 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
         setError(null);
 
         const matrixData = await getMatrixByUUID(uuid);
-        console.log("Matrix data received:", matrixData);
+        // console.log("Matrix data received:", matrixData);
         setMatrixInfo(matrixData);
 
       } catch (err) {
@@ -104,7 +104,7 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     hoverSoundRef, gameOverSoundRef,
     intervalRef, networkRef,
     location, selectedPlanetLocal,
-    uuid, handleLoadCoordinates
+    uuid, handleLoadCoordinates, applyCoordinates
   };
 
   return (

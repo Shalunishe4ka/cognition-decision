@@ -19,7 +19,7 @@ export const GraphComponent = (props) => {
     physicsEnabled, nodeSize,
     edgeRoundness, intervalRef,
     networkRef, selectedPlanetLocal,
-    uuid, nodeColor,
+    uuid, nodeColor, applyCoordinates
   } = props
 
   const planetColor = cardcreds[selectedPlanetLocal.name]?.color || "white";
@@ -28,35 +28,14 @@ export const GraphComponent = (props) => {
   const modelName = currentCard?.title;
   const planetImg = currentCard?.image;
   const didLoadCoordsRef = useRef(false); // флаг
-  // Функция, которая применяется для обновления графа
-  const applyCoordinates = (data) => {
-    console.log("applyCoordinates called with data:", data);
-    if (!data || !networkRef?.current) return;
-    const { graph_settings, node_coordinates } = data;
-    const visNetwork = networkRef.current.body;
-    if (node_coordinates) {
-      Object.entries(node_coordinates).forEach(([nodeId, coords]) => {
-        if (visNetwork.nodes[nodeId]) {
-          visNetwork.nodes[nodeId].x = coords.x;
-          visNetwork.nodes[nodeId].y = coords.y;
-        }
-      });
-    }
-    if (graph_settings && networkRef.current.moveTo) {
-      networkRef.current.moveTo({
-        position: graph_settings.position || { x: 0, y: 0 },
-        scale: graph_settings.scale || 1,
-        animation: { duration: 1000, easingFunction: "easeInOutQuad" },
-      });
-    }
-    networkRef.current.redraw();
-  };
+
 
   // // Добавляем useEffect, который при загрузке графа вызывает handleLoadCoordinates.
   useEffect(() => {
     // Если планета не задана - сделаем проверку
     if (!selectedPlanetLocal) {
-      return <div>Нет выбранной планеты</div>;
+      console.warn("Нет выбранной планеты");
+      return;
     }
 
     // Если matrixInfo загружена и граф уже проинициализирован
@@ -118,6 +97,8 @@ export const GraphComponent = (props) => {
               applyCoordinates={applyCoordinates}  // передаём функцию для обновления графа
               matrixInfo={matrixInfo}
               networkRef={networkRef}
+              planetColor={planetColor}
+              planetImg={planetImg}
             />
           </div>
         </div>

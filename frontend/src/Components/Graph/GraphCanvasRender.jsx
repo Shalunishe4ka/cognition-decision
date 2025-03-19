@@ -111,14 +111,21 @@ export const GraphCanvasRender = ({
 
   // 2) Подсвечиваем выбранные рёбра
   useEffect(() => {
-    if (graphData?.edges) {
-      selectedEdges.forEach((edgeId) => {
+    if (!graphData || !graphData.edges) return;
+
+    selectedEdges.forEach((edgeId) => {
+      try {
         graphData.edges.update({
           id: edgeId,
           width: 5,
           color: { color: "white" },
         });
-      });
+      } catch (err) {
+        console.warn(`Ошибка обновления выделенного ребра ${edgeId}:`, err);
+      }
+    });
+
+    try {
       graphData.edges.forEach((edge) => {
         if (!selectedEdges.includes(edge.id)) {
           graphData.edges.update({
@@ -130,6 +137,8 @@ export const GraphCanvasRender = ({
           });
         }
       });
+    } catch (err) {
+      console.warn("Ошибка при обходе рёбер:", err);
     }
   }, [selectedEdges, graphData, positiveEdgeColor, negativeEdgeColor]);
 

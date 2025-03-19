@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom'
 export const Buttons = ({ 
   matrixUuid,
   networkRef,
-  applyCoordinates
+  applyCoordinates,
+  planetColor,
+  planetImg
 }) => {
   const {
     isRunning,
@@ -76,7 +78,7 @@ export const Buttons = ({
         </li>
 
         <li>
-          <Link to="/science" state={{ selectedPlanet, selectedCardIndex }}>
+          <Link to={`/science/${matrixUuid}`} state={{ selectedPlanet, selectedCardIndex, planetColor, planetImg }}>
             <button
               className="game-button"
               disabled={isRunning}

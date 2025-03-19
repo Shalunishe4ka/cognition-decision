@@ -1,0 +1,50 @@
+.AlgoPage-main-div {
+    color: white;
+    background-color: rgba(14, 10, 32, 1);
+}
+
+.algoPage-submain-div {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    top: 5rem
+}
+
+.Description-text {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+}
+
+.Description-text strong {
+    margin-left: 2.5em;
+}
+
+.Description-text ul li {
+    margin-left: 5em;
+}
+
+.blue-text {
+    color: blue;
+}
+
+.blue-background {
+    background-color: blue;
+    font-size: 3rem;
+}
+
+#small-blue-bg {
+    font-size: 1.5rem;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+.italic {
+    font-style: italic;
+}

@@ -1,0 +1,44 @@
+.science-page {
+  display: flex;
+  color: white;
+  flex-direction: column;
+  padding: 0 70px;
+}
+
+.regulator h1 {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.science-graph-page,
+.graph-container-science {
+  height: 700px;
+}
+
+.planet-creds-div {
+  display: flex;
+  align-items: center;
+}
+
+.tables-section {
+  display: flex;
+  flex-direction: row;
+  gap: 8rem;
+}
+
+#huge-table-alignment-div {
+  flex: 1;
+}
+
+#huge-table-alignment-div h5, #small-table-alignment-div  h5 {
+  color: #ffd700;
+  height: 48px;
+}
+
+#small-table-alignment-div {
+  flex: 0.7;
+}
+#huge-table-alignment-div,
+#small-table-alignment-div {
+  width: 50%;
+}

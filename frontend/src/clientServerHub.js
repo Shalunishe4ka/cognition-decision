@@ -106,13 +106,20 @@ export async function calculateScore(selectedNodes, matrixName) {
   });
 }
 
-export async function getScienceTable(matrixName) {
-  const body = { matrixName };
-  return await fetchJson(`${BASE_URL}/science_table`, {
+export async function fetchScienceDataByUUID(matrix_uuid) {
+  return fetchJson(`${BASE_URL}/science_table`, {
     method: "POST",
-    body: JSON.stringify(body),
+    body: JSON.stringify({ matrix_uuid }),
   });
 }
+
+export async function logScienceQuery(matrix_uuid, user_uuid) {
+  return fetchJson(`${BASE_URL}/log-science-query`, {
+    method: "POST",
+    body: JSON.stringify({ matrix_uuid, user_uuid }),
+  });
+}
+
 
 // ========================= ГРАФ-НАСТРОЙКИ ========================= //
 
@@ -137,3 +144,5 @@ export async function saveUserGraphSettingsAPI(uuid, userUuid, settings) {
     body: JSON.stringify(settings),
   });
 }
+
+
