@@ -1,4 +1,4 @@
-import {createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 
 import {
   getUserUuidFromToken,
@@ -68,14 +68,49 @@ export const CustomStatesProvider = ({ children }) => {
   const intervalRef = useRef();
   const networkRef = useRef(null);
 
+  const handleClear = () => {
+    setSelectedNodes([]);
+  };
 
+  const handleMakeMove = () => {
+    // Логика хода
+    console.log('Делаем ход с вершинами:', selectedNodes);
+    setSelectedNodes([]); // опционально
+  };
+
+  useEffect(() => {
+    if (selectedNodes.length > 0) {
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+    }
+  }, [selectedNodes]);
+
+  const handleClearEdges = () => {
+    selectedEdges.forEach((edgeId) => {
+      const edgeObj = graphData.edges.get(edgeId);
+      if (edgeObj) {
+        graphData.edges.update({
+          id: edgeId,
+          width: 1,
+          color: {
+            color: edgeObj.rawValue > 0 ? positiveEdgeColor : negativeEdgeColor,
+          },
+        });
+      }
+    });
+    setSelectedEdges([]);
+  };
   
+
+
   // При загрузке компонента — обновим userUuid, если токен сменился
   useEffect(() => {
     const uuidFromToken = getUserUuidFromToken();
     if (uuidFromToken && uuidFromToken !== userUuid) {
       setUserUuid(uuidFromToken);
     }
+    // eslint-disable-next-line
   }, []);
 
 
@@ -240,9 +275,9 @@ export const CustomStatesProvider = ({ children }) => {
       console.warn("Нет корректных координат для применения:", data);
       return;
     }
-  
+
     const { graph_settings, node_coordinates } = data;
-  
+
     if (
       !graph_settings ||
       !node_coordinates ||
@@ -251,16 +286,16 @@ export const CustomStatesProvider = ({ children }) => {
       console.warn("Данные координат неполные или некорректные:", data);
       return;
     }
-  
+
     const visNetwork = networkRef.current.body;
-  
+
     Object.entries(node_coordinates).forEach(([nodeId, coords]) => {
       if (visNetwork.nodes[nodeId]) {
         visNetwork.nodes[nodeId].x = coords.x;
         visNetwork.nodes[nodeId].y = coords.y;
       }
     });
-  
+
     if (graph_settings && networkRef.current.moveTo) {
       networkRef.current.moveTo({
         position: graph_settings.position || { x: 0, y: 0 },
@@ -268,7 +303,7 @@ export const CustomStatesProvider = ({ children }) => {
         animation: { duration: 1000, easingFunction: "easeInOutQuad" },
       });
     }
-  
+
     networkRef.current.redraw();
     console.log("Координаты применены!");
   }, [networkRef]);
@@ -311,7 +346,7 @@ export const CustomStatesProvider = ({ children }) => {
       maxTime, progress, setProgress,
       selectedPlanet, setSelectedPlanet,
       hoveredPlanet, setHoveredPlanet,
-
+      
       // Рефы
       hoverSoundRef,
       gameOverSoundRef,
@@ -322,7 +357,9 @@ export const CustomStatesProvider = ({ children }) => {
       handleOpenModal,
       handleStart,
       handleStop,
-
+      handleClear,
+      handleMakeMove,
+      handleClearEdges,
       // Методы для работы с координатами
       loadDefaultCoordinates,
       loadUserCoordinates,

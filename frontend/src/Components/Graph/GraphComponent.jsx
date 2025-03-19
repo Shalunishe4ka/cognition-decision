@@ -19,7 +19,12 @@ export const GraphComponent = (props) => {
     physicsEnabled, nodeSize,
     edgeRoundness, intervalRef,
     networkRef, selectedPlanetLocal,
-    uuid, nodeColor, applyCoordinates
+    uuid, nodeColor, applyCoordinates,
+    handleClear, handleMakeMove,
+    selectedNodes, hoveredNode,
+    showModal, setShowModal,
+    lastIndex, showNodeList, handleClearEdges
+
   } = props
 
   const planetColor = cardcreds[selectedPlanetLocal.name]?.color || "white";
@@ -43,6 +48,7 @@ export const GraphComponent = (props) => {
       handleLoadCoordinates(uuid, applyCoordinates);
       didLoadCoordsRef.current = true;
     }
+    // eslint-disable-next-line
   }, [matrixInfo, networkRef, uuid, handleLoadCoordinates]);
 
   // --- Логика запуска/остановки таймера ---
@@ -55,6 +61,7 @@ export const GraphComponent = (props) => {
       clearInterval(intervalRef.current);
     }
     return () => clearInterval(intervalRef.current);
+    // eslint-disable-next-line
   }, [isRunning]);
 
 
@@ -76,7 +83,10 @@ export const GraphComponent = (props) => {
     lockedNodes,
     setSelectedNodes,
     setSelectedEdges,
-    networkRef,
+    networkRef, handleClear, handleMakeMove,
+    selectedNodes, hoveredNode,
+    showModal, setShowModal, lastIndex, showNodeList,
+    handleClearEdges
   };
 
   return (

@@ -1,5 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import { DataSet, Network } from "vis-network/standalone/esm/vis-network";
+import { AllNodesList } from './AllNodeList';
+import { SelectedNodesList } from './SelectedNodes';
+import { Button } from 'react-bootstrap';
 
 export const GraphCanvasRender = ({
   matrixInfo,
@@ -19,7 +22,8 @@ export const GraphCanvasRender = ({
   lockedNodes,
   setSelectedNodes,
   setSelectedEdges,
-  networkRef,
+  networkRef, lastIndex, hoveredNode, selectedNodes,
+  handleClear, handleMakeMove, showNodeList, handleClearEdges
 }) => {
   const localNetworkRef = useRef(null);
 
@@ -235,6 +239,7 @@ export const GraphCanvasRender = ({
         networkRef.current = newNetwork;
       }
     }
+    // eslint-disable-next-line
   }, [graphData, edgeRoundness, physicsEnabled, nodeSize]);
 
   // 4) Клик по узлам/рёбрам
@@ -289,6 +294,43 @@ export const GraphCanvasRender = ({
           className="graph-container"
         />
       )}
+      {selectedEdges.length > 0 && (
+        <div
+          className="selected-edges-clear"
+          style={{
+            position: "absolute",
+            top: "240px",
+            right: "80px",
+            zIndex: 1,
+            backgroundColor: "white",
+            padding: "10px",
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+            fontFamily: "Montserrat",
+            color: "black",
+          }}
+        >
+          <p>Выделено рёбер: {selectedEdges.length}</p>
+          <Button variant="secondary" onClick={handleClearEdges}>
+            Очистить рёбра
+          </Button>
+        </div>
+      )}
+      {graphData && showNodeList && (
+        <AllNodesList nodes={graphData.nodes.get()} hoveredNode={hoveredNode} />
+      )}
+
+      {selectedNodes.length > 0 && (
+        <SelectedNodesList
+          selectedNodes={selectedNodes}
+          hoveredNode={hoveredNode}
+          lastIndex={lastIndex}
+          handleClear={handleClear}
+          handleMakeMove={handleMakeMove}
+          handleClearEdges={handleClearEdges}
+        />
+      )}
+
     </>
   );
 };

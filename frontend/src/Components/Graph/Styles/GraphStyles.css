@@ -170,3 +170,62 @@
   color: red;
   font-size: 18px;
 }
+
+.node-list-container {
+  position: absolute;
+  top: 240px;
+  left: 80px;
+  z-index: 2;
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  font-family: Montserrat, sans-serif;
+  color: black;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.node-list {
+  padding-left: 20px;
+}
+
+.node-item {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.selected-nodes-list {
+  position: absolute;
+  top: 240px;
+  right: 320px;
+  z-index: 1;
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  font-family: Montserrat, sans-serif;
+  color: black;
+}
+
+.selected-list {
+  padding-left: 20px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.selected-item {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.highlighted {
+  background-color: #fff3cd;
+  font-weight: bold;
+}
+
+.button-row {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}

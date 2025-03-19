@@ -24,3 +24,5 @@
 .vscode/
 
 /server/cognition-decision-venv
+__Pycache__/
+__pycache__/
