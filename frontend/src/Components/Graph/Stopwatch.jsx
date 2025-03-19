@@ -1,36 +1,85 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { FaStopwatch, FaMedal, FaStar } from 'react-icons/fa';
+import { FaStopwatch, FaMedal } from 'react-icons/fa';
 import { useCustomStates } from './CustomStates';
-
 
 const Stopwatch = () => {
   const {
     currentTime,
     score,
-    maxScorePerMove,
+    movesHistory,
     handleStart,
-    handleStop
+    handleStop,
+    isRunning,
+    disabledNodes,
   } = useCustomStates();
 
+  const [isHovered, setIsHovered] = useState(false);
+
+  const elapsedTime = currentTime; // Переименуем для читабельности
+  const buttonStyle = {
+    backgroundColor: isHovered ? 'limegreen' : 'green',
+    color: 'white',
+    border: 'none',
+    marginRight: '10px',
+  };
+
   return (
-    <div className="stopwatch-container">
-      <h3>Процесс игры</h3>
+    <div
+      className="stopwatch-container"
+      style={{
+        color: "white",
+      }}
+    >
       <div className="stopwatch-container-time">
-        <p><FaStopwatch /> {`Elapsed Time: ${currentTime} seconds`}</p>
+        <h3>Time</h3>
+        <p>
+          <FaStopwatch />{" "}
+          {`${String(Math.floor(elapsedTime / 60)).padStart(2, "0")}:${String(elapsedTime % 60).padStart(2, "0")}`}
+        </p>
       </div>
+
       <div className="stopwatch-container-score">
-        <p><FaMedal /> {`Score: ${score}`}</p>
+        <h3>Score</h3>
+        <p>
+          <FaMedal /> {score}
+        </p>
       </div>
+
       <div className="stopwatch-container-table">
-        <p><FaStar /> {`Max Score Per Move: ${maxScorePerMove}`}</p>
-        {/* Можешь сюда таблицу ходов вставлять и т.д. */}
+        <h1>Vertices</h1>
+        {movesHistory.length > 0 ? (
+          <ul style={{ padding: 0, listStyle: "none" }}>
+            {movesHistory.map((move) => (
+              <li key={move.moveNumber} style={{ marginBottom: "10px" }}>
+                <strong>Move {move.moveNumber}:</strong> {move.nodes.join(", ")}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No moves made yet</p>
+        )}
       </div>
+
+
       <div className="stopwatch-container-buttons">
-        <Button variant="success" onClick={handleStart}>
+        <Button
+          style={buttonStyle}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          disabled={isRunning}
+          onClick={handleStart}
+          title={isRunning ? "Вы уже в процессе игры!" : "Начать игру"}
+
+        >
           Start
         </Button>
-        <Button variant="danger" onClick={handleStop}>
+        <Button
+          variant="danger"
+          disabled={!isRunning}
+          onClick={handleStop}
+          title={isRunning ? "Остановить игру" : "Вы ещё не начали игру!"}
+        >
           Stop
         </Button>
       </div>

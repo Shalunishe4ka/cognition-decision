@@ -165,7 +165,7 @@ export const GraphCanvasRender = ({
             },
           },
           arrows: { to: true },
-          font: { size: 24, align: "horizontal" },
+          font: { size: 18, align: "horizontal",  color: "white"},
           color: { highlight: "white", hover: "white" },
           chosen: true,
         },

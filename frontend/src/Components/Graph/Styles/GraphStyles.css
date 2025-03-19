@@ -173,8 +173,8 @@
 
 .node-list-container {
   position: absolute;
-  top: 240px;
-  left: 80px;
+  top: 200px;
+  right: 220px;
   z-index: 2;
   background-color: white;
   padding: 15px;
@@ -193,6 +193,7 @@
 .node-item {
   padding: 5px;
   border-radius: 4px;
+  list-style: none;
 }
 
 .selected-nodes-list {

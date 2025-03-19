@@ -7,7 +7,6 @@ export const SelectedNodesList = ({
   lastIndex,
   handleClear,
   handleMakeMove,
-  handleClearEdges
 }) => {
   return (
     <div className="selected-nodes-list">

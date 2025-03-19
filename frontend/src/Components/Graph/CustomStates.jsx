@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 
 import {
+  calculateScore,
   getUserUuidFromToken,
   loadDefaultCoordinatesAPI,
   loadUserCoordinatesAPI,
@@ -72,11 +73,76 @@ export const CustomStatesProvider = ({ children }) => {
     setSelectedNodes([]);
   };
 
-  const handleMakeMove = () => {
-    // Логика хода
-    console.log('Делаем ход с вершинами:', selectedNodes);
-    setSelectedNodes([]); // опционально
+  const handleMakeMove = async () => {
+    try {
+      console.log('Делаем ход с вершинами:', selectedNodes);
+  
+      if (!graphData || !graphData.nodes) {
+        alert("Граф не загружен.");
+        return;
+      }
+  
+      const allNodes = graphData.nodes.get();
+      const availableNodesCount = allNodes.filter(node => !disabledNodes.includes(node.id)).length;
+  
+      const minRequired = availableNodesCount < 3 ? availableNodesCount : 3;
+  
+      if (selectedNodes.length < minRequired) {
+        alert(`Для хода необходимо выбрать минимум ${minRequired} вершин.`);
+        return;
+      }
+  
+      // --- Создание словаря выбранных вершин ---
+      const selectedNodesDictionary = {};
+      selectedNodes.forEach((nodeId, idx) => {
+        selectedNodesDictionary[lastIndex + idx] = nodeId;
+      });
+  
+      // --- Запрос на сервер ---
+      const responseData = await calculateScore(selectedNodesDictionary, matrixInfo.matrix_info.matrix_name);
+  
+      if (!responseData || typeof responseData !== "object") {
+        console.error("Некорректный ответ от сервера:", responseData);
+        return;
+      }
+  
+      if (!isRunning) {
+        handleStart();
+      }
+  
+      const { turn_score, total_score } = responseData;
+  
+      setMoveHistory(prevHistory => [
+        ...prevHistory,
+        { selectedNodes: [...selectedNodes], score: turn_score },
+      ]);
+  
+      setMovesHistory(prevMoves => [
+        ...prevMoves,
+        { moveNumber: prevMoves.length + 1, nodes: [...selectedNodes] },
+      ]);
+  
+      setScore(prevScore =>
+        typeof total_score === "number" && !isNaN(total_score) ? total_score : prevScore
+      );
+  
+      setDisabledNodes(prev => [...new Set([...prev, ...selectedNodes])]);
+      setSelectedNodes([]);
+      setSelectedEdges([]);
+  
+      setLastIndex(prevLastIndex => {
+        const maxIndex = Math.max(...Object.keys(selectedNodesDictionary).map(Number));
+        return maxIndex + 1;
+      });
+  
+      setShowHistoryModal(true);
+  
+    } catch (error) {
+      console.error("Ошибка выполнения хода:", error);
+      alert(`Ошибка: ${error.message}`);
+    }
   };
+  
 
   useEffect(() => {
     if (selectedNodes.length > 0) {

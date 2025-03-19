@@ -33,7 +33,7 @@ def convert_excel_to_txt(input_file, output_file):
 
         with open(output_file, "w") as f:
             # Записываем заголовок с количеством столбцов, damping factor и фиксированным значением 0.2
-            f.write(f"{len(df.columns)}\t{damping_factor}\t0.2\n")
+            f.write(f"{len(df.columns)}\t{damping_factor}\t0.02\n")
             f.write("0\t0\t0\n")  # Эта строка сохраняется без изменений
 
             # Ввод параметров для вершин (ограничения, демпинг и т.д.)
@@ -113,7 +113,7 @@ def convert_txt_to_fortran(input_file, output_file):
 
         with open(output_file, "w") as f:
             # Записываем заголовок: размерность матрицы, damping factor, фиксированное значение 0.2
-            f.write(f"{len(headers)+1}\t{damping_factor}\t0.2\n")
+            f.write(f"{len(headers)+1}\t{damping_factor}\t0.02\n")
 
             # Ввод параметров для вершин
             vertices = []

@@ -1,6 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 
-const BASE_URL = "https://0sdbmz53-8000.euw.devtunnels.ms/";
+// const BASE_URL = "http://10.131.103.32:8000";
+const BASE_URL = `${window.location.protocol}//${window.location.hostname}:8000`;
+console.log(BASE_URL)
+// const BASE_URL = "http://localhost:8000"
 
 /**
  * Утилита для fetch-запросов с обработкой ошибок.
