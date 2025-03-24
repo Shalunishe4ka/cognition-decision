@@ -8,7 +8,7 @@ import "./Styles/GraphStyles.css"
 
 export const GraphMainLayout = ({ setHeaderShow }) => {
   useEffect(() => {
-    setHeaderShow(false);
+    setHeaderShow(true);
   }, [setHeaderShow]);
   const {
     graphData, setGraphData,
@@ -42,7 +42,7 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     isLoading, setIsLoading, error, setError, handleLoadCoordinates,
     hoverSoundRef, gameOverSoundRef,
     intervalRef, networkRef, applyCoordinates,
-    handleClear, handleMakeMove, handleClearEdges
+    handleClear, handleMakeMove, handleClearEdges, nodeColor
   } = useCustomStates();
 
   const location = useLocation();
@@ -108,7 +108,7 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     intervalRef, networkRef,
     location, selectedPlanetLocal,
     uuid, handleLoadCoordinates, applyCoordinates, 
-    handleClear, handleMakeMove, handleClearEdges
+    handleClear, handleMakeMove, handleClearEdges, nodeColor
   };
 
   return (

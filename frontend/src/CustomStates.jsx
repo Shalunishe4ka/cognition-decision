@@ -43,7 +43,7 @@ export const CustomStatesProvider = ({ children }) => {
   // Текущий юзер
   // const [userUuid, setuserUuid] = useState(localStorage.getItem("currentUser") || "defaultUser");
   // Цвет узлов
-  const [nodeColor, setNodeColor] = useState("#0b001a");
+  const [nodeColor, setNodeColor] = useState("#0e0a20");
 
   // Для статусов загрузки/ошибок
   const [error, setError] = useState(null);

@@ -207,3 +207,17 @@
   height: 380px;
   min-width: 220px
 }
+
+.selected-list {
+  list-style: none;
+}
+
+.node-list-container {
+  position: fixed;
+  left: 55%;
+  max-width: 500px;
+}
+
+.selected-nodes-list {
+  position: fixed;
+}

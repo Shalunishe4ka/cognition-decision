@@ -27,6 +27,7 @@ export const GraphCanvasRender = ({
 }) => {
   const localNetworkRef = useRef(null);
 
+  
   // 1) Собираем данные (nodes/edges) в DataSet
   useEffect(() => {
     if (matrixInfo) {

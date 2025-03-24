@@ -4,7 +4,7 @@ import './UserCreds.css';
 
 export const SignIn = ({ setHeaderShow }) => {
   useEffect(() => {
-    setHeaderShow(false);
+    setHeaderShow(true);
   }, [setHeaderShow]);
 
   const [form, setForm] = useState({ username: '', password: '' });
