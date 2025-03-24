@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { FaStopwatch, FaMedal } from 'react-icons/fa';
 import { useCustomStates } from '../../CustomStates';
 
-export const StopWatchContainer = ({ planetColor }) => {
+export const ScienceStopWatchContainer = ({ planetColor }) => {
   const {
     currentTime,
     score,
@@ -50,7 +50,7 @@ export const StopWatchContainer = ({ planetColor }) => {
           <ul style={{ padding: 0, listStyle: 'none', margin: 0 }}>
             {movesHistory.map((move) => (
               <li key={move.moveNumber} style={{ marginBottom: '10px' }}>
-                <strong>Move {move.moveNumber}:</strong> {move.nodes.join(', ')}
+                <strong>Move {move.moveNumber}:</strong> {move.nodes.map(node => node?.id ?? 'N/A').join(', ')}
               </li>
             ))}
           </ul>
@@ -84,4 +84,3 @@ export const StopWatchContainer = ({ planetColor }) => {
     </div>
   );
 };
-

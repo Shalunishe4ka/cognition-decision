@@ -9,17 +9,28 @@ console.log(BASE_URL)
  * Утилита для fetch-запросов с обработкой ошибок.
  */
 async function fetchJson(url, options = {}) {
+  const token = localStorage.getItem("access_token");  // <-- твой токен
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+  if (token) {
+    // Прокидываем авторизацию
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const res = await fetch(url, {
     ...options,
-    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+    headers,
   });
   if (!res.ok) {
-    const errorData = await res.json();
+    // Ошибка - читаем и бросаем
+    const errorData = await res.json().catch(() => ({}));
     throw new Error(
       errorData.error || `Ошибка fetch: ${res.status} ${res.statusText}`
     );
   }
-  return res.json();
+  return res.json().catch(() => ({}));
 }
 
 // ========================= АВТОРИЗАЦИЯ ========================= //
@@ -101,9 +112,19 @@ export async function getMatrixByUUID(uuid) {
   return await fetchJson(`${BASE_URL}/matrix_by_uuid/${uuid}`);
 }
 
-export async function calculateScore(selectedNodes, matrixName) {
-  const body = { selectedNodes, matrixName };
+export async function calculateScore(selectedNodes, uuid) {
+  const body = { selectedNodes, uuid };
   return await fetchJson(`${BASE_URL}/calculate_score`, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+// ====== Сброс (reset-game) ======
+export async function resetGame(uuid) {
+  // uuid — это matrixInfo.matrix_info.uuid
+  const body = { uuid };
+  return await fetchJson(`${BASE_URL}/reset-game`, {
     method: "POST",
     body: JSON.stringify(body),
   });

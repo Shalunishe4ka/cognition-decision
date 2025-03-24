@@ -45,13 +45,13 @@ const Stopwatch = ({planetColor}) => {
         </p>
       </div>
 
-      <div className="stopwatch-container-table">
-        <h1>Vertices</h1>
+      <div className="stopwatch-container-table" style={{ marginBottom: '15px' }}>
+        <h3>Vertices</h3>
         {movesHistory.length > 0 ? (
-          <ul style={{ padding: 0, listStyle: "none" }}>
+          <ul style={{ padding: 0, listStyle: 'none', margin: 0 }}>
             {movesHistory.map((move) => (
-              <li key={move.moveNumber} style={{ marginBottom: "10px" }}>
-                <strong>Move {move.moveNumber}:</strong> {move.nodes.join(", ")}
+              <li key={move.moveNumber} style={{ marginBottom: '10px' }}>
+                <strong>Move {move.moveNumber}:</strong> {move.nodes.map(node => node?.id ?? 'N/A').join(', ')}
               </li>
             ))}
           </ul>

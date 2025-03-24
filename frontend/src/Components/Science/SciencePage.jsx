@@ -10,7 +10,7 @@ import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMin
 import "./SciencePage.css";
 import { Conditions } from "./Conditions";
 import { SciencePageButtons } from "./SciencePageButtons"
-import {StopWatchContainer} from "./StopWatchContainer";
+import { ScienceStopWatchContainer } from "./ScienceStopWatchContainer";
 
 export const SciencePage = () => {
   const { uuid } = useParams();
@@ -18,12 +18,14 @@ export const SciencePage = () => {
   const planetColor = location.state?.planetColor;
   const planetImg = location.state?.planetImg;
 
-  const [smallTableData, setSmallTableData] = useState([]);
-  const [hugeTableData, setHugeTableData] = useState([]);
-  const [syntheticData, setSyntheticData] = useState([]);
-  const [matrixInfo, setMatrixInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    smallTableData, setSmallTableData,
+    hugeTableData, setHugeTableData,
+    syntheticData, setSyntheticData,
+    matrixInfo, setMatrixInfo,
+    isLoading, setIsLoading,
+    error, setError,
+  } = useCustomStates();
 
   const {
     graphData, setGraphData,
@@ -35,7 +37,7 @@ export const SciencePage = () => {
   useEffect(() => {
     const fetchMatrix = async () => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         const data = await getMatrixByUUID(uuid);
         setMatrixInfo(data);
         setMatrixCtxInfo(data);
@@ -45,7 +47,7 @@ export const SciencePage = () => {
         console.error("Matrix load error:", err);
         setError("Ошибка загрузки матрицы");
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -56,7 +58,7 @@ export const SciencePage = () => {
   useEffect(() => {
     const fetchScience = async (matrixUUID) => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         console.log("Запрос science данных для UUID:", matrixUUID);
 
         const [scienceData] = await Promise.all([
@@ -91,7 +93,7 @@ export const SciencePage = () => {
         console.error("Ошибка загрузки scienceData:", err);
         setError("Ошибка загрузки аналитических данных");
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -119,7 +121,7 @@ export const SciencePage = () => {
           </h1>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="loading-overlay">
             <div className="loader" />
             <p>Загрузка данных...</p>
@@ -134,7 +136,7 @@ export const SciencePage = () => {
 
             <div className="graph-section">
               {graphData && <ScienceGraphComponent uuid={uuid} />}
-              <StopWatchContainer planetColor={planetColor}/>
+              <ScienceStopWatchContainer planetColor={planetColor} />
               <MovesTable data={syntheticData} />
             </div>
           </>

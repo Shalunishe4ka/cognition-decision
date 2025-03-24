@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { DataSet, Network } from "vis-network/standalone/esm/vis-network";
-import { Button } from "react-bootstrap";
 import { ScienceAllNodesList } from "./ScienceAllNodeList";
 import { ScienceSelectedNodesList } from "./ScienceSelectedNodes";
 import { useCustomStates } from "../../CustomStates";

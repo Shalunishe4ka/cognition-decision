@@ -24,7 +24,7 @@ router = APIRouter()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],   # Смотри, можно ограничивать, если требуется
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,6 +42,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 oauth2_scheme = HTTPBearer()
 
+# Здесь храним сессии в памяти, ключ: user_uuid -> { matrix_uuid -> { turns, used_nodes, total_score } }
 in_memory_sessions: Dict[str, Dict[str, Any]] = {}
 
 # =============================== Утилиты ===============================
@@ -193,8 +194,11 @@ def get_matrix_by_uuid(uuid: str):
     }, status_code=200)
 
 # =============================== calculate_score ===============================
-@router.post("/calculate_score")
-async def calculate_score(request: Request):
+@app.post("/calculate_score")
+async def calculate_score(
+    request: Request,
+    current_user_uuid: str = Depends(get_current_user_uuid)  # <-- привязка к пользователю
+):
     try:
         body = await request.json()
         nodes = body.get('selectedNodes', {})
@@ -209,26 +213,38 @@ async def calculate_score(request: Request):
 
         matrix_name = f"{matrix_name_raw}_result"
 
-        try:
-            matrix_order = load_true_sequence(matrix_name)
-        except FileNotFoundError:
+        # Загружаем "идеальную" последовательность (True_Seq)
+        path_to_seq = TRUE_SEQ_DIR / f"{matrix_name}.json"
+        if not path_to_seq.exists():
             return JSONResponse({"error": f"True sequence for '{matrix_name}' not found"}, 404)
+        with open(path_to_seq, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        matrix_order = {int(k): float(v) for k, v in data.items()}
+
+        # ------------------ Ищем/создаём сессию для user_uuid + matrix_uuid ------------------ #
+        if current_user_uuid not in in_memory_sessions:
+            in_memory_sessions[current_user_uuid] = {}
+
+        if matrix_uuid not in in_memory_sessions[current_user_uuid]:
+            in_memory_sessions[current_user_uuid][matrix_uuid] = {
+                "turns": [],
+                "total_score": 0,
+                "used_nodes": []
+            }
+        session_data = in_memory_sessions[current_user_uuid][matrix_uuid]
 
         node_values = list(nodes.values())
-        user_id = "anonymous"  # Или из токена при необходимости
-
-        session_data = in_memory_sessions.setdefault(user_id, {
-            "turns": [],
-            "total_score": 0,
-            "used_nodes": []
-        })
-
+        # Проверяем, не использовались ли эти вершины ранее
         if any(node in session_data['used_nodes'] for node in node_values):
             return JSONResponse({"error": "Некоторые вершины уже использовались"}, 400)
 
+        # Считаем score
         order_score = calculate_order_score(node_values, matrix_order)
-        order_score = max(0, order_score if isinstance(order_score, (int, float)) and not np.isnan(order_score) else 0)
+        if not isinstance(order_score, (int, float)) or np.isnan(order_score):
+            order_score = 0
+        order_score = max(0, order_score)
 
+        # Обновляем серверную сессию
         session_data['turns'].append({'nodes': node_values, 'score': order_score})
         session_data['total_score'] += order_score
         session_data['used_nodes'].extend(node_values)
@@ -241,6 +257,38 @@ async def calculate_score(request: Request):
 
     except Exception as e:
         return JSONResponse({"error": str(e)}, 500)
+
+
+# ===================== Сброс игры (reset-game) =====================
+@app.post("/reset-game")
+async def reset_game(
+    request: Request,
+    current_user_uuid: str = Depends(get_current_user_uuid)
+):
+    """
+    Сбрасывает состояние (used_nodes, turns, total_score) для конкретной матрицы у конкретного user_uuid
+    """
+    try:
+        body = await request.json()
+        matrix_uuid = body.get("uuid")
+        if not matrix_uuid:
+            return JSONResponse({"error": "uuid is required"}, 400)
+
+        if current_user_uuid not in in_memory_sessions:
+            in_memory_sessions[current_user_uuid] = {}
+
+        in_memory_sessions[current_user_uuid][matrix_uuid] = {
+            "turns": [],
+            "total_score": 0,
+            "used_nodes": []
+        }
+
+        return JSONResponse({"message": "Game session reset", "matrix_uuid": matrix_uuid}, 200)
+
+    except Exception as e:
+        log.error(f"[RESET GAME ERROR]: {e}")
+        return JSONResponse({"error": str(e)}, 500)
+
 
 # =============================== science_table ===============================
 

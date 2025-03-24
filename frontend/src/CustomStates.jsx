@@ -7,6 +7,7 @@ import {
   loadUserCoordinatesAPI,
   saveGraphSettingsDefaultAPI,
   saveUserGraphSettingsAPI,
+  resetGame,
 } from "./clientServerHub"
 const CustomStatesContext = createContext();
 export const useCustomStates = () => useContext(CustomStatesContext);
@@ -39,6 +40,12 @@ export const CustomStatesProvider = ({ children }) => {
   const [physicsEnabled, setPhysicsEnabled] = useState(false);
   const [nodeSize, setNodeSize] = useState(40);
   const [edgeRoundness, setEdgeRoundness] = useState(0.15);
+  const [smallTableData, setSmallTableData] = useState([]);
+  const [hugeTableData, setHugeTableData] = useState([]);
+  const [syntheticData, setSyntheticData] = useState([]);
+
+
+
 
   // Текущий юзер
   // const [userUuid, setuserUuid] = useState(localStorage.getItem("currentUser") || "defaultUser");
@@ -76,73 +83,76 @@ export const CustomStatesProvider = ({ children }) => {
   const handleMakeMove = async () => {
     try {
       console.log('Делаем ход с вершинами:', selectedNodes);
-  
+
       if (!graphData || !graphData.nodes) {
         alert("Граф не загружен.");
         return;
       }
-  
+
       const allNodes = graphData.nodes.get();
       const availableNodesCount = allNodes.filter(node => !disabledNodes.includes(node.id)).length;
-  
+
       const minRequired = availableNodesCount < 3 ? availableNodesCount : 3;
-  
+
       if (selectedNodes.length < minRequired) {
         alert(`Для хода необходимо выбрать минимум ${minRequired} вершин.`);
         return;
       }
-  
+
       // --- Создание словаря выбранных вершин ---
       const selectedNodesDictionary = {};
-      selectedNodes.forEach((nodeId, idx) => {
-        selectedNodesDictionary[lastIndex + idx] = nodeId;
+      selectedNodes.forEach((nodeObj, idx) => {
+        const id = typeof nodeObj === 'object' ? nodeObj.id : nodeObj; // берём только id
+        selectedNodesDictionary[lastIndex + idx] = id;
       });
-  
+
       // --- Запрос на сервер ---
-      const responseData = await calculateScore(selectedNodesDictionary, matrixInfo.matrix_info.matrix_name);
-  
+      const responseData = await calculateScore(selectedNodesDictionary, matrixInfo.matrix_info.uuid);
+
       if (!responseData || typeof responseData !== "object") {
         console.error("Некорректный ответ от сервера:", responseData);
         return;
       }
-  
+
       if (!isRunning) {
         handleStart();
       }
-  
+
       const { turn_score, total_score } = responseData;
-  
+
       setMoveHistory(prevHistory => [
         ...prevHistory,
         { selectedNodes: [...selectedNodes], score: turn_score },
       ]);
-  
+
+      const selectedIds = selectedNodes.map(n => (typeof n === 'object' ? n.id : n));
+      const moveNodesData = selectedIds.map(id => graphData.nodes.get(id)).filter(Boolean);
       setMovesHistory(prevMoves => [
         ...prevMoves,
-        { moveNumber: prevMoves.length + 1, nodes: [...selectedNodes] },
+        { moveNumber: prevMoves.length + 1, nodes: moveNodesData },
       ]);
-  
+
       setScore(prevScore =>
         typeof total_score === "number" && !isNaN(total_score) ? total_score : prevScore
       );
-  
+
       setDisabledNodes(prev => [...new Set([...prev, ...selectedNodes])]);
       setSelectedNodes([]);
       setSelectedEdges([]);
-  
+
       setLastIndex(prevLastIndex => {
         const maxIndex = Math.max(...Object.keys(selectedNodesDictionary).map(Number));
         return maxIndex + 1;
       });
-  
+
       setShowHistoryModal(true);
-  
+
     } catch (error) {
       console.error("Ошибка выполнения хода:", error);
       alert(`Ошибка: ${error.message}`);
     }
   };
-  
+
 
   useEffect(() => {
     if (selectedNodes.length > 0) {
@@ -167,7 +177,7 @@ export const CustomStatesProvider = ({ children }) => {
     });
     setSelectedEdges([]);
   };
-  
+
 
 
   // При загрузке компонента — обновим userUuid, если токен сменился
@@ -187,19 +197,34 @@ export const CustomStatesProvider = ({ children }) => {
   };
 
   // Примитивный старт/стоп для Stopwatch
-  const handleStart = () => {
+  const handleStart = async () => {
     if (intervalRef.current) return; // уже работает
+
+    // Сброс игры на сервере (NEW)
+    try {
+      if (matrixInfo && matrixInfo.matrix_info?.uuid) {
+        await resetGame(matrixInfo.matrix_info.uuid);
+      }
+    } catch (err) {
+      console.warn("Ошибка при сбросе на сервере:", err);
+    }
+
+    // Чистим локальные стейты
     setIsRunning(true);
     setCurrentTime(0);
     setScore(0);
     setLastIndex(0);
     setMoveHistory([]);
+    setMovesHistory([]);
     setLockedNodes({});
+    setDisabledNodes([]); // Очистили, чтобы все вершины снова стали кликабельными
 
+    // Запускаем таймер
     intervalRef.current = setInterval(() => {
       setCurrentTime(prev => prev + 1);
     }, 1000);
   };
+
 
   const handleStop = () => {
     setIsRunning(false);
@@ -412,7 +437,7 @@ export const CustomStatesProvider = ({ children }) => {
       maxTime, progress, setProgress,
       selectedPlanet, setSelectedPlanet,
       hoveredPlanet, setHoveredPlanet,
-      
+
       // Рефы
       hoverSoundRef,
       gameOverSoundRef,
