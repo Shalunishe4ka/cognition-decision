@@ -23,7 +23,7 @@ export const GraphComponent = (props) => {
     handleClear, handleMakeMove,
     selectedNodes, hoveredNode,
     showModal, setShowModal,
-    lastIndex, showNodeList, handleClearEdges
+    lastIndex, showNodeList, handleClearEdges, setIsNetworkReady, isNetworkReady
 
   } = props
 
@@ -32,24 +32,19 @@ export const GraphComponent = (props) => {
   const currentCard = cards[planetName].find((card) => card.uuid === uuid);
   const modelName = currentCard?.title;
   const planetImg = currentCard?.image;
-  const didLoadCoordsRef = useRef(false); // флаг
+  // const didLoadCoordsRef = useRef(false); // флаг
 
 
   // // Добавляем useEffect, который при загрузке графа вызывает handleLoadCoordinates.
   useEffect(() => {
-    // Если планета не задана - сделаем проверку
-    if (!selectedPlanetLocal) {
-      console.warn("Нет выбранной планеты");
-      return;
-    }
-
-    // Если matrixInfo загружена и граф уже проинициализирован
-    if (!didLoadCoordsRef.current && matrixInfo && networkRef.current) {
-      handleLoadCoordinates(uuid, applyCoordinates);
-      didLoadCoordsRef.current = true;
-    }
-    // eslint-disable-next-line
-  }, [matrixInfo, networkRef, uuid, handleLoadCoordinates]);
+    if (!selectedPlanetLocal) return;
+    if (!matrixInfo) return;
+    if (!isNetworkReady) return;
+  
+    console.log("Сеть готова, применяем координаты...");
+    handleLoadCoordinates(uuid, applyCoordinates);
+  }, [matrixInfo, isNetworkReady, uuid, applyCoordinates]);
+  
 
   // --- Логика запуска/остановки таймера ---
   useEffect(() => {
@@ -86,7 +81,7 @@ export const GraphComponent = (props) => {
     networkRef, handleClear, handleMakeMove,
     selectedNodes, hoveredNode,
     showModal, setShowModal, lastIndex, showNodeList,
-    handleClearEdges
+    handleClearEdges, setIsNetworkReady,
   };
 
   return (

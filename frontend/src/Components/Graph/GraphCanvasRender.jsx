@@ -23,11 +23,12 @@ export const GraphCanvasRender = ({
   setSelectedNodes,
   setSelectedEdges,
   networkRef, lastIndex, hoveredNode, selectedNodes,
-  handleClear, handleMakeMove, showNodeList, handleClearEdges
+  handleClear, handleMakeMove, showNodeList, handleClearEdges,
+  setIsNetworkReady,
 }) => {
   const localNetworkRef = useRef(null);
 
-  
+
   // 1) Собираем данные (nodes/edges) в DataSet
   useEffect(() => {
     if (matrixInfo) {
@@ -166,7 +167,7 @@ export const GraphCanvasRender = ({
             },
           },
           arrows: { to: true },
-          font: { size: 18, align: "horizontal",  color: "white"},
+          font: { size: 18, align: "horizontal", color: "white" },
           color: { highlight: "white", hover: "white" },
           chosen: true,
         },
@@ -211,7 +212,17 @@ export const GraphCanvasRender = ({
 
       // Создаём сеть
       const newNetwork = new Network(container, graphData, options);
+      // Сохраняем ссылку
+      localNetworkRef.current = newNetwork;
+      if (networkRef) {
+        networkRef.current = newNetwork;
+      }
 
+      // 🔥 Устанавливаем флаг готовности сети
+      if (setIsNetworkReady) {
+        console.log("🧱 Сеть создана, устанавливаем isNetworkReady = true");
+        setIsNetworkReady(true);
+      }
       // События
       newNetwork.on("click", handleNodeClick);
       newNetwork.on("hoverNode", (event) => {
@@ -233,12 +244,6 @@ export const GraphCanvasRender = ({
           edges: params.edges,
         });
       });
-
-      // Сохраняем ссылку
-      localNetworkRef.current = newNetwork;
-      if (networkRef) {
-        networkRef.current = newNetwork;
-      }
     }
     // eslint-disable-next-line
   }, [graphData, edgeRoundness, physicsEnabled, nodeSize]);
@@ -286,6 +291,8 @@ export const GraphCanvasRender = ({
       });
     }
   };
+
+
 
   return (
     <>

@@ -43,6 +43,7 @@ export const CustomStatesProvider = ({ children }) => {
   const [smallTableData, setSmallTableData] = useState([]);
   const [hugeTableData, setHugeTableData] = useState([]);
   const [syntheticData, setSyntheticData] = useState([]);
+  const [isNetworkReady, setIsNetworkReady] = useState(false);
 
 
 
@@ -437,6 +438,10 @@ export const CustomStatesProvider = ({ children }) => {
       maxTime, progress, setProgress,
       selectedPlanet, setSelectedPlanet,
       hoveredPlanet, setHoveredPlanet,
+      isNetworkReady, setIsNetworkReady,
+      smallTableData, setSmallTableData,
+      hugeTableData, setHugeTableData,
+      syntheticData, setSyntheticData,
 
       // Рефы
       hoverSoundRef,
