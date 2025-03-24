@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./StartPage.css";
 import "./StartPageAdaptives.css"
 import ButtonGroup from "./ButtonGroup";
@@ -7,7 +7,9 @@ import { CODE } from "./CODE";
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText";
 
 const StartPage = ({setHeaderShow}) => {
-  setHeaderShow(true)
+  useEffect(() => {
+    setHeaderShow(true);
+  }, [setHeaderShow]);
   return (
     <div className="start-page">
       <div className="content">

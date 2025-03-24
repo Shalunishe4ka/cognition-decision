@@ -8,8 +8,10 @@ import SolarSystem from "./Components/Solar/SolarSystem";
 import { GraphMainLayout } from "./Components/Graph/GraphMainLayout";
 import { SignUp } from "./Components/UserCreds/SignUp";
 import { SignIn } from "./Components/UserCreds/SignIn";
-import { CustomStatesProvider } from "./Components/Graph/CustomStates";
+import { CustomStatesProvider } from "./CustomStates";
 import { SciencePage } from "./Components/Science/SciencePage";
+import { AlgoPage } from "./Components/Science/AlgoPage";
+import { RulesPage } from "./Components/RulesPage/RulesPage";
 
 function App() {
   const [headerShow, setHeaderShow] = useState(true);
@@ -47,6 +49,14 @@ function App() {
           <Route
             path="/sign-in"
             element={<SignIn setHeaderShow={setHeaderShow} />}
+          />
+          <Route
+            path="/algorithm"
+            element={<AlgoPage setHeaderShow={setHeaderShow} />}
+          />
+          <Route
+            path="/rules"
+            element={<RulesPage setHeaderShow={setHeaderShow} />}
           />
         </Routes>
       </Router>

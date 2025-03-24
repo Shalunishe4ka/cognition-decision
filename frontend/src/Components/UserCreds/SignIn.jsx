@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { loginUser, getUserUuidFromToken } from '../../clientServerHub';  // Импорт из хаба
 import './UserCreds.css';
 
 export const SignIn = ({ setHeaderShow }) => {
-  setHeaderShow(true);
+  useEffect(() => {
+    setHeaderShow(false);
+  }, [setHeaderShow]);
 
   const [form, setForm] = useState({ username: '', password: '' });
   const [error, setError] = useState(null);

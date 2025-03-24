@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useCustomStates } from './CustomStates';
+import { useCustomStates } from '../../CustomStates';
 
 const VerticalProgressBar = () => {
   const {

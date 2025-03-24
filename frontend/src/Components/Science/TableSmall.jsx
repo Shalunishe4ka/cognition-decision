@@ -4,6 +4,8 @@ import React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
+import {Conditions} from "./Conditions"
+
 const TableHeader = [
   { title: "ID", key: "ID", width: "75px", height: "75px" },
   {

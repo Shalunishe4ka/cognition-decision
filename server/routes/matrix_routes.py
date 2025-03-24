@@ -10,6 +10,7 @@ from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
 import jwt
+from fastapi.responses import JSONResponse
 
 # Внешние импорты
 from services.matrix_service import get_all_matrices, get_matrix_data_by_name
@@ -44,6 +45,11 @@ oauth2_scheme = HTTPBearer()
 in_memory_sessions: Dict[str, Dict[str, Any]] = {}
 
 # =============================== Утилиты ===============================
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    log.error(f"[UNHANDLED ERROR] {request.url.path} → {exc}")
+    return JSONResponse(content={"error": "Internal Server Error"}, status_code=500)
+
 def ensure_dir(path: pathlib.Path) -> pathlib.Path:
     path.mkdir(parents=True, exist_ok=True)
     return path
@@ -110,11 +116,11 @@ async def sign_up(request: Request):
         data = await request.json()
         username, email, password = data.get("username"), data.get("email"), data.get("password")
         if not username or not email or not password:
-            return {"error": "username, email и password обязательны"}, 400
+            return JSONResponse({"error": "username, email и password обязательны"}, 400)
 
         creds_path = get_user_creds_filepath(username)
         if creds_path.exists():
-            return {"error": "Пользователь с таким именем уже существует"}, 400
+            return JSONResponse({"error": "Пользователь с таким именем уже существует"}, 400)
 
         user_uuid = str(uuid4())
         user_data = {"username": username, "email": email, "password": password, "user_uuid": user_uuid}
@@ -128,10 +134,10 @@ async def sign_up(request: Request):
 
         ensure_dir(USERS_ROOT / user_uuid / "user_settings")
         log.info(f"[REGISTER] user_uuid: {user_uuid}")
-        return {"message": "Регистрация успешна", "user_uuid": user_uuid}, 201
+        return JSONResponse({"message": "Регистрация успешна", "user_uuid": user_uuid}, 201)
     except Exception as e:
         log.error(f"[REGISTER ERROR]: {e}")
-        return {"error": str(e)}, 500
+        return JSONResponse({"error": str(e)}, 500)
 
 @router.post("/sign-in")
 async def sign_in(request: Request):
@@ -139,23 +145,23 @@ async def sign_in(request: Request):
         data = await request.json()
         username, password = data.get("username"), data.get("password")
         if not username or not password:
-            return {"error": "username и password обязательны"}, 400
+            return JSONResponse({"error": "username и password обязательны"}, 400)
 
         creds_path = get_user_creds_filepath(username)
         if not creds_path.exists():
-            return {"error": "Пользователь не найден"}, 404
+            return JSONResponse({"error": "Пользователь не найден"}, 404)
 
         user_data = load_json(creds_path)
         if user_data.get("password") != password:
-            return {"error": "Неверный пароль"}, 401
+            return JSONResponse({"error": "Неверный пароль"}, 401)
 
         user_uuid = user_data.get("user_uuid")
         token = create_access_token({"sub": username, "uuid": user_uuid})
         log.info(f"[LOGIN] user_uuid: {user_uuid}")
-        return {"message": "Вход выполнен", "access_token": token, "token_type": "bearer"}, 200
+        return JSONResponse({"message": "Вход выполнен", "access_token": token, "token_type": "bearer"}, 200)
     except Exception as e:
         log.error(f"[LOGIN ERROR]: {e}")
-        return {"error": str(e)}, 500
+        return JSONResponse({"error": str(e)}, 500)
 
 # =============================== Эндпоинты: Матрицы ===============================
 @router.get("/matrices")
@@ -168,23 +174,23 @@ def get_matrices():
             uuid = next((k for k, v in MATRIX_UUIDS.items() if v == matrix_name), None)
             m["uuid"] = uuid
             result.append(m)
-        return {"matrices": result}
+        return JSONResponse(content={"matrices": result}, status_code=200)
     except Exception as e:
-        return {"error": str(e)}
+        return JSONResponse(content={"error": str(e)}, status_code=500)
 
 @router.get("/matrix_by_uuid/{uuid}")
 def get_matrix_by_uuid(uuid: str):
     matrix_name = MATRIX_UUIDS.get(uuid)
     if not matrix_name:
-        return {"error": f"UUID '{uuid}' не найден"}, 404
+        return JSONResponse({"error": f"UUID '{uuid}' не найден"}, 404)
     data = get_matrix_data_by_name(matrix_name)
     if not data:
-        return {"error": f"Данные матрицы недоступны"}, 404
-    return {
+        return JSONResponse({"error": f"Данные матрицы недоступны"}, 404)
+    return JSONResponse(content={
         "matrix_info": {"matrix_name": matrix_name, "uuid": uuid},
         "nodes": data["nodes"],
         "edges": data["edges"]
-    }
+    }, status_code=200)
 
 # =============================== calculate_score ===============================
 @router.post("/calculate_score")
@@ -195,18 +201,18 @@ async def calculate_score(request: Request):
         matrix_uuid = body.get('uuid')
 
         if not matrix_uuid:
-            return {"error": "Matrix UUID is required"}, 400
+            return JSONResponse({"error": "Matrix UUID is required"}, 400)
 
         matrix_name_raw = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name_raw:
-            return {"error": "Matrix UUID not found"}, 404
+            return JSONResponse({"error": "Matrix UUID not found"}, 404)
 
         matrix_name = f"{matrix_name_raw}_result"
 
         try:
             matrix_order = load_true_sequence(matrix_name)
         except FileNotFoundError:
-            return {"error": f"True sequence for '{matrix_name}' not found"}, 404
+            return JSONResponse({"error": f"True sequence for '{matrix_name}' not found"}, 404)
 
         node_values = list(nodes.values())
         user_id = "anonymous"  # Или из токена при необходимости
@@ -218,7 +224,7 @@ async def calculate_score(request: Request):
         })
 
         if any(node in session_data['used_nodes'] for node in node_values):
-            return {"error": "Некоторые вершины уже использовались"}, 400
+            return JSONResponse({"error": "Некоторые вершины уже использовались"}, 400)
 
         order_score = calculate_order_score(node_values, matrix_order)
         order_score = max(0, order_score if isinstance(order_score, (int, float)) and not np.isnan(order_score) else 0)
@@ -227,29 +233,31 @@ async def calculate_score(request: Request):
         session_data['total_score'] += order_score
         session_data['used_nodes'].extend(node_values)
 
-        return {
+        return JSONResponse({
             'turn_score': order_score,
             'total_score': session_data['total_score'],
             'turns': session_data['turns']
-        }, 200
+        }, 200)
 
     except Exception as e:
-        return {"error": str(e)}, 500
+        return JSONResponse({"error": str(e)}, 500)
 
 # =============================== science_table ===============================
+
 @router.post("/science_table")
 async def get_science_table(request: Request):
     try:
         body = await request.json()
         matrix_uuid = body.get('matrixUuid')
         if not matrix_uuid:
-            return {"error": "Matrix UUID is required"}, 400
+            return JSONResponse({"error": "Matrix UUID is required"}, 400)
 
         matrix_name = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name:
-            return {"error": "Matrix UUID not found"}, 404
+            return JSONResponse({"error": "Matrix UUID not found"}, 404)
 
-        report_file_path = BASE_DIR / "Vadimka" / f"{matrix_name}_report.txt"
+        report_file_path = BASE_DIR / "../data/processed_files/Reports" / f"{matrix_name}_report.txt"
+
         if not report_file_path.exists():
             log.info(f"Report not found: {report_file_path}. Processing...")
             process_input_files(
@@ -259,7 +267,7 @@ async def get_science_table(request: Request):
             )
 
         if not report_file_path.exists():
-            return {"error": "report.txt not found"}, 404
+            return JSONResponse({"error": "report.txt not found"}, 404)
 
         with open(report_file_path, "r") as f:
             lines = f.readlines()
@@ -275,18 +283,37 @@ async def get_science_table(request: Request):
         true_seq = {i + 1: v for i, v in enumerate(normalized_u)}
         sorted_seq = sorted(true_seq.items(), key=lambda item: item[1], reverse=True)
 
-        return {
+        return JSONResponse(content={
             "x": x,
             "u": u,
             "normalized_x": normalized_x,
             "normalized_u": normalized_u,
             "matrix_name": matrix_name,
             "sorted_true_seq": sorted_seq
-        }, 200
+        }, status_code=200)
 
     except Exception as e:
-        return {"error": str(e)}, 500
+        return JSONResponse(content={"error": str(e)}, status_code=500)
 
+
+@router.post("/log-science-query")
+async def log_science_query(request: Request):
+    try:
+        body = await request.json()
+        matrix_uuid = body.get('matrixUuid')
+        user_uuid = body.get('userUuid')
+
+        if not matrix_uuid or not user_uuid:
+            return JSONResponse({"error": "matrixUuid и userUuid обязательны"}, status_code=400)
+
+        log.info(f"[LOG QUERY] userUuid: {user_uuid}, matrixUuid: {matrix_uuid}")
+        # Тут можно добавить сохранение в файл или базу, если нужно.
+
+        return JSONResponse({"message": "Научный запрос успешно залогирован"}, status_code=200)
+
+    except Exception as e:
+        log.error(f"[LOG QUERY ERROR]: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
 # =============================== graph settings ===============================
 
 @router.post("/save-graph-settings/{matrix_uuid}")
@@ -297,19 +324,19 @@ async def save_default_graph_settings(matrix_uuid: str, request: Request):
     try:
         data = await request.json()
         if not data:
-            return {"error": "Нет данных для сохранения"}, 400
+            return JSONResponse({"error": "Нет данных для сохранения"}, 400)
 
         matrix_name = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name:
-            return {"error": "UUID не найден"}, 404
+            return JSONResponse({"error": "UUID не найден"}, 404)
 
         filepath = get_default_settings_filepath(matrix_name)
         save_json(filepath, data)
         log.info(f"[SAVE DEFAULT] {filepath}")
-        return {"message": "Дефолтные настройки сохранены"}, 200
+        return JSONResponse({"message": "Дефолтные настройки сохранены"}, 200)
     except Exception as e:
         log.error(f"[SAVE DEFAULT ERROR]: {e}")
-        return {"error": str(e)}, 500
+        return JSONResponse({"error": str(e)}, 500)
 
 @router.get("/load-graph-settings/{matrix_uuid}")
 def load_default_graph_settings(matrix_uuid: str):
@@ -319,18 +346,18 @@ def load_default_graph_settings(matrix_uuid: str):
     try:
         matrix_name = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name:
-            return {"error": "UUID не найден"}, 404
+            return JSONResponse({"error": "UUID не найден"}, 404)
 
         filepath = get_default_settings_filepath(matrix_name)
         if not filepath.exists():
-            return {"error": "Файл настроек не найден"}, 404
+            return JSONResponse({"error": "Файл настроек не найден"}, 404)
 
         data = load_json(filepath)
         log.info(f"[LOAD DEFAULT] {filepath}")
-        return data, 200
+        return JSONResponse(content=data, status_code=200)
     except Exception as e:
         log.error(f"[LOAD DEFAULT ERROR]: {e}")
-        return {"error": str(e)}, 500
+        return JSONResponse({"error": str(e)}, 500)
     
 
 
@@ -342,19 +369,19 @@ async def save_user_graph_settings(user_uuid: str, matrix_uuid: str, request: Re
     try:
         data = await request.json()
         if not data:
-            return {"error": "Нет данных для сохранения"}, 400
+            return JSONResponse({"error": "Нет данных для сохранения"}, 400)
 
         matrix_name = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name:
-            return {"error": "UUID не найден"}, 404
+            return JSONResponse({"error": "UUID не найден"}, 404)
 
         filepath = get_user_settings_filepath(user_uuid, matrix_name)
         save_json(filepath, data)
         log.info(f"[SAVE USER] {filepath}")
-        return {"message": "Настройки пользователя сохранены"}, 200
+        return JSONResponse({"message": "Настройки пользователя сохранены"}, 200)
     except Exception as e:
         log.error(f"[SAVE USER ERROR]: {e}")
-        return {"error": str(e)}, 500
+        return JSONResponse({"error": str(e)}, 500)
 
 @router.get("/{user_uuid}/load-graph-settings/{matrix_uuid}")
 def load_user_graph_settings(user_uuid: str, matrix_uuid: str):
@@ -364,15 +391,15 @@ def load_user_graph_settings(user_uuid: str, matrix_uuid: str):
     try:
         matrix_name = MATRIX_UUIDS.get(matrix_uuid)
         if not matrix_name:
-            return {"error": "UUID не найден"}, 404
+            return JSONResponse({"error": "UUID не найден"}, 404)
 
         filepath = get_user_settings_filepath(user_uuid, matrix_name)
         if not filepath.exists():
-            return {"error": "Файл настроек не найден"}, 404
+            return JSONResponse({"error": "Файл настроек не найден"}, 404)
 
         data = load_json(filepath)
         log.info(f"[LOAD USER] {filepath}")
-        return data, 200
+        return JSONResponse(content=data, status_code=200)
     except Exception as e:
         log.error(f"[LOAD USER ERROR]: {e}")
-        return {"error": str(e)}, 500
+        return JSONResponse({"error": str(e)}, 500)

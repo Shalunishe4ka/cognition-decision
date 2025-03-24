@@ -1,7 +1,8 @@
 import React from "react";
 import "./AlgoPage.css";
-
-export const AlgoPage = () => {
+import crimeImg from "./images/C_P.png"
+export const AlgoPage = ({setHeaderShow}) => {
+  setHeaderShow = true
   return (
     <div className="AlgoPage-main-div">
       <div className="algoPage-submain-div">
@@ -72,7 +73,7 @@ export const AlgoPage = () => {
             связь между факторами модели. Число рядом с дугой – вес (сила)
             причинной связи.
           </p>
-          <img src="imgs/C&P.png" width={750} style={{alignSelf: "center"}}/>
+          <img src={crimeImg} width={750} style={{alignSelf: "center"}}/>
           <br />
           <p>
             <strong>Основная идея: </strong>система установок и убеждений человека

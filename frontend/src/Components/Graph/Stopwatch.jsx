@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { FaStopwatch, FaMedal } from 'react-icons/fa';
-import { useCustomStates } from './CustomStates';
+import { useCustomStates } from '../../CustomStates';
 
-const Stopwatch = () => {
+const Stopwatch = ({planetColor}) => {
   const {
     currentTime,
     score,
@@ -11,14 +11,13 @@ const Stopwatch = () => {
     handleStart,
     handleStop,
     isRunning,
-    disabledNodes,
   } = useCustomStates();
 
   const [isHovered, setIsHovered] = useState(false);
 
   const elapsedTime = currentTime; // Переименуем для читабельности
   const buttonStyle = {
-    backgroundColor: isHovered ? 'limegreen' : 'green',
+    backgroundColor: isHovered ? 'limegreen' : planetColor,
     color: 'white',
     border: 'none',
     marginRight: '10px',

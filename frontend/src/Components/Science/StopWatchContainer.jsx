@@ -1,90 +1,87 @@
-import React, { useState, useRef, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import Button from "react-bootstrap/Button";
-import { FaMedal, FaStopwatch } from "react-icons/fa";
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { FaStopwatch, FaMedal } from 'react-icons/fa';
+import { useCustomStates } from '../../CustomStates';
 
+export const StopWatchContainer = ({ planetColor }) => {
+  const {
+    currentTime,
+    score,
+    movesHistory,
+    handleStart,
+    handleStop,
+    isRunning,
+  } = useCustomStates();
 
-export const StopWatchContainer = ({ planetColor, movesHistory, isRunning, setIsRunning }) => {
-    const [elapsedTime, setElapsedTime] = useState(0);
-    const [score, setScore] = useState(0);
-    const intervalRef = useRef();
+  const [isHovered, setIsHovered] = useState(false);
+  const elapsedTime = currentTime;
 
-    useEffect(() => {
-        if (isRunning) {
-            intervalRef.current = setInterval(() => {
-                setElapsedTime((prevTime) => prevTime + 1);
-            }, 1000);
-        } else if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-        }
+  const startButtonStyle = {
+    backgroundColor: isHovered ? 'limegreen' : planetColor,
+    color: 'white',
+    border: 'none',
+    marginRight: '10px',
+    transition: 'background-color 0.3s ease',
+  };
 
-        return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
-        };
-    }, [isRunning]);
+  return (
+    <div className="stopwatch-container" style={{ color: 'white', maxWidth: "250px" }}>
+      {/* Время */}
+      <div className="stopwatch-container-time" style={{ marginBottom: '15px' }}>
+        <h3>Time</h3>
+        <p>
+          <FaStopwatch />{' '}
+          {`${String(Math.floor(elapsedTime / 60)).padStart(2, '0')}:${String(elapsedTime % 60).padStart(2, '0')}`}
+        </p>
+      </div>
 
-    // console.log('movesHistory: ', movesHistory)
+      {/* Счёт */}
+      <div className="stopwatch-container-score" style={{ marginBottom: '15px' }}>
+        <h3>Score</h3>
+        <p>
+          <FaMedal /> {score}
+        </p>
+      </div>
 
-    return (
-        <div className="science-stopwatch-container">
-            <div className="science-stopwatch-container-time">
-                <h3>Time</h3>
-                <p>
-                    <FaStopwatch />
-                    {`${String(Math.floor(elapsedTime / 60)).padStart(
-                        2,
-                        "0"
-                    )}:${String(elapsedTime % 60).padStart(2, "0")}`}
-                </p>
-            </div>
-            <div className="science-stopwatch-container-score">
-                <h3>Score</h3>
-                <p>
-                    <FaMedal /> {`${score}`}
-                </p>
-            </div>
-            <div className="science-stopwatch-container-table">
-                <h3>Vertices</h3>
-                {movesHistory && movesHistory.length > 0 ? (
-                    <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", padding: 0 }}>
-                        {movesHistory.map((move, moveIndex) => (
-                            <li key={moveIndex} style={{ listStyle: "none", marginBottom: "10px" }}>
-                                <div style={{ display: "flex", alignItems: "center" }}>
-                                    <span>Move {move.moveNumber}:</span>
-                                    <ul style={{ display: "flex", listStyle: "none", margin: 0, padding: 0 }}>
-                                        {move.nodes.map((node, nodeIndex) => (
-                                            <li key={nodeIndex} style={{ marginLeft: "5px" }}>
-                                                {node}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No moves</p>
-                )}
-            </div>
-            <div className="science-stopwatch-container-buttons" >
-                <Button
-                    style={{ backgroundColor: planetColor, color: "black", border: `1px solid ${planetColor}` }}
-                    disabled={isRunning}
-                    onClick={() => setIsRunning(true)}
-                >
-                    Start
-                </Button>{" "}
-                <Button
-                    variant="danger"
-                    disabled={!isRunning}
-                    onClick={() => setIsRunning(false)}
-                >
-                    Stop
-                </Button>
-            </div>
-        </div>
-    )
-}
+      {/* История ходов */}
+      <div className="stopwatch-container-table" style={{ marginBottom: '15px' }}>
+        <h3>Vertices</h3>
+        {movesHistory.length > 0 ? (
+          <ul style={{ padding: 0, listStyle: 'none', margin: 0 }}>
+            {movesHistory.map((move) => (
+              <li key={move.moveNumber} style={{ marginBottom: '10px' }}>
+                <strong>Move {move.moveNumber}:</strong> {move.nodes.join(', ')}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No moves made yet</p>
+        )}
+      </div>
+
+      {/* Кнопки управления */}
+      <div className="stopwatch-container-buttons">
+        <Button
+          style={startButtonStyle}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          disabled={isRunning}
+          onClick={handleStart}
+          title={isRunning ? 'Вы уже в процессе игры!' : 'Начать игру'}
+        >
+          Start
+        </Button>
+
+        <Button
+          variant="danger"
+          disabled={!isRunning}
+          onClick={handleStop}
+          title={isRunning ? 'Остановить игру' : 'Вы ещё не начали игру!'}
+        >
+          Stop
+        </Button>
+      </div>
+    </div>
+  );
+};
+

@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
 import { GraphComponent } from './GraphComponent';
-import { useCustomStates } from './CustomStates';
+import { useCustomStates } from '../../CustomStates';
 import { useLocation, useParams } from 'react-router-dom';
 import { getMatrixByUUID } from '../../clientServerHub';
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText"
 import "./Styles/GraphStyles.css"
 
 export const GraphMainLayout = ({ setHeaderShow }) => {
-  setHeaderShow(true)
+  useEffect(() => {
+    setHeaderShow(false);
+  }, [setHeaderShow]);
   const {
     graphData, setGraphData,
     highlightedNode, setHighlightedNode,

@@ -1,0 +1,151 @@
+.Rules-div {
+    font-family: "Montserrat";
+    color: white;
+    padding: 50px;
+  }
+  
+  .Rules-div strong{
+    font-weight: 850;
+  }
+  .Rules-div h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 5em;
+  }
+  
+  .Rules-div h2 {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .Rules-div h3 {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .Rules-div h4 {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .Rules-div h5 {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .Rules-div p {
+    margin: 0;
+    padding: 0;
+    font-size: 1.8em !important;
+  }
+  
+  .Rules-div a {
+    margin: 0;
+    padding: 0;
+    font-size: 1.5em !important;
+  }
+  
+  #video-span {
+    color: red;
+  }
+  
+  #sub-topic {
+    color: rgb(114, 144, 255);
+    text-align: center;
+    font-weight: bold;
+    font-size: 2.5em;
+  }
+  
+  #sub-paragraph {
+    margin-left: 2rem;
+  }
+  
+  
+  
+  #listik {
+    list-style-type: "√";
+    padding-inline-start: 1ch;
+  }
+  
+  
+  .Example-crime-div {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+  
+  #crime-img {
+    width: 150%;
+  }
+  
+  .Start-End-Phrase {
+    text-align: center;
+    color: rgb(114, 144, 255);
+    font-size: 4em;
+    font-family: "Moon Dance", regular, cursive;
+  }
+  
+  #letter-sublist-uncolored {
+    margin-left: 5em;
+  }
+  
+  #letter-sublist-uncolored li::marker {
+    color: red;
+    font-size: 1.5em;
+  }
+  
+  #letter-list-uncolored li::marker {
+    color: red;
+    /* font-size: 1.5em; */
+    font-size: calc(1.325rem + .9vw);
+  }
+  
+  
+  #sub-list-colored-span {
+    color: red;
+    font-size: 1.5em;
+  
+  }
+  
+  #sub-list-colored-div {
+    display: flex;
+    text-align: start;
+    margin-left: 3em;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  #num-list-uncolored li::marker {
+    color: white;
+    font-size: 1.5em;
+  }
+  
+  #disc-list-uncolored li::marker {
+    color: white;
+    font-size: 2em;
+  }
+  
+  
+  
+  .strong-text-p {
+    font-weight: 1000;
+  }
+  
+  #list-header-h2 {
+    font-weight: 800;
+    
+  
+  }
+  
+  #spanned-list-header-p {
+    color: rgb(114, 144, 255);
+  }
+  
+  
+  #players-capabilities-list{
+    margin-left: 2.5em;
+  }
+  
+  #players-capabilities-list li::marker {
+    color: white;
+  }

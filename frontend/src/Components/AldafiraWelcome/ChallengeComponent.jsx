@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./ChallengeComponent.css";
 import "./ChallengeComponentAdaptives.css";
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText";
@@ -7,7 +7,9 @@ import bg from "./assets/bg.png"
 import intro from "./assets/premain.mp4"
 
 const ChallengeComponent = ({ setHeaderShow }) => {
-  setHeaderShow(false);
+  useEffect(() => {
+    setHeaderShow(false);
+  }, [setHeaderShow]);
   const [showVideo, setShowVideo] = useState(false);
   const [showText, setShowText] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -69,9 +71,9 @@ const ChallengeComponent = ({ setHeaderShow }) => {
         <div className="second-page-texts">
           <h1 className="comabla">Coma Berenices</h1>
           {showText && (
-            <Link to="/solar" className="letsGoText">
+            <h1 onClick={handleVideoEnd} className="letsGoText">
               Let's go!
-            </Link>
+            </h1>
           )}
         </div>
       </div>

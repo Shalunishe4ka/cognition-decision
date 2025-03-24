@@ -94,6 +94,7 @@
   top: 30rem;
   color: #ffd700;
   transition: all 0.15s ease;
+  cursor: pointer;
 }
 
 .letsGoText:hover {

@@ -116,7 +116,7 @@ export const GraphComponent = (props) => {
       <div className="graph-component-row">
         <VerticalProgressBar />
         <GraphCanvasRender {...graphCanvasProps} />
-        <Stopwatch />
+        <Stopwatch planetColor={planetColor}/>
       </div>
     </div>
   )

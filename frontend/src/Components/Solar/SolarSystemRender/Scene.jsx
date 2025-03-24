@@ -4,13 +4,26 @@ import { Orbit } from "./Orbit";
 import GreenPlanetTexture from "./assets/imgs/Green/GreenPlanetTexture.png"
 import OrangePlanetTexture from "./assets/imgs/Orange/OrangePlanetTexture.jpg"
 import VioletPlanetTexture from "./assets/imgs/Violet/VioletPlanetTexture.jpg"
+import { useEffect } from "react";
+
 
 export const Scene = ({
   sunRef,
   setHoveredPlanet,
   setSelectedPlanet,
   selectedPlanet,
+  hoveredPlanet
 }) => {
+
+
+  useEffect(() => {
+    setHoveredPlanet("Orange")
+    console.log("Hovered Planet изменился:", hoveredPlanet);
+    // eslint-disable-next-line
+  }, [setHoveredPlanet]);
+
+
+
   return (
     <>
       <Sun sunRef={sunRef} />

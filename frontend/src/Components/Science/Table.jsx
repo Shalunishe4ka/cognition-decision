@@ -1,8 +1,6 @@
-// SyntheticTable.jsx
 import React from "react";
 
-
-const SyntheticTableHeader = [
+const MovesTableHeader = [
   { title: "Ходы", key: "Moves", width: "150px" },
   {
     title: "Начисленные очки",
@@ -15,9 +13,8 @@ const SyntheticTableHeader = [
   },
 ];
 
-export const SyntheticTable = ({ data }) => {
-   // Default data for demonstration
-   const defaultData = [
+export const MovesTable = ({ data }) => {
+  const defaultData = [
     { Moves: "Ход 1", PerMove: "None" },
     { Moves: "Ход 2", PerMove: "None" },
     { Moves: "Ход 3", PerMove: "None" },
@@ -27,15 +24,16 @@ export const SyntheticTable = ({ data }) => {
     { Moves: "Ход 7", PerMove: "None" },
   ];
 
-  // Пример адаптации, если данные из бэкенда имеют другую структуру
-  const tableData = data
+  // Проверка на непустой массив
+  const hasData = Array.isArray(data) && data.length > 0;
+
+  const tableData = hasData
     ? data.map((item, index) => ({
         Moves: `Ход ${index + 1}`,
-        PerMove: "None", // Всегда "None" в "За 1 ход"
+        PerMove: "None",  // можно адаптировать позже
       }))
     : defaultData;
 
-  // Создаём "накопительные" значения как строку "None"
   const calculatedData = tableData.map((row, index) => ({
     ...row,
     Cumulative: "None",
@@ -43,95 +41,97 @@ export const SyntheticTable = ({ data }) => {
 
   return (
     <div id="synthetic-table-container">
-      <h5 style={{ color: "#ffd700", textAlign: "center" }}>
+      <h5 style={{ color: "#ffd700", textAlign: "center", marginBottom: "10px" }}>
         Данные о ходах и очках
       </h5>
-      <table style={{ borderCollapse: "collapse", width: "100%" }}>
-        <thead>
-          <tr>
-            <th
-              style={{
-                width: SyntheticTableHeader[0].width,
-                fontSize: "18px",
-                textAlign: "center",
-                border: "1px solid white",
-                padding: "8px",
-              }}
-              rowSpan="2"
-            >
-              {SyntheticTableHeader[0].title}
-            </th>
-            <th
-              style={{
-                width: SyntheticTableHeader[1].width,
-                fontSize: "18px",
-                textAlign: "center",
-                border: "1px solid white",
-                padding: "8px",
-              }}
-              colSpan={SyntheticTableHeader[1].subHeaders.length}
-            >
-              {SyntheticTableHeader[1].title}
-            </th>
-          </tr>
-          <tr>
-            {SyntheticTableHeader[1].subHeaders.map((subHeader, index) => (
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ borderCollapse: "collapse", width: "100%", minWidth: "400px" }}>
+          <thead>
+            <tr>
               <th
-                key={index}
                 style={{
-                  width: subHeader.width,
-                  fontSize: "16px",
+                  width: MovesTableHeader[0].width,
+                  fontSize: "18px",
                   textAlign: "center",
                   border: "1px solid white",
                   padding: "8px",
                 }}
+                rowSpan="2"
               >
-                {subHeader.title}
+                {MovesTableHeader[0].title}
               </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {calculatedData.map((row, index) => (
-            <tr key={index}>
-              <td
+              <th
                 style={{
-                  width: SyntheticTableHeader[0].width,
+                  width: MovesTableHeader[1].width,
+                  fontSize: "18px",
+                  textAlign: "center",
                   border: "1px solid white",
                   padding: "8px",
                 }}
+                colSpan={MovesTableHeader[1].subHeaders.length}
               >
-                {row.Moves}
-              </td>
-              <td
-                style={{
-                  width: SyntheticTableHeader[1].subHeaders[0].width,
-                  border: "1px solid white",
-                  padding: "8px",
-                }}
-              >
-                {row.PerMove}
-              </td>
-              <td
-                style={{
-                  width: SyntheticTableHeader[1].subHeaders[1].width,
-                  border:
-                    index === calculatedData.length - 1
-                      ? "2px solid red"
-                      : "1px solid white",
-                  padding: "8px",
-                  fontWeight:
-                    index === calculatedData.length - 1 ? "bold" : "normal",
-                  fontSize:
-                    index === calculatedData.length - 1 ? "1.2rem" : "",
-                }}
-              >
-                {row.Cumulative}
-              </td>
+                {MovesTableHeader[1].title}
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            <tr>
+              {MovesTableHeader[1].subHeaders.map((subHeader, index) => (
+                <th
+                  key={index}
+                  style={{
+                    width: subHeader.width,
+                    fontSize: "16px",
+                    textAlign: "center",
+                    border: "1px solid white",
+                    padding: "8px",
+                  }}
+                >
+                  {subHeader.title}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {calculatedData.map((row, index) => (
+              <tr key={index}>
+                <td
+                  style={{
+                    width: MovesTableHeader[0].width,
+                    border: "1px solid white",
+                    padding: "8px",
+                  }}
+                >
+                  {row.Moves}
+                </td>
+                <td
+                  style={{
+                    width: MovesTableHeader[1].subHeaders[0].width,
+                    border: "1px solid white",
+                    padding: "8px",
+                  }}
+                >
+                  {row.PerMove}
+                </td>
+                <td
+                  style={{
+                    width: MovesTableHeader[1].subHeaders[1].width,
+                    border:
+                      index === calculatedData.length - 1
+                        ? "2px solid red"
+                        : "1px solid white",
+                    padding: "8px",
+                    fontWeight:
+                      index === calculatedData.length - 1 ? "bold" : "normal",
+                    fontSize:
+                      index === calculatedData.length - 1 ? "1.2rem" : "",
+                  }}
+                >
+                  {row.Cumulative}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

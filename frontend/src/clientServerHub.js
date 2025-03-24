@@ -109,17 +109,17 @@ export async function calculateScore(selectedNodes, matrixName) {
   });
 }
 
-export async function fetchScienceDataByUUID(matrix_uuid) {
+export async function fetchScienceDataByUUID(matrixUuid) {
   return fetchJson(`${BASE_URL}/science_table`, {
     method: "POST",
-    body: JSON.stringify({ matrix_uuid }),
+    body: JSON.stringify({ matrixUuid }),
   });
 }
 
-export async function logScienceQuery(matrix_uuid, user_uuid) {
+export async function logScienceQuery(matrixUuid, userUuid) {
   return fetchJson(`${BASE_URL}/log-science-query`, {
     method: "POST",
-    body: JSON.stringify({ matrix_uuid, user_uuid }),
+    body: JSON.stringify({ matrixUuid, userUuid }),
   });
 }
 
