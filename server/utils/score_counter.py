@@ -17,7 +17,7 @@ def calculate_order_score(user_order, matrix_order):
 
         # Нормализуем очки
         score = (1 - np.sum(order_diff) / (max_diff * len(user_order))) * 100
-
+        print(score)
         # Проверка на корректность результата
         if not isinstance(score, (int, float)) or np.isnan(score) or score < 0:
             score = 0
