@@ -44,6 +44,7 @@ export const CustomStatesProvider = ({ children }) => {
   const [hugeTableData, setHugeTableData] = useState([]);
   const [syntheticData, setSyntheticData] = useState([]);
   const [isNetworkReady, setIsNetworkReady] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 
 
@@ -442,6 +443,7 @@ export const CustomStatesProvider = ({ children }) => {
       smallTableData, setSmallTableData,
       hugeTableData, setHugeTableData,
       syntheticData, setSyntheticData,
+      isMenuOpen, setIsMenuOpen,
 
       // Рефы
       hoverSoundRef,
@@ -456,6 +458,7 @@ export const CustomStatesProvider = ({ children }) => {
       handleClear,
       handleMakeMove,
       handleClearEdges,
+
       // Методы для работы с координатами
       loadDefaultCoordinates,
       loadUserCoordinates,

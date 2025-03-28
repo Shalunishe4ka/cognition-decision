@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { registerUser } from '../../clientServerHub';  // Импорт из хаба
 import './UserCreds.css';
+import { Link } from 'react-router-dom';
 
 export const SignUp = ({ setHeaderShow }) => {
   useEffect(() => {
@@ -62,6 +63,7 @@ export const SignUp = ({ setHeaderShow }) => {
         />
         <button type="submit">Зарегистрироваться</button>
       </form>
+      <p className='sign-in-up-p'>Уже есть аккаунт?<Link className='sign-in-up-link' to={"/sign-in"}>Войти</Link></p>
     </div>
   );
 };

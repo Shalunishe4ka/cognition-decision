@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { loginUser, getUserUuidFromToken } from '../../clientServerHub';  // Импорт из хаба
 import './UserCreds.css';
+import { Link } from 'react-router-dom';
 
 export const SignIn = ({ setHeaderShow }) => {
   useEffect(() => {
@@ -40,7 +41,15 @@ export const SignIn = ({ setHeaderShow }) => {
       {error && <p className="auth-error">{error}</p>}
       {successMsg && <p className="auth-success">{successMsg}</p>}
 
-      <form onSubmit={handleSubmit} className="auth-form">
+      <form
+        onSubmit={async (e) => {
+          await handleSubmit(e);
+          if (!error) {
+            window.location.href = "/";
+          }
+        }}
+        className="auth-form"
+      >
         <input
           name="username"
           placeholder="Имя пользователя"
@@ -58,6 +67,7 @@ export const SignIn = ({ setHeaderShow }) => {
         />
         <button type="submit">Войти</button>
       </form>
+      <p className='sign-in-up-p'>Вы тут впервые? <Link className='sign-in-up-link' to={"/sign-up"}>Зарегистрироваться</Link></p> 
     </div>
   );
 };

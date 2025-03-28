@@ -7,6 +7,9 @@
     box-shadow: 0 0 15px rgba(0,0,0,0.4);
     color: #ffffff;
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
   
   .auth-container h2 {
@@ -33,14 +36,15 @@
     padding: 10px;
     border: none;
     border-radius: 4px;
-    background-color: #00d1b2;
+    background-color: #008a75;
     color: white;
     cursor: pointer;
     transition: background 0.3s ease;
   }
   
   .auth-form button:hover {
-    background-color: #00a38a;
+    background-color: #00a78e;
+    color: #000000;
   }
   
   .auth-error {
@@ -55,3 +59,23 @@
     margin-bottom: 10px;
   }
   
+  .sign-in-up-p {
+    display: flex;
+    gap: 10px;
+    align-self: center;
+  }
+
+  .sign-in-up-p, .sign-in-up-link {
+    text-decoration: none;
+    color: white;
+    font-family: "Montserrat", sans-serif;
+    text-align: center;
+  }
+
+  .sign-in-up-link:visited {
+    color: white;
+  }
+
+  .sign-in-up-link:hover {
+    color: #00a38a;
+  }

@@ -16,7 +16,8 @@
 }
 
 .App-header ul li.active a {
-  color: white; /* Цвет для активного пункта */
+  color: white;
+  /* Цвет для активного пункта */
 }
 
 .App-header ul li.active:hover a {
@@ -68,6 +69,52 @@ nav ul li:hover {
   color: white;
 }
 
+/* Стили для бургер-меню */
+.burger-menu-container {
+  position: relative;
+}
+
+.burger-button {
+  background-color: transparent;
+  border: none;
+  color: #ffd700;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.burger-button:hover {
+  color: white;
+}
+
+.burger-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background-color: #0b001a;
+  border: 1px solid #ffd700;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.burger-menu-item {
+  background-color: transparent;
+  border: none;
+  color: #ffd700;
+  font-size: 1.7rem;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.burger-menu-item:hover {
+  color: white;
+}
+
 /* Адаптивность для экранов до 768px (планшеты) */
 @media screen and (max-width: 768px) {
   .App-header {
@@ -106,5 +153,13 @@ nav ul li:hover {
 
   .social-icons a {
     font-size: 1.2rem;
+  }
+
+  .burger-button {
+    font-size: 1.5rem;
+  }
+
+  .burger-menu-item {
+    font-size: 1.3rem;
   }
 }
