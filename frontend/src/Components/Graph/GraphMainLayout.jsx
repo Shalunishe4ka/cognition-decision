@@ -42,7 +42,9 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     isLoading, setIsLoading, error, setError, handleLoadCoordinates,
     hoverSoundRef, gameOverSoundRef,
     intervalRef, networkRef, applyCoordinates,
-    handleClear, handleMakeMove, handleClearEdges, nodeColor, setIsNetworkReady, isNetworkReady,
+    handleClear, handleMakeMove, handleClearEdges,
+    nodeColor, setIsNetworkReady, isNetworkReady,
+    graphDataState, setGraphDataState,
   } = useCustomStates();
 
   const location = useLocation();
@@ -109,7 +111,8 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     location, selectedPlanetLocal,
     uuid, handleLoadCoordinates, applyCoordinates, 
     handleClear, handleMakeMove, handleClearEdges, nodeColor,
-    setIsNetworkReady, isNetworkReady
+    setIsNetworkReady, isNetworkReady,
+    graphDataState, setGraphDataState
   };
 
   return (

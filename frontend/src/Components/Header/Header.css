@@ -30,6 +30,7 @@ nav ul {
   gap: 2rem;
   margin: 0;
   padding: 0;
+  align-items: center;
 }
 
 nav ul li {
@@ -57,61 +58,22 @@ nav ul li:hover {
 }
 
 
-.log-out-button {
-  background-color: transparent;
-  border: none;
-  color: #ffd700;
-  font: 400 1.5rem "Motserrat", sans-serif;
-  cursor: pointer;
+.logout-icon {
+  display: flex;
+  align-items: center;
+  perspective: 800px;
 }
 
-.log-out-button:hover {
-  color: white;
-}
-
-/* Стили для бургер-меню */
-.burger-menu-container {
-  position: relative;
-}
-
-.burger-button {
+.logout-button {
   background-color: transparent;
   border: none;
   color: #ffd700;
   font-size: 2rem;
   cursor: pointer;
-}
-
-.burger-button:hover {
-  color: white;
-}
-
-.burger-menu {
-  position: absolute;
-  top: 120%;
-  right: 0;
-  background-color: #0b001a;
-  border: 1px solid #ffd700;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  z-index: 100;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 
-.burger-menu-item {
-  background-color: transparent;
-  border: none;
-  color: #ffd700;
-  font-size: 1.7rem;
-  text-align: left;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.burger-menu-item:hover {
+.logout-button:hover {
   color: white;
 }
 
@@ -143,6 +105,10 @@ nav ul li:hover {
     padding: 0.5rem;
   }
 
+  .burger-menu {
+    width: auto;
+  }
+
   nav ul {
     gap: 0.5rem;
   }
@@ -155,11 +121,4 @@ nav ul li:hover {
     font-size: 1.2rem;
   }
 
-  .burger-button {
-    font-size: 1.5rem;
-  }
-
-  .burger-menu-item {
-    font-size: 1.3rem;
-  }
 }

@@ -3,7 +3,7 @@ import { useCustomStates } from '../../CustomStates'
 import InfoIcon from '@mui/icons-material/Info'
 import { Link } from 'react-router-dom'
 
-export const Buttons = ({ 
+export const Buttons = ({
   matrixUuid,
   networkRef,
   applyCoordinates,
@@ -18,7 +18,7 @@ export const Buttons = ({
     handleLoadCoordinates,
     handleResetCoordinates,
     handleSaveUserView,
-    userUuid,
+    userUuid, handleSaveDefaultView
   } = useCustomStates();
 
   // --- Продвинутая логика сохранения ---
@@ -127,6 +127,13 @@ export const Buttons = ({
             Load Last View
           </button>
         </li>
+        {/* Кнопка "Сохранить граф (дефолт)" */}
+        <li>
+          <button className='game-button' onClick={handleSaveDefaultView} title='Временная кнопка'>
+            Save Graph (Default)
+          </button>
+        </li>
+
       </ul>
     </div>
   )

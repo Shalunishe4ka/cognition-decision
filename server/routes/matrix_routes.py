@@ -75,7 +75,7 @@ def get_user_settings_filepath(user_uuid: str, matrix_name: str) -> pathlib.Path
     return (path / f"{matrix_name}_settings.json").resolve()
 
 def get_default_settings_filepath(matrix_name: str) -> pathlib.Path:
-    path = CURRENT_DIR / "graph_settings"
+    path = CURRENT_DIR / "../data/graph_settings"
     ensure_dir(path)
     return (path / f"{matrix_name}_graph_settings.json").resolve()
 

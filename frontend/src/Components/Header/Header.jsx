@@ -3,24 +3,21 @@ import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
 import SocialIcons from "./SocialIcons";
 import { useCustomStates } from "../../CustomStates";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Header = ({ headerShow }) => {
   const location = useLocation();
-  const { isMenuOpen, setIsMenuOpen, userUuid, setUserUuid } = useCustomStates();
-
-  if (!headerShow) return null;
-
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
+  const { userUuid, setUserUuid } = useCustomStates();
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user_uuid");
     setUserUuid(null);
     console.log("Пользователь разлогинен");
-    // Можно добавить редирект на главную или страницу логина
+    // При желании можно добавить редирект
   };
+
+  if (!headerShow) return null;
 
   return (
     <header className="App-header">
@@ -31,27 +28,10 @@ const Header = ({ headerShow }) => {
             <Link to="/">Main</Link>
           </li>
           {userUuid ? (
-            <li className="burger-menu-container">
-              <button onClick={toggleMenu} className="burger-button">
-                &#9776;
+            <li className="logout-icon">
+              <button onClick={handleLogout} className="logout-button" title="Log Out">
+                <LogoutIcon fontSize="inherit"/>
               </button>
-              {isMenuOpen && (
-                <div className="burger-menu">
-                  <Link
-                    to="/profile"
-                    className="burger-menu-item"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    View Profile
-                  </Link>
-                  <button
-                    className="burger-menu-item"
-                    onClick={handleLogout}
-                  >
-                    Log Out
-                  </button>
-                </div>
-              )}
             </li>
           ) : (
             <li className={location.pathname === "/sign-up" ? "active" : ""}>

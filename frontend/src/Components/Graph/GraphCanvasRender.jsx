@@ -38,6 +38,7 @@ export const GraphCanvasRender = ({
       const nodesDataSet = new DataSet();
       const edgesDataSet = new DataSet();
 
+
       edges.forEach(({ from, to, value }) => {
         if (value !== 0) {
           const fromId = from;
@@ -206,9 +207,9 @@ export const GraphCanvasRender = ({
       };
 
       // Уничтожаем предыдущий инстанс, если был
-      if (localNetworkRef.current) {
-        localNetworkRef.current.destroy();
-      }
+      // if (localNetworkRef.current) {
+      //   localNetworkRef.current.destroy();
+      // }
 
       // Создаём сеть
       const newNetwork = new Network(container, graphData, options);

@@ -23,7 +23,9 @@ export const GraphComponent = (props) => {
     handleClear, handleMakeMove,
     selectedNodes, hoveredNode,
     showModal, setShowModal,
-    lastIndex, showNodeList, handleClearEdges, setIsNetworkReady, isNetworkReady
+    lastIndex, showNodeList, handleClearEdges, 
+    setIsNetworkReady, isNetworkReady,
+    graphDataState, setGraphDataState
 
   } = props
 
@@ -40,11 +42,11 @@ export const GraphComponent = (props) => {
     if (!selectedPlanetLocal) return;
     if (!matrixInfo) return;
     if (!isNetworkReady) return;
-  
+
     console.log("Сеть готова, применяем координаты...");
     handleLoadCoordinates(uuid, applyCoordinates);
   }, [matrixInfo, isNetworkReady, uuid, applyCoordinates]);
-  
+
 
   // --- Логика запуска/остановки таймера ---
   useEffect(() => {
@@ -82,6 +84,7 @@ export const GraphComponent = (props) => {
     selectedNodes, hoveredNode,
     showModal, setShowModal, lastIndex, showNodeList,
     handleClearEdges, setIsNetworkReady,
+    graphDataState, setGraphDataState
   };
 
   return (
@@ -111,7 +114,7 @@ export const GraphComponent = (props) => {
       <div className="graph-component-row">
         <VerticalProgressBar />
         <GraphCanvasRender {...graphCanvasProps} />
-        <Stopwatch planetColor={planetColor}/>
+        <Stopwatch planetColor={planetColor} />
       </div>
     </div>
   )
