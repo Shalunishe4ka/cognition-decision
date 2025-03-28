@@ -14,6 +14,7 @@ const Header = ({ headerShow }) => {
     localStorage.removeItem("user_uuid");
     setUserUuid(null);
     console.log("Пользователь разлогинен");
+    window.location.href="/sign-in"
     // При желании можно добавить редирект
   };
 
@@ -34,8 +35,8 @@ const Header = ({ headerShow }) => {
               </button>
             </li>
           ) : (
-            <li className={location.pathname === "/sign-up" ? "active" : ""}>
-              <Link to="/sign-up">Sign Up</Link>
+            <li className={location.pathname === "/sign-in" ? "active" : ""}>
+              <Link to="/sign-in">Sign in</Link>
             </li>
           )}
         </ul>

@@ -39,7 +39,7 @@ TRUE_SEQ_DIR = (CURRENT_DIR / "../data/processed_files/True_Seq").resolve()
 
 SECRET_KEY = "MY_SUPER_SECRET_KEY"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 3000
 oauth2_scheme = HTTPBearer()
 
 # Здесь храним сессии в памяти, ключ: user_uuid -> { matrix_uuid -> { turns, used_nodes, total_score } }

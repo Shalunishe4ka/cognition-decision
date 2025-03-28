@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { DataSet, Network } from "vis-network/standalone/esm/vis-network";
-import { ScienceAllNodesList } from "./ScienceAllNodeList";
+import { ScienceAllNodesList } from "./ScienceAllNodesList";
 import { ScienceSelectedNodesList } from "./ScienceSelectedNodes";
 import { useCustomStates } from "../../CustomStates";
 
@@ -30,7 +30,13 @@ export const ScienceGraphComponent = () => {
     handleMakeMove,
     showNodeList,
     handleClearEdges,
+    // Функции для загрузки и применения координат:
+    handleLoadCoordinates,
+    applyCoordinates,
   } = useCustomStates();
+
+  // Флаг для загрузки координат только один раз
+  const coordsLoadedRef = useRef(false);
 
   // 1. Построение DataSet для графа
   useEffect(() => {
@@ -52,16 +58,16 @@ export const ScienceGraphComponent = () => {
               title: node.name,
               description: node.description,
               color: {
-                background: node.target === 1 ? "gold" : (isDisabled ? "gray" : nodeColor)
+                background: node.target === 1 ? "gold" : (isDisabled ? "gray" : nodeColor),
               },
               font: {
-                size: node.target === 1 ? 25 : (isDisabled ? 14 : 16)
+                size: node.target === 1 ? 25 : (isDisabled ? 14 : 16),
               },
             });
           }
         });
 
-        // Используем формат "from-to" для id ребра и проверяем дублирование
+        // Используем формат "from-to" для id ребра
         const edgeId = `${from}-${to}`;
         if (!edgesDataSet.get(edgeId)) {
           edgesDataSet.add({
@@ -84,7 +90,6 @@ export const ScienceGraphComponent = () => {
       }
     });
 
-    // Обновляем стейт графа
     setGraphData({ nodes: nodesDataSet, edges: edgesDataSet });
   }, [matrixInfo, disabledNodes, nodeColor, edgeRoundness, positiveEdgeColor, negativeEdgeColor, setGraphData]);
 
@@ -94,7 +99,6 @@ export const ScienceGraphComponent = () => {
     const container = document.getElementById("graph-container");
     if (!container) return;
 
-    // Создаём новый экземпляр графа каждый раз — избегаем переиспользования старого
     const network = new Network(container, graphData, {
       edges: {
         smooth: { type: "curvedCW", roundness: edgeRoundness },
@@ -112,9 +116,15 @@ export const ScienceGraphComponent = () => {
       interaction: { hover: true, tooltipDelay: 300, multiselect: true },
     });
 
-    // Вешаем события
     network.on("click", (event) => handleNodeClick(event, network));
     network.on("hoverNode", (event) => {
+      // Если узел disabled – сбрасываем выделение и не обрабатываем hover
+      if (disabledNodes.includes(Number(event.node))) {
+        network.unselectAll();
+        setShowNodeList(false);
+        setHoveredNode(null);
+        return;
+      }
       setHoveredNode(event.node);
       setHighlightedNode(event.node);
       setShowNodeList(true);
@@ -125,21 +135,33 @@ export const ScienceGraphComponent = () => {
       setShowNodeList(false);
     });
 
-    // Сохраняем ссылку на текущий экземпляр
     networkRef.current = network;
-  }, [graphData, edgeRoundness, physicsEnabled, nodeSize]);
+  }, [graphData, edgeRoundness, physicsEnabled, nodeSize, disabledNodes, setHighlightedNode, setShowNodeList, setHoveredNode, networkRef]);
 
-  // 3. Обработка кликов по узлам и рёбрам
+  // 3. Загружаем координаты графа только один раз после инициализации
+  useEffect(() => {
+    if (graphData && matrixInfo?.matrix_info?.uuid && networkRef.current && !coordsLoadedRef.current) {
+      console.log("Загружаем координаты графа...");
+      handleLoadCoordinates(matrixInfo.matrix_info.uuid, applyCoordinates);
+      coordsLoadedRef.current = true;
+    }
+  }, [graphData, matrixInfo, networkRef, handleLoadCoordinates, applyCoordinates]);
+
+  // 4. Обработка кликов по узлам и рёбрам
   const handleNodeClick = (event, network) => {
     const [nodeId] = event.nodes;
     const { edges } = event;
 
+    if (nodeId && disabledNodes.includes(Number(nodeId))) {
+      network.unselectAll();
+      return;
+    }
+
     if (nodeId) {
       const isLocked = lockedNodes[nodeId];
-      const isDisabled = disabledNodes.includes(nodeId);
       const nodeObj = graphData.nodes.get(nodeId);
 
-      if (!isLocked && !isDisabled && nodeObj) {
+      if (!isLocked && !disabledNodes.includes(Number(nodeId)) && nodeObj) {
         setSelectedNodes((prev) => {
           const exists = prev.find((n) => n.id === nodeId);
           return exists ? prev.filter((n) => n.id !== nodeId) : [...prev, nodeObj];
