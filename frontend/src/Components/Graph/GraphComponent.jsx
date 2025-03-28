@@ -25,7 +25,7 @@ export const GraphComponent = (props) => {
     showModal, setShowModal,
     lastIndex, showNodeList, handleClearEdges, 
     setIsNetworkReady, isNetworkReady,
-    graphDataState, setGraphDataState
+    graphDataState, setGraphDataState,
 
   } = props
 

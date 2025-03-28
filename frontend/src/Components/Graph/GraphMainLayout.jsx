@@ -6,6 +6,10 @@ import { getMatrixByUUID } from '../../clientServerHub';
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText"
 import "./Styles/GraphStyles.css"
 
+// [CAT LOGIC] - Импортируем CatAnimation
+import CatAnimation from "../Cat/CatAnimation"; // <-- скорректируйте путь
+
+
 export const GraphMainLayout = ({ setHeaderShow }) => {
   useEffect(() => {
     setHeaderShow(true);
@@ -45,6 +49,9 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     handleClear, handleMakeMove, handleClearEdges,
     nodeColor, setIsNetworkReady, isNetworkReady,
     graphDataState, setGraphDataState,
+    showCat, setShowCat, maxTime,
+    catAnimationLaunched, setCatAnimationLaunched,
+
   } = useCustomStates();
 
   const location = useLocation();
@@ -73,9 +80,20 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     fetchMatrixData();
   }, [uuid, setMatrixInfo, setIsLoading, setError]);
 
+  useEffect(() => {
+    if (currentTime >= (maxTime / 2) && !catAnimationLaunched) {
+      setShowCat(true);
+      setCatAnimationLaunched(true);
+    }
+  }, [currentTime, isRunning, catAnimationLaunched]);
+
   if (isLoading) return <div className="loading-status">Загрузка графа...</div>;
   if (error) return <div className="error-status">Ошибка: {error}</div>;
   if (!matrixInfo) return <div className="error-status">Данные матрицы не найдены</div>;
+
+
+
+
 
   const graphProps = {
     graphData, setGraphData,
@@ -109,7 +127,7 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     hoverSoundRef, gameOverSoundRef,
     intervalRef, networkRef,
     location, selectedPlanetLocal,
-    uuid, handleLoadCoordinates, applyCoordinates, 
+    uuid, handleLoadCoordinates, applyCoordinates,
     handleClear, handleMakeMove, handleClearEdges, nodeColor,
     setIsNetworkReady, isNetworkReady,
     graphDataState, setGraphDataState
@@ -119,6 +137,12 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     <div className="layout-challenge-container">
       <ChallengeYourMindText />
       <GraphComponent {...graphProps} />
+      {showCat && (
+        <CatAnimation
+          triggerAnimation={true}
+          stopAtX={1400}
+        />
+        )}
     </div>
   )
 }

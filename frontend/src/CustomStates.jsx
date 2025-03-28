@@ -45,7 +45,9 @@ export const CustomStatesProvider = ({ children }) => {
   const [syntheticData, setSyntheticData] = useState([]);
   const [isNetworkReady, setIsNetworkReady] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  // [CAT LOGIC] - состояния для "показать кота" и "уже запустили кота"
+  const [showCat, setShowCat] = useState(false);
+  const [catAnimationLaunched, setCatAnimationLaunched] = useState(false);
 
 
 
@@ -474,7 +476,9 @@ export const CustomStatesProvider = ({ children }) => {
       hugeTableData, setHugeTableData,
       syntheticData, setSyntheticData,
       isMenuOpen, setIsMenuOpen,
-
+      showCat, setShowCat,
+      catAnimationLaunched, setCatAnimationLaunched,
+      
       // Рефы
       hoverSoundRef,
       gameOverSoundRef,

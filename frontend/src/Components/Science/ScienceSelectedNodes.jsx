@@ -8,6 +8,7 @@ export const ScienceSelectedNodesList = ({
   handleClear,
   handleMakeMove,
 }) => {
+
   return (
     <div className="selected-nodes-list">
       <h2>Выбранные вершины:</h2>

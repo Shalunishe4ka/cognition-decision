@@ -11,6 +11,7 @@ import "./SciencePage.css";
 import { Conditions } from "./Conditions";
 import { SciencePageButtons } from "./SciencePageButtons"
 import { ScienceStopWatchContainer } from "./ScienceStopWatchContainer";
+import CatAnimation from "../Cat/CatAnimation";
 
 export const SciencePage = () => {
   const { uuid } = useParams();
@@ -24,7 +25,10 @@ export const SciencePage = () => {
     syntheticData, setSyntheticData,
     matrixInfo, setMatrixInfo,
     isLoading, setIsLoading,
-    error, setError,
+    error, setError, showCat,
+    setShowCat, currentTime,
+    catAnimationLaunched, setCatAnimationLaunched,
+    isRunning, maxTime,
   } = useCustomStates();
 
   const {
@@ -101,6 +105,15 @@ export const SciencePage = () => {
     if (matrixUUID) fetchScience(matrixUUID);
   }, [matrixInfo, userUuid]);
 
+
+  useEffect(() => {
+    if (currentTime >= (maxTime / 2) && !catAnimationLaunched) {
+      setShowCat(true);
+      setCatAnimationLaunched(true);
+    }
+  }, [currentTime, isRunning, catAnimationLaunched]);
+
+
   return (
     <div className="science-page">
       <div className="regulator">
@@ -138,6 +151,14 @@ export const SciencePage = () => {
               {graphData && <ScienceGraphComponent uuid={uuid} />}
               <ScienceStopWatchContainer planetColor={planetColor} />
               <MovesTable data={syntheticData} />
+              {showCat && (
+                <div style={{ position: "fixed", top: "70%", paddingBottom: "100px"}}>
+                  <CatAnimation
+                    triggerAnimation={true}
+                    stopAtX={850}
+                  />
+                </div>
+              )}
             </div>
           </>
         )}
