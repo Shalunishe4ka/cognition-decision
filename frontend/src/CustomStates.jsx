@@ -295,19 +295,6 @@ export const CustomStatesProvider = ({ children }) => {
   };
 
   /**
-   * Сохранение (дефолтных) настроек графа по uuid.
-   */
-
-  const saveGraphSettingsDefault = async (uuid, settings) => {
-    try {
-      await saveGraphSettingsDefaultAPI(uuid, settings);
-      console.log(`Дефолтные настройки для uuid: ${uuid} успешно сохранены!`);
-    } catch (error) {
-      console.error("Ошибка сохранения дефолтных настроек:", error);
-    }
-  };
-
-  /**
    * Сохранение пользовательских настроек (userUuid) по uuid.
    */
   const saveUserGraphSettings = async (uuid, settings) => {
@@ -368,7 +355,7 @@ export const CustomStatesProvider = ({ children }) => {
       console.warn("networkRef.current отсутствует — граф не готов");
       return;
     }
-  
+
     try {
       const nodePositions = networkRef.current.body.nodes;
       const coordinates = Object.fromEntries(
@@ -377,24 +364,22 @@ export const CustomStatesProvider = ({ children }) => {
           { x: node.x, y: node.y },
         ])
       );
-  
+
       const position = networkRef.current.getViewPosition?.() || { x: 0, y: 0 };
       const scale = networkRef.current.getScale?.() || 1;
-  
+
       const dataToSave = {
         graph_settings: { position, scale },
         node_coordinates: coordinates,
       };
-  
+
       await saveGraphSettingsDefaultAPI(matrixInfo.matrix_info.uuid, dataToSave);
       console.log("✅ Дефолтные настройки успешно сохранены!");
     } catch (error) {
-      alert(error)
+      alert(`${error}. Эта кнопка для разработчиков и она временная!`)
       console.error("❌ Ошибка сохранения дефолтных настроек:", error);
     }
   };
-  
-
 
   // Функция, которая применяется для обновления графа
   const applyCoordinates = useCallback((data) => {

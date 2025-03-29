@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
+import React from 'react';
 import { FaStopwatch, FaMedal } from 'react-icons/fa';
 import { useCustomStates } from '../../CustomStates';
 
@@ -17,16 +16,6 @@ export const ScienceStopWatchContainer = ({ planetColor }) => {
     setIsHoveredStop,
   } = useCustomStates();
 
-  const [isHovered, setIsHovered] = useState(false);
-  const elapsedTime = currentTime;
-
-  const startButtonStyle = {
-    backgroundColor: isHovered ? 'limegreen' : planetColor,
-    color: 'white',
-    border: 'none',
-    marginRight: '10px',
-    transition: 'background-color 0.3s ease',
-  };
 
   return (
     <div className="stopwatch-container" style={{ color: 'white', maxWidth: "250px" }}>
@@ -35,7 +24,7 @@ export const ScienceStopWatchContainer = ({ planetColor }) => {
         <h3>Time</h3>
         <p>
           <FaStopwatch />{' '}
-          {`${String(Math.floor(elapsedTime / 60)).padStart(2, '0')}:${String(elapsedTime % 60).padStart(2, '0')}`}
+          {`${String(Math.floor(currentTime / 60)).padStart(2, '0')}:${String(currentTime % 60).padStart(2, '0')}`}
         </p>
       </div>
 
