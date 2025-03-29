@@ -165,6 +165,23 @@ async def sign_in(request: Request):
         return JSONResponse({"error": str(e)}, 500)
 
 # =============================== Эндпоинты: Матрицы ===============================
+@router.get("/testik/{uuid}")
+def preprocess_test(uuid: str):
+    try:
+        matrix_name = MATRIX_UUIDS.get(uuid)
+        if not matrix_name:
+            return JSONResponse({"error": f"UUID '{uuid}' не найден"}, 404)
+        process_input_files(
+                str(BASE_DIR / "../data/models"),
+                str(BASE_DIR / "../data/processed_files/Models"),
+                BASE_DIR / "edited_mils.f90"
+            )
+    except Exception as e:
+        log.error(f"АШИПКА: {e}")
+        return JSONResponse({"error": str(e)}, 404)
+    
+
+
 @router.get("/matrices")
 def get_matrices():
     try:
@@ -369,6 +386,8 @@ async def save_default_graph_settings(matrix_uuid: str, request: Request):
     """
     Сохраняет дефолтные настройки графа по UUID матрицы.
     """
+    if request.client.host not in ("127.0.0.1", "::1"):
+        return JSONResponse({"error": "Access denied"}, status_code=403)
     try:
         data = await request.json()
         if not data:

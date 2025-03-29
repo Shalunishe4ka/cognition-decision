@@ -71,7 +71,7 @@
 
 /* Модальное тело с прокруткой */
 .modal-body-custom {
-  height: calc(100% - 160px);
+  height: calc(100% - 200px);
   overflow-y: auto;
 }
 
@@ -267,6 +267,11 @@
   background: transparent;
   width: 100px;
   height: 35px;
+}
+
+.life-strategy {
+  max-height: 120px;
+  overflow: auto;
 }
 
 .life-strategy,

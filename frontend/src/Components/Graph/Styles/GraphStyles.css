@@ -6,7 +6,6 @@
    Стили для Stopwatch (ранее .stopwatch-container)
 ---------------------------------- */
 .stopwatch-container {
-  top: 360px; /* Если хочешь реально фиксировать расположение, оставь. Иначе можно убрать */
   padding: 10px;
   border-radius: 32px;
   border: 3px solid white;
@@ -20,10 +19,18 @@
 
 /* Кнопки/контейнеры внутри stopwatch */
 .stopwatch-container-buttons {
-  margin-top: 10px;
+  
   display: flex;
   justify-content: space-evenly;
 }
+
+.btn-start, .btn-stop {
+  color: black;
+  font: 600 14px "Montserrat", sans-serif;
+  border-radius: 10px;
+  padding: 10px;
+}
+
 .stopwatch-container-time {
   display: flex;
   flex-direction: column;

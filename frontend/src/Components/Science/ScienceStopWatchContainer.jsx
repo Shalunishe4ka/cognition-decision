@@ -11,6 +11,10 @@ export const ScienceStopWatchContainer = ({ planetColor }) => {
     handleStart,
     handleStop,
     isRunning,
+    isHoveredStart,
+    setIsHoveredStart,
+    isHoveredStop,
+    setIsHoveredStop,
   } = useCustomStates();
 
   const [isHovered, setIsHovered] = useState(false);
@@ -61,25 +65,40 @@ export const ScienceStopWatchContainer = ({ planetColor }) => {
 
       {/* Кнопки управления */}
       <div className="stopwatch-container-buttons">
-        <Button
-          style={startButtonStyle}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+        <button
+          style={{
+            backgroundColor: isRunning ? "gray" : (isHoveredStart ? 'transparent' : planetColor),
+            border: `1px solid ${isRunning ? "gray" : planetColor}`,
+            cursor: isRunning ? "not-allowed" : "pointer",
+            color: isHoveredStart ? planetColor : "black"
+          }}
+          className='btn-start'
+          onMouseEnter={() => setIsHoveredStart(true)}
+          onMouseLeave={() => setIsHoveredStart(false)}
           disabled={isRunning}
           onClick={handleStart}
-          title={isRunning ? 'Вы уже в процессе игры!' : 'Начать игру'}
+          title={isRunning ? "Вы уже в процессе игры!" : "Начать игру"}
+
         >
           Start
-        </Button>
+        </button>
+        <button
+          onMouseEnter={() => setIsHoveredStop(true)}
+          onMouseLeave={() => setIsHoveredStop(false)}
+          style={{
+            backgroundColor: isRunning ? (isHoveredStop ? 'transparent' : 'rgb(255, 105, 105)') : 'gray',
+            border: `1px solid ${isRunning ? (isHoveredStop ? planetColor : "rgb(255, 105, 105)") : 'gray'}`,
+            cursor: isRunning ? "pointer" : "not-allowed",
+            color: isHoveredStop ? planetColor : "black"
 
-        <Button
-          variant="danger"
+          }}
           disabled={!isRunning}
           onClick={handleStop}
-          title={isRunning ? 'Остановить игру' : 'Вы ещё не начали игру!'}
+          title={isRunning ? "Остановить игру" : "Вы ещё не начали игру!"}
+          className='btn-stop'
         >
           Stop
-        </Button>
+        </button>
       </div>
     </div>
   );

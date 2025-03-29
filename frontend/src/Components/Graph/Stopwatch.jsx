@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
+import React from 'react';
 import { FaStopwatch, FaMedal } from 'react-icons/fa';
 import { useCustomStates } from '../../CustomStates';
 
-const Stopwatch = ({planetColor}) => {
+const Stopwatch = ({ planetColor }) => {
   const {
     currentTime,
     score,
@@ -11,17 +10,14 @@ const Stopwatch = ({planetColor}) => {
     handleStart,
     handleStop,
     isRunning,
+    isHoveredStart,
+    setIsHoveredStart,
+    isHoveredStop,
+    setIsHoveredStop,
   } = useCustomStates();
 
-  const [isHovered, setIsHovered] = useState(false);
 
   const elapsedTime = currentTime; // Переименуем для читабельности
-  const buttonStyle = {
-    backgroundColor: isHovered ? 'limegreen' : planetColor,
-    color: 'white',
-    border: 'none',
-    marginRight: '10px',
-  };
 
   return (
     <div
@@ -45,7 +41,7 @@ const Stopwatch = ({planetColor}) => {
         </p>
       </div>
 
-      <div className="stopwatch-container-table" style={{ marginBottom: '15px' }}>
+      <div className="stopwatch-container-table">
         <h3>Vertices</h3>
         {movesHistory.length > 0 ? (
           <ul style={{ padding: 0, listStyle: 'none', margin: 0 }}>
@@ -62,25 +58,40 @@ const Stopwatch = ({planetColor}) => {
 
 
       <div className="stopwatch-container-buttons">
-        <Button
-          style={buttonStyle}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+        <button
+          style={{
+            backgroundColor: isRunning ? "gray" : (isHoveredStart ? 'transparent' : planetColor),
+            border: `1px solid ${isRunning ? "gray" : planetColor}`,
+            cursor: isRunning ? "not-allowed" : "pointer",
+            color: isHoveredStart ? planetColor : "black"
+          }}
+          className='btn-start'
+          onMouseEnter={() => setIsHoveredStart(true)}
+          onMouseLeave={() => setIsHoveredStart(false)}
           disabled={isRunning}
           onClick={handleStart}
           title={isRunning ? "Вы уже в процессе игры!" : "Начать игру"}
 
         >
           Start
-        </Button>
-        <Button
-          variant="danger"
+        </button>
+        <button
+          onMouseEnter={() => setIsHoveredStop(true)}
+          onMouseLeave={() => setIsHoveredStop(false)}
+          style={{
+            backgroundColor: isRunning ? (isHoveredStop ? 'transparent' : 'rgb(255, 105, 105)') : 'gray',
+            border: `1px solid ${isRunning ? (isHoveredStop ? planetColor : "rgb(255, 105, 105)") : 'gray'}`,
+            cursor: isRunning ? "pointer" : "not-allowed",
+            color: isHoveredStop ? planetColor : "black"
+
+          }}
           disabled={!isRunning}
           onClick={handleStop}
           title={isRunning ? "Остановить игру" : "Вы ещё не начали игру!"}
+          className='btn-stop'
         >
           Stop
-        </Button>
+        </button>
       </div>
     </div>
   );

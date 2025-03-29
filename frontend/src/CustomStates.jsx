@@ -48,6 +48,8 @@ export const CustomStatesProvider = ({ children }) => {
   // [CAT LOGIC] - состояния для "показать кота" и "уже запустили кота"
   const [showCat, setShowCat] = useState(false);
   const [catAnimationLaunched, setCatAnimationLaunched] = useState(false);
+  const [isHoveredStart, setIsHoveredStart] = useState(false);
+  const [isHoveredStop, setIsHoveredStop] = useState(false);
 
 
 
@@ -387,6 +389,7 @@ export const CustomStatesProvider = ({ children }) => {
       await saveGraphSettingsDefaultAPI(matrixInfo.matrix_info.uuid, dataToSave);
       console.log("✅ Дефолтные настройки успешно сохранены!");
     } catch (error) {
+      alert(error)
       console.error("❌ Ошибка сохранения дефолтных настроек:", error);
     }
   };
@@ -478,7 +481,10 @@ export const CustomStatesProvider = ({ children }) => {
       isMenuOpen, setIsMenuOpen,
       showCat, setShowCat,
       catAnimationLaunched, setCatAnimationLaunched,
-      
+      isHoveredStart, setIsHoveredStart,
+      isHoveredStop, setIsHoveredStop,
+
+
       // Рефы
       hoverSoundRef,
       gameOverSoundRef,

@@ -19,6 +19,7 @@ export const Buttons = ({
     handleResetCoordinates,
     handleSaveUserView,
     userUuid, handleSaveDefaultView
+    
   } = useCustomStates();
 
   // --- Продвинутая логика сохранения ---
