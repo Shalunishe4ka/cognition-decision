@@ -141,6 +141,19 @@
   z-index: 1000;
 }
 
+#science-button {
+  background-color: #4f75ff !important;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+}
+
+#science-button p {
+  margin-right: 0.25rem;
+  font: 600 1rem "Montserrat", sans-serif;
+}
+
 /* ----------------------------------
    VerticalProgressBar
 ---------------------------------- */

@@ -10,10 +10,10 @@ const TableHeader1 = [
 ];
 
 const TableHeader2 = [
-  { title: "Вершина", key: "ID", width: "150px", height: "75px" },
-  { title: "Счёт", key: "Score1", width: "240px", height: "75px" },
-  { title: "Вершина", key: "S", width: "150px", height: "75px" },
-  { title: "Счёт", key: "Score2", width: "240px", height: "75px" },
+  { title: "Вершина", key: "ID", width: "150px", height: "20px" },
+  { title: "Счёт", key: "Score1", width: "240px", height: "20px" },
+  { title: "Вершина", key: "S", width: "150px", height: "20px" },
+  { title: "Счёт", key: "Score2", width: "240px", height: "20px" },
 ];
 
 export const TableHuge = ({ data }) => {

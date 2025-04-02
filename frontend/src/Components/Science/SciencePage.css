@@ -33,6 +33,10 @@
   padding: 20px 0;
 }
 
+.tables-section thead {
+  height: 100px;
+}
+
 .Conditions-Restrictins-div {
   max-width: 760px;
   margin-top: 20px;
@@ -123,16 +127,6 @@
   margin: 1.5rem 0;
 }
 
-#science-button {
-  background-color: #4f75ff;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-}
-
-#science-button p {
-  margin-right: 0.75rem;
-}
 
 #game-button {
   background-color: #342b41;
@@ -194,7 +188,9 @@
   font-size: 28px;
 }
 
-
+#small-table-name, #huge-table-name {
+  height: 75px;
+}
 
 .science-stopwatch-container-table{
   display: flex;

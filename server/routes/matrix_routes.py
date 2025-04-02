@@ -124,7 +124,13 @@ async def sign_up(request: Request):
             return JSONResponse({"error": "Пользователь с таким именем уже существует"}, 400)
 
         user_uuid = str(uuid4())
-        user_data = {"username": username, "email": email, "password": password, "user_uuid": user_uuid}
+        user_data = {
+            "username": username,
+            "email": email,
+            "password": password,
+            "user_uuid": user_uuid,
+            "science_clicks": 2
+            }
 
         ensure_dir(creds_path.parent)
         save_json(creds_path, user_data)
@@ -307,7 +313,45 @@ async def reset_game(
         return JSONResponse({"error": str(e)}, 500)
 
 
-# =============================== science_table ===============================
+# =============================== science ===============================
+science_attempts: Dict[str, int] = {}
+
+@router.post("/science_attempt")
+async def science_attempt(
+    request: Request,
+    current_user_uuid: str = Depends(get_current_user_uuid)
+):
+    try:
+        # Получаем путь к файлу учетных данных пользователя по user_uuid
+        user_file = get_user_uuid_creds_path(current_user_uuid)
+        if not user_file.exists():
+            return JSONResponse({"error": "Пользователь не найден"}, 404)
+        
+        user_data = load_json(user_file)
+        clicks_left = user_data.get("science_clicks", 0)
+        if clicks_left <= 0:
+            return JSONResponse({"error": "Попытки исчерпаны"}, status_code=403)
+        
+        # Уменьшаем счетчик на 1 и сохраняем
+        user_data["science_clicks"] = clicks_left - 1
+        save_json(user_file, user_data)
+        log.info(f"[SCIENCE ATTEMPT] User {current_user_uuid} осталось попыток: {user_data['science_clicks']}")
+        
+        return JSONResponse({"message": "Научный запрос принят", "science_clicks": user_data["science_clicks"]}, status_code=200)
+    except Exception as e:
+        log.error(f"[SCIENCE ATTEMPT ERROR]: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+@router.get("/science_clicks")
+async def get_science_clicks(current_user_uuid: str = Depends(get_current_user_uuid)):
+    user_file = get_user_uuid_creds_path(current_user_uuid)
+    if not user_file.exists():
+        return JSONResponse({"error": "Пользователь не найден"}, 404)
+
+    user_data = load_json(user_file)
+    clicks_left = user_data.get("science_clicks", 0)
+    return JSONResponse({"science_clicks": clicks_left}, 200)
+
 
 @router.post("/science_table")
 async def get_science_table(request: Request):
@@ -379,6 +423,8 @@ async def log_science_query(request: Request):
     except Exception as e:
         log.error(f"[LOG QUERY ERROR]: {e}")
         return JSONResponse({"error": str(e)}, status_code=500)
+    
+
 # =============================== graph settings ===============================
 
 @router.post("/save-graph-settings/{matrix_uuid}")

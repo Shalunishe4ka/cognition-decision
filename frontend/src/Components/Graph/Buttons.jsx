@@ -1,15 +1,11 @@
-import React from 'react'
-import { useCustomStates } from '../../CustomStates'
-import InfoIcon from '@mui/icons-material/Info'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useCustomStates } from '../../CustomStates';
+import InfoIcon from '@mui/icons-material/Info';
+import { Link } from 'react-router-dom';
+import KeyIcon from "@mui/icons-material/Key";
+import { getScienceClicks, logScienceAttempt } from '../../clientServerHub';
 
-export const Buttons = ({
-  matrixUuid,
-  networkRef,
-  applyCoordinates,
-  planetColor,
-  planetImg
-}) => {
+export const Buttons = ({ matrixUuid, planetColor, planetImg }) => {
   const {
     isRunning,
     selectedPlanet,
@@ -18,55 +14,38 @@ export const Buttons = ({
     handleLoadCoordinates,
     handleResetCoordinates,
     handleSaveUserView,
-    userUuid, handleSaveDefaultView
-    
+    handleSaveDefaultView
   } = useCustomStates();
 
-  // --- Продвинутая логика сохранения ---
-  const saveGraphSettings = async () => {
-    if (!networkRef?.current) {
-      console.log("Граф не инициализирован (networkRef.current отсутствует).");
-      return;
-    }
+  const [scienceClicks, setScienceClicks] = useState(null); // null пока не загрузилось
 
-    // Собираем все узлы из Vis.js
-    const nodePositions = networkRef.current.body.nodes;
-    const coordinates = {};
-    for (const [nodeId, node] of Object.entries(nodePositions)) {
-      coordinates[nodeId] = { x: node.x, y: node.y };
-    }
+  // Загружаем текущее количество science_clicks при монтировании
+  useEffect(() => {
+    const fetchScienceClicks = async () => {
+      try {
+        const result = await getScienceClicks(matrixUuid); // Тот же эндпоинт, но без уменьшения
+        if (result && result.science_clicks !== undefined) {
+          setScienceClicks(result.science_clicks);
+        }
+      } catch (error) {
+        console.error("Ошибка при получении science_clicks:", error.message);
+      }
+    };
 
+    fetchScienceClicks();
+  }, [matrixUuid]);
+
+  const handleScienceClick = async () => {
     try {
-      // Vis.js методы для получения текущего положения и масштаба:
-      const position = networkRef.current.getViewPosition?.() || { x: 0, y: 0 };
-      const scale = networkRef.current.getScale?.() || 1;
-
-      // Формируем итоговый объект
-      const dataToSave = {
-        graph_settings: { position, scale },
-        node_coordinates: coordinates,
-      };
-
-      // Далее вызываем handleSaveUserView из useCustomStates,
-      // который уже умеет отправлять запрос на сервер
-      await handleSaveUserView(matrixUuid, dataToSave);
-
-      // alert("Пользовательские настройки успешно сохранены!");
-      console.log("Saving graph settings for userUuid:", userUuid);
-
+      const result = await logScienceAttempt(matrixUuid);
+      console.log("Science attempt logged:", result);
+      if (result && result.science_clicks !== undefined) {
+        setScienceClicks(result.science_clicks); // Обновляем из ответа сервера
+      }
     } catch (error) {
-      console.error("Ошибка при сохранении пользовательских настроек:", error);
+      console.error("Ошибка:", error.message);
+      alert(error.message);
     }
-  };
-
-  // --- Загрузка пользовательских настроек ---
-  const loadUserCoordinatesClick = async () => {
-    await handleLoadCoordinates(matrixUuid, applyCoordinates);
-  };
-
-  // --- Сброс на дефолт ---
-  const resetNodeCoordinates = async () => {
-    await handleResetCoordinates(matrixUuid, applyCoordinates);
   };
 
   return (
@@ -81,61 +60,41 @@ export const Buttons = ({
         <li>
           <Link to={`/science/${matrixUuid}`} state={{ selectedPlanet, selectedCardIndex, planetColor, planetImg }}>
             <button
-              className="game-button"
-              disabled={isRunning}
-              title={isRunning ? "Not available during the game" : ""}
+              id="science-button"
+              className='game-button'
+              onClick={handleScienceClick}
+              disabled={scienceClicks !== null && scienceClicks <= 0}
             >
-              Science
+              <p>Science</p>
+              {scienceClicks !== null &&
+                Array.from({ length: scienceClicks }, (_, index) => (
+                  <KeyIcon key={index} sx={{ marginRight: "4px" }} />
+                ))
+              }
             </button>
           </Link>
         </li>
 
+        {/* Остальные кнопки */}
+        <li><button className="game-button">Graph</button></li>
         <li>
-          <button className="game-button">
-            Graph
-          </button>
-        </li>
-
-        <li>
-          <button
-            className="game-button"
-            disabled={isRunning}
-            title={isRunning ? "Not available during the game" : ""}
-          >
+          <button className="game-button" disabled={isRunning} title={isRunning ? "Not available during the game" : ""}>
             Profile
           </button>
         </li>
-
-        {/* Кнопка Save – собираем реальную позицию и масштаб из networkRef */}
+        <li><button className="game-button" onClick={handleSaveUserView}>Save View</button></li>
+        <li><button className="game-button" onClick={handleResetCoordinates}>Reset</button></li>
         <li>
-          <button className="game-button" onClick={saveGraphSettings}>
-            Save View
-          </button>
-        </li>
-
-        <li>
-          <button className="game-button" onClick={resetNodeCoordinates}>
-            Reset
-          </button>
-        </li>
-
-        <li>
-          <button
-            className="game-button"
-            onClick={loadUserCoordinatesClick}
-            title="Загружает последний сохранённый вид графа"
-          >
+          <button className="game-button" onClick={handleLoadCoordinates} title="Загружает последний сохранённый вид графа">
             Load Last View
           </button>
         </li>
-        {/* Кнопка "Сохранить граф (дефолт)" */}
         <li>
           <button className='game-button' onClick={handleSaveDefaultView} title='Временная кнопка'>
             Save Graph (Default)
           </button>
         </li>
-
       </ul>
     </div>
-  )
-}
+  );
+};

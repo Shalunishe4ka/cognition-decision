@@ -170,3 +170,16 @@ export async function saveUserGraphSettingsAPI(uuid, userUuid, settings) {
 }
 
 
+// ========================= Science ========================= //
+
+export async function logScienceAttempt(matrixUuid) {
+  // matrixUuid можно передавать, если нужно, но сервер получит user_uuid из токена
+  return await fetchJson(`${BASE_URL}/science_attempt`, {
+    method: "POST",
+    body: JSON.stringify({ matrixUuid })
+  });
+}
+
+export async function getScienceClicks() {
+  return await fetchJson(`${BASE_URL}/science_clicks`);
+}
