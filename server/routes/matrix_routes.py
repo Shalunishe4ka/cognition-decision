@@ -132,8 +132,8 @@ async def sign_up(request: Request):
             "science_clicks": 2
             }
 
-        ensure_dir(creds_path.parent)
-        save_json(creds_path, user_data)
+        # ensure_dir(creds_path.parent)
+        # save_json(creds_path, user_data)
 
         uuid_creds_path = get_user_uuid_creds_path(user_uuid)
         ensure_dir(uuid_creds_path.parent)

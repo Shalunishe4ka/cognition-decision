@@ -4,10 +4,13 @@ import { useCustomStates } from '../../CustomStates';
 import { useLocation, useParams } from 'react-router-dom';
 import { getMatrixByUUID } from '../../clientServerHub';
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText"
+import { cards, cardcreds } from '../Solar/ModalWindowCards/cards'
 import "./Styles/GraphStyles.css"
 
 // [CAT LOGIC] - Импортируем CatAnimation
 import CatAnimation from "../Cat/CatAnimation"; // <-- скорректируйте путь
+import { InfoModalWindow } from './InfoModalWindow';
+import { GameOverModalWindow } from './GameOverModalWindow';
 
 
 export const GraphMainLayout = ({ setHeaderShow }) => {
@@ -93,7 +96,11 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
 
 
 
-
+  const planetColor = cardcreds[selectedPlanetLocal.name]?.color || "white";
+  const planetName = selectedPlanetLocal.name;
+  const currentCard = cards[planetName].find((card) => card.uuid === uuid);
+  const modelName = currentCard?.title;
+  const planetImg = currentCard?.image;
 
   const graphProps = {
     graphData, setGraphData,
@@ -130,7 +137,8 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
     uuid, handleLoadCoordinates, applyCoordinates,
     handleClear, handleMakeMove, handleClearEdges, nodeColor,
     setIsNetworkReady, isNetworkReady,
-    graphDataState, setGraphDataState
+    graphDataState, setGraphDataState, planetColor,
+    modelName, planetImg,
   };
 
   return (
@@ -142,7 +150,9 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
           triggerAnimation={true}
           stopAtX={1400}
         />
-        )}
+      )}
+      <InfoModalWindow planetColor={planetColor} isClosing={isClosing} />
+      <GameOverModalWindow planetColor={planetColor} score={score} />
     </div>
   )
 }

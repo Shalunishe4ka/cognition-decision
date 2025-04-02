@@ -50,7 +50,7 @@ export const CustomStatesProvider = ({ children }) => {
   const [catAnimationLaunched, setCatAnimationLaunched] = useState(false);
   const [isHoveredStart, setIsHoveredStart] = useState(false);
   const [isHoveredStop, setIsHoveredStop] = useState(false);
-
+  const [showPreviewWindow, setShowPreviewWindow] = useState(true); // Состояние для окна "Исследуйте граф"
 
 
   // Текущий юзер
@@ -81,6 +81,14 @@ export const CustomStatesProvider = ({ children }) => {
   const gameOverSoundRef = useRef(null);
   const intervalRef = useRef();
   const networkRef = useRef(null);
+
+    const handleClosePreviewWindow = () => {
+        setIsClosing(true);
+        setTimeout(() => {
+            setIsClosing(false);
+            setShowPreviewWindow(false);
+        }, 700);
+    };
 
   const handleClear = () => {
     setSelectedNodes([]);
@@ -468,7 +476,7 @@ export const CustomStatesProvider = ({ children }) => {
       catAnimationLaunched, setCatAnimationLaunched,
       isHoveredStart, setIsHoveredStart,
       isHoveredStop, setIsHoveredStop,
-
+      showPreviewWindow,
 
       // Рефы
       hoverSoundRef,
@@ -483,6 +491,7 @@ export const CustomStatesProvider = ({ children }) => {
       handleClear,
       handleMakeMove,
       handleClearEdges,
+      handleClosePreviewWindow,
 
       // Методы для работы с координатами
       loadDefaultCoordinates,

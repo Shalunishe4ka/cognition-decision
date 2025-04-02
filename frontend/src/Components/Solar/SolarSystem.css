@@ -14,12 +14,6 @@
   font: 400 72px "Moon Dance", cursive;
 }
 
-.GraphPreviewModalBody {
-  display: flex;
-  justify-content: center;
-  color: rgb(255, 218, 150);
-}
-
 .custom-modal-content {
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(3px);

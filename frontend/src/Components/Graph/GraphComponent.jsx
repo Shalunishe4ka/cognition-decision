@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react'
 import { GraphCanvasRender } from './GraphCanvasRender'
 import Stopwatch from './Stopwatch'
 import VerticalProgressBar from './VerticalProgressBar'
-import { cards, cardcreds } from '../Solar/ModalWindowCards/cards'
 import { Buttons } from './Buttons'
 
 export const GraphComponent = (props) => {
@@ -23,17 +22,14 @@ export const GraphComponent = (props) => {
     handleClear, handleMakeMove,
     selectedNodes, hoveredNode,
     showModal, setShowModal,
-    lastIndex, showNodeList, handleClearEdges, 
+    lastIndex, showNodeList, handleClearEdges,
     setIsNetworkReady, isNetworkReady,
     graphDataState, setGraphDataState,
+    planetColor, modelName, planetImg,
 
   } = props
 
-  const planetColor = cardcreds[selectedPlanetLocal.name]?.color || "white";
-  const planetName = selectedPlanetLocal.name;
-  const currentCard = cards[planetName].find((card) => card.uuid === uuid);
-  const modelName = currentCard?.title;
-  const planetImg = currentCard?.image;
+
   // const didLoadCoordsRef = useRef(false); // флаг
 
 

@@ -19,12 +19,12 @@
 
 /* Кнопки/контейнеры внутри stopwatch */
 .stopwatch-container-buttons {
-  
   display: flex;
   justify-content: space-evenly;
 }
 
-.btn-start, .btn-stop {
+.btn-start,
+.btn-stop {
   color: black;
   font: 600 14px "Montserrat", sans-serif;
   border-radius: 10px;
@@ -154,6 +154,195 @@
   font: 600 1rem "Montserrat", sans-serif;
 }
 
+/* ================================
+   Graph Preview Modal: CLEAN SLATE
+   ================================ */
+
+/* Обёртка: контейнер с фоновой пеленой */
+.preview-main-div,
+.game-over-main-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.6);
+  transition: opacity 0.5s ease;
+}
+
+.preview-main-div.hidden,
+.game-over-main-div.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Анимации для модалки */
+@keyframes slideIn {
+  0% {
+    transform: translateX(-150%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(150%);
+    opacity: 0;
+  }
+}
+
+/* Контейнер модалки */
+.modal-wrapper {
+  width: 500px;
+  height: auto;
+  border: 1px solid white;
+  border-radius: 15px;
+  color: rgb(255, 218, 150);
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+  text-align: center;
+  padding: 15px 5px;
+}
+
+#buttonOkGraphPreview {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px 20px;
+  border-radius: 10px;
+}
+
+.preview-modal-window {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Анимации */
+.modal-wrapper.slide-in {
+  animation-name: slideIn;
+}
+
+.modal-wrapper.slide-out {
+  animation-name: slideOut;
+}
+
+/* --- Game Over Modal --- */
+
+.game-over-main-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.6);
+  transition: opacity 0.5s ease;
+}
+
+.game-over-main-div.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.game-over-modal-wrapper {
+  width: 500px;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes gameSlideIn {
+  0% {
+    transform: translateX(-150%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes gameSlideOut {
+  0% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(150%);
+    opacity: 0;
+  }
+}
+
+.game-over-modal-wrapper.slide-in {
+  animation-name: gameSlideIn;
+}
+
+.game-over-modal-wrapper.slide-out {
+  animation-name: gameSlideOut;
+}
+
+.game-over-modal-window {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+}
+
+#game-over-title {
+  font-size: 2em;
+  font-family: "Montserrat", sans-serif;
+  color: #ffaaaa;
+}
+
+.GameOverModalBody h3 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.GameOverModalFooter {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.game-over-button {
+  padding: 10px 30px;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 1.1em;
+  font-weight: bold;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.game-over-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 /* ----------------------------------
    VerticalProgressBar
 ---------------------------------- */
@@ -200,7 +389,7 @@
   background-color: white;
   padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   font-family: Montserrat, sans-serif;
   color: black;
   max-height: 300px;
@@ -225,7 +414,7 @@
   background-color: white;
   padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   font-family: Montserrat, sans-serif;
   color: black;
 }
