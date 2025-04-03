@@ -30,7 +30,7 @@ const SolarSystem = ({ setHeaderShow }) => {
         style={{ height: "100vh" }}
         camera={{ position: [35, 5, 25], fov: 70 }}
         onCreated={({ gl }) => {
-          console.log("🎯 WebGL context initialized.");
+          // console.log("🎯 WebGL context initialized.");
         }}
       >
         <ambientLight intensity={0.5} />

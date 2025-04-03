@@ -38,7 +38,7 @@ export const Buttons = ({ matrixUuid, planetColor, planetImg }) => {
   const handleScienceClick = async () => {
     try {
       const result = await logScienceAttempt(matrixUuid);
-      console.log("Science attempt logged:", result);
+      // console.log("Science attempt logged:", result);
       if (result && result.science_clicks !== undefined) {
         setScienceClicks(result.science_clicks); // Обновляем из ответа сервера
       }

@@ -18,7 +18,7 @@ export const Scene = ({
 
   useEffect(() => {
     setHoveredPlanet("Orange")
-    console.log("Hovered Planet изменился:", hoveredPlanet);
+    // console.log("Hovered Planet изменился:", hoveredPlanet);
     // eslint-disable-next-line
   }, [setHoveredPlanet]);
 

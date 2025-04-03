@@ -23,6 +23,6 @@
 
 .vscode/
 
-/server/cognition-decision-venv
+/server/venv
 __pycache__/
 *.pyc

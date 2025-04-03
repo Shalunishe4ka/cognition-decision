@@ -155,7 +155,7 @@ export const GraphCanvasRender = ({
       networkRef.current = newNetwork;
     }
     if (setIsNetworkReady) {
-      console.log("Сеть создана, устанавливаем isNetworkReady = true");
+      // console.log("Сеть создана, устанавливаем isNetworkReady = true");
       setIsNetworkReady(true);
     }
 

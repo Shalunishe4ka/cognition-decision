@@ -1,8 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 
-// const BASE_URL = "http://10.131.103.32:8000";
 const BASE_URL = `${window.location.protocol}//${window.location.hostname}:8000`;
-console.log(BASE_URL);
+
 // const BASE_URL = "http://localhost:8000"
 
 /**
@@ -80,11 +79,11 @@ export async function loginUser(username, password) {
     body: JSON.stringify(body),
   });
   const payload = Array.isArray(response) ? response[0] : response;
-  console.log("Ответ от сервера:", payload);
+  // console.log("Ответ от сервера:", payload);
   if (payload.access_token) {
     localStorage.setItem("access_token", payload.access_token);
     const user_uuid = getUserUuidFromToken(payload.access_token);
-    console.log("user_uuid из токена:", user_uuid);
+    // console.log("user_uuid из токена:", user_uuid);
     if (user_uuid) {
       localStorage.setItem("user_uuid", user_uuid);
     }

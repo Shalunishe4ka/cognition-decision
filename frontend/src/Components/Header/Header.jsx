@@ -13,7 +13,7 @@ const Header = ({ headerShow }) => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user_uuid");
     setUserUuid(null);
-    console.log("Пользователь разлогинен");
+    // console.log("Пользователь разлогинен");
     window.location.href="/sign-in"
     // При желании можно добавить редирект
   };

@@ -63,14 +63,14 @@ export const SciencePage = () => {
     const fetchScience = async (matrixUUID) => {
       try {
         setIsLoading(true);
-        console.log("Запрос science данных для UUID:", matrixUUID);
+        // console.log("Запрос science данных для UUID:", matrixUUID);
 
         const [scienceData] = await Promise.all([
           fetchScienceDataByUUID(matrixUUID),
           userUuid ? logScienceQuery(matrixUUID, userUuid) : Promise.resolve(null)
         ]);
 
-        console.log("Получены scienceData:", scienceData);
+        // console.log("Получены scienceData:", scienceData);
 
         // Обработка данных для маленькой таблицы
         const small = scienceData.x.map((val, i) => ({

@@ -96,7 +96,7 @@ export const CustomStatesProvider = ({ children }) => {
 
   const handleMakeMove = async () => {
     try {
-      console.log('Делаем ход с вершинами:', selectedNodes);
+      // console.log('Делаем ход с вершинами:', selectedNodes);
 
       if (!graphData || !graphData.nodes) {
         alert("Граф не загружен.");
@@ -308,11 +308,11 @@ export const CustomStatesProvider = ({ children }) => {
   const saveUserGraphSettings = async (uuid, settings) => {
     try {
       await saveUserGraphSettingsAPI(uuid, userUuid, settings);
-      console.log("Пользовательские настройки успешно сохранены!");
+      // console.log("Пользовательские настройки успешно сохранены!");
     } catch (error) {
-      console.log(uuid);
-      console.log(userUuid);
-      console.log(settings)
+      // console.log(uuid);
+      // console.log(userUuid);
+      // console.log(settings)
       console.error("Ошибка сохранения пользовательских настроек:", error);
     }
   };
@@ -325,7 +325,7 @@ export const CustomStatesProvider = ({ children }) => {
   const handleLoadCoordinates = async (uuid, applyCoordinatesFn) => {
     const userData = await loadUserCoordinates(uuid);
     if (userData) {
-      console.log("Загружены пользовательские настройки");
+      // console.log("Загружены пользовательские настройки");
       applyCoordinatesFn(userData);
     } else {
       console.warn("Пользовательских настроек нет, грузим дефолтные...");
@@ -382,7 +382,7 @@ export const CustomStatesProvider = ({ children }) => {
       };
 
       await saveUserGraphSettingsAPI(matrixInfo.matrix_info.uuid, userUuid, dataToSave);
-      console.log(`✅ Настройки пользователя ${userUuid} успешно сохранены!`);
+      // console.log(`✅ Настройки пользователя ${userUuid} успешно сохранены!`);
     } catch (error) {
       console.error("❌ Ошибка сохранения настроек:", error);
     }
@@ -418,7 +418,7 @@ export const CustomStatesProvider = ({ children }) => {
       };
 
       await saveGraphSettingsDefaultAPI(matrixInfo.matrix_info.uuid, dataToSave);
-      console.log("✅ Дефолтные настройки успешно сохранены!");
+      // console.log("✅ Дефолтные настройки успешно сохранены!");
     } catch (error) {
       alert(`${error}. Эта кнопка для разработчиков и она временная!`)
       console.error("❌ Ошибка сохранения дефолтных настроек:", error);
@@ -427,7 +427,7 @@ export const CustomStatesProvider = ({ children }) => {
 
   // Функция, которая применяется для обновления графа
   const applyCoordinates = useCallback((data) => {
-    console.log(data)
+    // console.log(data)
     if (!data || data.error || !networkRef?.current) {
       console.warn("Нет корректных координат для применения:", data);
       return;
@@ -462,7 +462,7 @@ export const CustomStatesProvider = ({ children }) => {
     }
 
     networkRef.current.redraw();
-    console.log("Координаты применены!");
+    // console.log("Координаты применены!");
   }, [networkRef]);
 
   return (
