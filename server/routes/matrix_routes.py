@@ -11,6 +11,9 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
 import jwt
 from fastapi.responses import JSONResponse
+import bcrypt
+
+
 
 # Внешние импорты
 from services.matrix_service import get_all_matrices, get_matrix_data_by_name
@@ -63,9 +66,6 @@ def load_json(filepath: pathlib.Path):
     with open(filepath, 'r', encoding='utf-8') as f:
         return json.load(f)
 
-def get_user_creds_filepath(username: str) -> pathlib.Path:
-    return (USERS_ROOT / username / "user_creds" / f"{username}.json").resolve()
-
 def get_user_uuid_creds_path(user_uuid: str) -> pathlib.Path:
     return (USERS_ROOT / user_uuid / "user_creds" / f"{user_uuid}.json").resolve()
 
@@ -86,6 +86,37 @@ def load_true_sequence(matrix_name: str) -> Dict[int, float]:
     with open(path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return {int(k): float(v) for k, v in data.items()}
+
+def hash_password(plain_password: str) -> str:
+    return bcrypt.hashpw(plain_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+
+
+def find_user_by_email(email: str) -> pathlib.Path | None:
+    for user_folder in USERS_ROOT.iterdir():
+        user_creds = user_folder / "user_creds" / f"{user_folder.name}.json"
+        if user_creds.exists():
+            try:
+                user_data = load_json(user_creds)
+                if user_data.get("email") == email:
+                    return user_creds
+            except Exception:
+                continue
+    return None
+
+def find_user_by_username(username: str) -> pathlib.Path | None:
+    for user_folder in USERS_ROOT.iterdir():
+        user_creds = user_folder / "user_creds" / f"{user_folder.name}.json"
+        if user_creds.exists():
+            try:
+                user_data = load_json(user_creds)
+                if user_data.get("username") == username:
+                    return user_creds
+            except Exception:
+                continue
+    return None
 
 # =============================== JWT ===============================
 def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
@@ -119,21 +150,22 @@ async def sign_up(request: Request):
         if not username or not email or not password:
             return JSONResponse({"error": "username, email и password обязательны"}, 400)
 
-        creds_path = get_user_creds_filepath(username)
-        if creds_path.exists():
+
+        if find_user_by_username(username):
             return JSONResponse({"error": "Пользователь с таким именем уже существует"}, 400)
 
+        if find_user_by_email(email):
+            return JSONResponse({"error": "Пользователь с таким email уже существует"}, 400)
+
         user_uuid = str(uuid4())
+        hashed_password = hash_password(password)
         user_data = {
             "username": username,
             "email": email,
-            "password": password,
+            "password": hashed_password,
             "user_uuid": user_uuid,
             "science_clicks": 2
             }
-
-        # ensure_dir(creds_path.parent)
-        # save_json(creds_path, user_data)
 
         uuid_creds_path = get_user_uuid_creds_path(user_uuid)
         ensure_dir(uuid_creds_path.parent)
@@ -154,18 +186,19 @@ async def sign_in(request: Request):
         if not username or not password:
             return JSONResponse({"error": "username и password обязательны"}, 400)
 
-        creds_path = get_user_creds_filepath(username)
-        if not creds_path.exists():
+        user_file = find_user_by_username(username)
+        if not user_file or not user_file.exists():
             return JSONResponse({"error": "Пользователь не найден"}, 404)
 
-        user_data = load_json(creds_path)
-        if user_data.get("password") != password:
+        user_data = load_json(user_file)
+        if not verify_password(password, user_data.get("password", "")):
             return JSONResponse({"error": "Неверный пароль"}, 401)
 
         user_uuid = user_data.get("user_uuid")
         token = create_access_token({"sub": username, "uuid": user_uuid})
         log.info(f"[LOGIN] user_uuid: {user_uuid}")
         return JSONResponse({"message": "Вход выполнен", "access_token": token, "token_type": "bearer"}, 200)
+
     except Exception as e:
         log.error(f"[LOGIN ERROR]: {e}")
         return JSONResponse({"error": str(e)}, 500)

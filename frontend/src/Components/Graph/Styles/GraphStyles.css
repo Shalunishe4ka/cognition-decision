@@ -384,7 +384,8 @@
 .node-list-container {
   position: absolute;
   top: 200px;
-  right: 220px;
+  right: 0;
+  left: 65% !important;
   z-index: 2;
   background-color: white;
   padding: 15px;
@@ -409,7 +410,7 @@
 .selected-nodes-list {
   position: absolute;
   top: 240px;
-  right: 320px;
+  right: 520px;
   z-index: 1;
   background-color: white;
   padding: 15px;

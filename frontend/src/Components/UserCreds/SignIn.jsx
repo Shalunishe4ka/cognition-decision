@@ -28,7 +28,6 @@ export const SignIn = ({ setHeaderShow }) => {
       // Извлекаем токен из localStorage и декодируем user_uuid
       const token = localStorage.getItem('access_token');
       const user_uuid = getUserUuidFromToken(token);
-      console.log("user_uuid из токена:", user_uuid);
     } catch (err) {
       console.error('Ошибка входа:', err);
       setError(err.message);

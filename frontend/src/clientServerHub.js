@@ -2,14 +2,14 @@ import { jwtDecode } from "jwt-decode";
 
 // const BASE_URL = "http://10.131.103.32:8000";
 const BASE_URL = `${window.location.protocol}//${window.location.hostname}:8000`;
-console.log(BASE_URL)
+console.log(BASE_URL);
 // const BASE_URL = "http://localhost:8000"
 
 /**
  * Утилита для fetch-запросов с обработкой ошибок.
  */
 async function fetchJson(url, options = {}) {
-  const token = localStorage.getItem("access_token");  // <-- твой токен
+  const token = localStorage.getItem("access_token"); // <-- твой токен
   const headers = {
     "Content-Type": "application/json",
     ...(options.headers || {}),
@@ -144,7 +144,6 @@ export async function logScienceQuery(matrixUuid, userUuid) {
   });
 }
 
-
 // ========================= ГРАФ-НАСТРОЙКИ ========================= //
 
 export async function loadDefaultCoordinatesAPI(uuid) {
@@ -168,7 +167,6 @@ export async function saveUserGraphSettingsAPI(uuid, userUuid, settings) {
     body: JSON.stringify(settings),
   });
 }
-
 
 // ========================= Science ========================= //
 

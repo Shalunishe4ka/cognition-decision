@@ -24,6 +24,9 @@ export const SignUp = ({ setHeaderShow }) => {
     try {
       const response = await registerUser(form.username, form.email, form.password);
       setSuccessMsg(response.message || 'Регистрация успешна');
+      if (!error) {
+        window.location.href = "/sign-in";
+      }
       // После регистрации можно автоматически перенаправить на вход или другую страницу
     } catch (err) {
       console.error('Ошибка регистрации:', err);

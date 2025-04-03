@@ -82,13 +82,13 @@ export const CustomStatesProvider = ({ children }) => {
   const intervalRef = useRef();
   const networkRef = useRef(null);
 
-    const handleClosePreviewWindow = () => {
-        setIsClosing(true);
-        setTimeout(() => {
-            setIsClosing(false);
-            setShowPreviewWindow(false);
-        }, 700);
-    };
+  const handleClosePreviewWindow = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      setShowPreviewWindow(false);
+    }, 700);
+  };
 
   const handleClear = () => {
     setSelectedNodes([]);
@@ -310,6 +310,9 @@ export const CustomStatesProvider = ({ children }) => {
       await saveUserGraphSettingsAPI(uuid, userUuid, settings);
       console.log("Пользовательские настройки успешно сохранены!");
     } catch (error) {
+      console.log(uuid);
+      console.log(userUuid);
+      console.log(settings)
       console.error("Ошибка сохранения пользовательских настроек:", error);
     }
   };
@@ -349,9 +352,42 @@ export const CustomStatesProvider = ({ children }) => {
   };
 
   // 3. Сохранить пользовательские
-  const handleSaveUserView = async (uuid, settings) => {
-    await saveUserGraphSettings(uuid, settings);
+  const handleSaveUserView = async () => {
+    if (!matrixInfo?.matrix_info?.uuid) {
+      console.warn("UUID матрицы отсутствует");
+      return;
+    }
+    if (!networkRef?.current) {
+      console.warn("networkRef.current отсутствует — граф не готов");
+      return;
+    }
+    if (!userUuid) {
+      console.warn("Пользователь не найден");
+    }
+    try {
+      const nodePositions = networkRef.current.body.nodes;
+      const coordinates = Object.fromEntries(
+        Object.entries(nodePositions).map(([nodeId, node]) => [
+          nodeId,
+          { x: node.x, y: node.y },
+        ])
+      );
+
+      const position = networkRef.current.getViewPosition?.() || { x: 0, y: 0 };
+      const scale = networkRef.current.getScale?.() || 1;
+
+      const dataToSave = {
+        graph_settings: { position, scale },
+        node_coordinates: coordinates,
+      };
+
+      await saveUserGraphSettingsAPI(matrixInfo.matrix_info.uuid, userUuid, dataToSave);
+      console.log(`✅ Настройки пользователя ${userUuid} успешно сохранены!`);
+    } catch (error) {
+      console.error("❌ Ошибка сохранения настроек:", error);
+    }
   };
+
 
   // 4. Сохранить дефолтные
   const handleSaveDefaultView = async () => {
