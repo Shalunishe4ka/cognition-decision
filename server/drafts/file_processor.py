@@ -4,6 +4,7 @@ import pandas as pd
 import json
 import sys
 import subprocess
+import re
 
 # Определяем базовую директорию относительно текущего скрипта
 BASE_DIR = pathlib.Path(__file__).parent.resolve()
@@ -14,27 +15,14 @@ def convert_excel_to_txt(input_file, output_file):
     damping factor, ограничений и влияния вершин.
     """
     try:
-        import pandas as pd  # если не импортирован глобально
-        import pathlib
-        import re
-
         df = pd.read_excel(input_file, index_col=0)
         # Индексация строк и столбцов начинается с 1
         df.index = range(1, len(df.index) + 1)
         df.columns = range(1, len(df.columns) + 1)
 
-        # Запрос damping factor у пользователя
-        damping_factor_str = input("Введите damping factor: ")
-        try:
-            damping_factor = float(damping_factor_str)
-        except ValueError:
-            print("Неверное значение damping factor, используется значение по умолчанию 1.0")
-            damping_factor = 1.0
-
         with open(output_file, "w") as f:
             # Записываем заголовок с количеством столбцов, damping factor и фиксированным значением 0.2
-            f.write(f"{len(df.columns)}\t{damping_factor}\t0.02\n")
-            f.write("0\t0\t0\n")  # Эта строка сохраняется без изменений
+            f.write(f"{len(df.columns)}\n")
 
             # Ввод параметров для вершин (ограничения, демпинг и т.д.)
             vertices = []
@@ -95,25 +83,16 @@ def convert_txt_to_fortran(input_file, output_file):
     damping factor и параметров для вершин.
     """
     try:
-        import re
-        import pathlib
         # Чтение входного текстового файла
         with open(input_file, "r") as f:
             lines = f.readlines()
 
         # Извлекаем заголовки (колонки), пропуская первую колонку
         headers = lines[0].strip().split("\t")[1:]
-        # Запрос damping factor у пользователя
-        damping_factor_str = input(f"Введите damping factor для файла {input_file.name}: ")
-        try:
-            damping_factor = float(damping_factor_str)
-        except ValueError:
-            print("Неверное значение, используется damping factor по умолчанию 1.0")
-            damping_factor = 1.0
 
         with open(output_file, "w") as f:
             # Записываем заголовок: размерность матрицы, damping factor, фиксированное значение 0.2
-            f.write(f"{len(headers)+1}\t{damping_factor}\t0.02\n")
+            f.write(f"{len(headers)+1}\n")
 
             # Ввод параметров для вершин
             vertices = []
@@ -179,19 +158,37 @@ def process_fortran_output(file_name):
         report_file_path = BASE_DIR / "report.txt"
         
         if report_file_path.exists():
+            x = []
+            u = []
             with open(report_file_path, "r") as report:
-                u = [float(line[12:-1]) for line in report if len(line) <= 23]
+                for i in report.readlines():
+                    if len(i) <= 23:
+                        x.append(float(i[1:10]))
+                        u.append(float(i[12:-1]))
+
+            sq_x = [num ** 2 for num in x]
             sq_u = [num ** 2 for num in u]
+
             sum_u = sum(sq_u)
+
             normalized_u = [round(value / sum_u, 4) for value in sq_u]
 
-            result = {i + 1: value for i, value in enumerate(normalized_u)}
-            sorted_result = dict(sorted(result.items(), key=lambda x: x[1], reverse=True))
+            sorted_list_u = {i + 1: value for i, value in enumerate(normalized_u)}
 
-            # Сохранение JSON с результатами в папку Vadimka
+            # Создание пар (индекс, sq_x, sorted_list_u)
+            # Создаем пары (id, sq_x)
+            pairs = list(enumerate(sq_x, start=1))
+        
+            # Сортируем пары по значениям sq_x в порядке убывания
+            sorted_pairs = sorted(pairs, key=lambda pair: pair[1], reverse=True)
+        
+            # Преобразуем в словарь с id как ключами и sq_x как значениями
+            result_dict = {str(pair[0]): pair[1] for pair in sorted_pairs}
+        
+            # Сохраняем результат в JSON-файл
             result_file_path = BASE_DIR / "../data/processed_files/True_Seq" / f"{file_name}_result.json"
             with open(result_file_path, "w") as json_file:
-                json.dump(sorted_result, json_file, indent=4)
+                json.dump(result_dict, json_file, indent=4)
 
             # Чтение Maximal_Eigen_Value.txt и создание нового файла с использованием имени матрицы
             max_eigen_value_path = BASE_DIR / "Maximal_Eigen_Value.txt"
@@ -262,7 +259,6 @@ def process_input_files(input_folder, output_folder, fortran_file):
             # Компиляция Fortran-программы
             result = subprocess.run(
                 ["gfortran", str(fortran_file), "-o", str(BASE_DIR / "edited_mils.out"), "-O3"],
-                capture_output=True,
                 text=True
             )
             print(f"[DEBUG] Результат компиляции: {result.returncode}")
@@ -273,11 +269,9 @@ def process_input_files(input_folder, output_folder, fortran_file):
             # Выполнение Fortran-программы
             result = subprocess.run(
                 [str(BASE_DIR / "edited_mils.out")],
-                capture_output=True,
                 text=True,
                 cwd=BASE_DIR  # Указание рабочей директории
             )
-            shutil.copy(BASE_DIR / "report.txt", BASE_DIR / f"../data/processed_files/Reports/{file.name}_report.txt")
             print(f"[DEBUG] Результат выполнения: {result.returncode}")
             print(f"[DEBUG] Стандартный вывод: {result.stdout}")
             print(f"[DEBUG] Стандартная ошибка: {result.stderr}")
