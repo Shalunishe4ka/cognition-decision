@@ -61,6 +61,9 @@ ELSE
  d=HUGE(d)
 ENDIF
 WRITE(*,*)'Maximal Eigen Value =',z,'  Maximal Damping-Factor =',d
+ OPEN(UNIT=3, FILE="Maximal_Eigen_Value.txt", ACTION="WRITE")
+ WRITE(UNIT=3, FMT=*)"MEV =",z,"MD-F =",d
+ CLOSE(UNIT=3)
 END SUBROUTINE df
 
 SUBROUTINE cd(n,a,b,x)

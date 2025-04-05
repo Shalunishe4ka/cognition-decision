@@ -404,7 +404,7 @@ async def get_science_table(request: Request):
             log.info(f"Report not found: {report_file_path}. Processing...")
             process_input_files(
                 str(BASE_DIR / "../data/models"),
-                str(BASE_DIR / "processed_files"),
+                str(BASE_DIR / "../data/processed_files/Models"),
                 BASE_DIR / "edited_mils.f90"
             )
 
@@ -422,7 +422,7 @@ async def get_science_table(request: Request):
         normalized_u = [round(v / sum_sq_u, 4) for v in sq_u] if sum_sq_u else []
         normalized_x = [num ** 2 for num in x]
 
-        true_seq = {i + 1: v for i, v in enumerate(normalized_u)}
+        true_seq = {i + 1: v for i, v in enumerate(normalized_x)}
         sorted_seq = sorted(true_seq.items(), key=lambda item: item[1], reverse=True)
 
         return JSONResponse(content={

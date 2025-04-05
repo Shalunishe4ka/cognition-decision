@@ -1,0 +1,1 @@
+Maximal Eigen Value: MEV =   1.04990566     MD-F =  0.952466547
