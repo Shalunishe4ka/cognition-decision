@@ -57,7 +57,14 @@ export const GameOverModalWindow = ({ planetColor, score }) => {
                         <h2 id="game-over-title">Game Over</h2>
                     </div>
                     <div className="GameOverModalBody">
-                        <h3>Your Score: {score}</h3>
+                        {score >= 100 ? (
+                            <>
+                            <h3 style={{ color: "#FFD700", fontWeight: "bold", marginBottom: "10px" }}>Идеальное прохождение! 🌟</h3>
+                            <h3>Your Score: {score.toFixed(2)}</h3>
+                            </>
+                        ) : (
+                            <h3>Your Score: {score.toFixed(2)}</h3>
+                        )}
                     </div>
                     <div className="GameOverModalFooter">
                         <button

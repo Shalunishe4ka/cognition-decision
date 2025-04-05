@@ -17,7 +17,7 @@ import bcrypt
 
 # Внешние импорты
 from services.matrix_service import get_all_matrices, get_matrix_data_by_name
-from utils.score_counter import calculate_order_score
+from utils.score_counter import calculate_step_score
 from drafts.file_processor import BASE_DIR, process_input_files
 from routes.UUID_MATRICES import MATRIX_UUIDS
 
@@ -250,14 +250,15 @@ def get_matrix_by_uuid(uuid: str):
     }, status_code=200)
 
 # =============================== calculate_score ===============================
+
 @app.post("/calculate_score")
 async def calculate_score(
     request: Request,
-    current_user_uuid: str = Depends(get_current_user_uuid)  # <-- привязка к пользователю
+    current_user_uuid: str = Depends(get_current_user_uuid)
 ):
     try:
         body = await request.json()
-        nodes = body.get('selectedNodes', {})
+        step_nodes = body.get('selectedNodes', {})
         matrix_uuid = body.get('uuid')
 
         if not matrix_uuid:
@@ -268,52 +269,55 @@ async def calculate_score(
             return JSONResponse({"error": "Matrix UUID not found"}, 404)
 
         matrix_name = f"{matrix_name_raw}_result"
-
-        # Загружаем "идеальную" последовательность (True_Seq)
         path_to_seq = TRUE_SEQ_DIR / f"{matrix_name}.json"
         if not path_to_seq.exists():
             return JSONResponse({"error": f"True sequence for '{matrix_name}' not found"}, 404)
+
         with open(path_to_seq, 'r', encoding='utf-8') as f:
             data = json.load(f)
         matrix_order = {int(k): float(v) for k, v in data.items()}
 
-        # ------------------ Ищем/создаём сессию для user_uuid + matrix_uuid ------------------ #
+        # Инициализация сессии
         if current_user_uuid not in in_memory_sessions:
             in_memory_sessions[current_user_uuid] = {}
 
         if matrix_uuid not in in_memory_sessions[current_user_uuid]:
             in_memory_sessions[current_user_uuid][matrix_uuid] = {
+                "used_nodes": [],
                 "turns": [],
-                "total_score": 0,
-                "used_nodes": []
+                "total_score": 0
             }
-        session_data = in_memory_sessions[current_user_uuid][matrix_uuid]
 
-        node_values = list(nodes.values())
-        # Проверяем, не использовались ли эти вершины ранее
-        if any(node in session_data['used_nodes'] for node in node_values):
+        session = in_memory_sessions[current_user_uuid][matrix_uuid]
+        current_step = list(step_nodes.values())
+
+        if any(node in session['used_nodes'] for node in current_step):
             return JSONResponse({"error": "Некоторые вершины уже использовались"}, 400)
 
-        # Считаем score
-        order_score = calculate_order_score(node_values, matrix_order)
-        if not isinstance(order_score, (int, float)) or np.isnan(order_score):
-            order_score = 0
-        order_score = max(0, order_score)
-
-        # Обновляем серверную сессию
-        session_data['turns'].append({'nodes': node_values, 'score': order_score})
-        session_data['total_score'] += order_score
-        session_data['used_nodes'].extend(node_values)
-
+        # Считаем очки только за текущий шаг
+        score_result = calculate_step_score(current_step, session["used_nodes"], matrix_order)
+        print("score result: ", score_result)
+        print("current step: ", current_step)
+        print("session: ", session["used_nodes"])
+        print("matrix order: ", matrix_order)
+        # Обновляем сессию
+        session['used_nodes'].extend(current_step)
+        session['turns'].append({
+            "nodes": current_step,
+            "score": score_result["step_score"],
+            "details": score_result["details"]
+        })
+        session["total_score"] += score_result["step_score"]
+        
         return JSONResponse({
-            'turn_score': order_score,
-            'total_score': session_data['total_score'],
-            'turns': session_data['turns']
+            "step_score": score_result["step_score"],
+            "total_score": session["total_score"],
+            "turns": session["turns"],
+            "details": score_result
         }, 200)
 
     except Exception as e:
         return JSONResponse({"error": str(e)}, 500)
-
 
 # ===================== Сброс игры (reset-game) =====================
 @app.post("/reset-game")

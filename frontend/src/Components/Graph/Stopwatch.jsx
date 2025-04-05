@@ -37,7 +37,7 @@ const Stopwatch = ({ planetColor }) => {
       <div className="stopwatch-container-score">
         <h3>Score</h3>
         <p>
-          <FaMedal /> {score}
+          <FaMedal /> {score.toFixed(2)}
         </p>
       </div>
 

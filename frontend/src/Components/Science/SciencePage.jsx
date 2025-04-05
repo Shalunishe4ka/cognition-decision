@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useCustomStates } from "../../CustomStates";
 import { useLocation, useParams } from 'react-router-dom';
 import { getMatrixByUUID, fetchScienceDataByUUID, logScienceQuery } from "../../clientServerHub";
@@ -56,6 +56,7 @@ export const SciencePage = () => {
     };
 
     if (uuid) fetchMatrix();
+    // eslint-disable-next-line 
   }, [uuid]);
 
   // Получение аналитических данных (science)
@@ -103,6 +104,7 @@ export const SciencePage = () => {
 
     const matrixUUID = matrixInfo?.matrix_info?.uuid;
     if (matrixUUID) fetchScience(matrixUUID);
+    // eslint-disable-next-line 
   }, [matrixInfo, userUuid]);
 
 
@@ -111,6 +113,7 @@ export const SciencePage = () => {
       setShowCat(true);
       setCatAnimationLaunched(true);
     }
+    // eslint-disable-next-line 
   }, [currentTime, isRunning, catAnimationLaunched]);
 
 

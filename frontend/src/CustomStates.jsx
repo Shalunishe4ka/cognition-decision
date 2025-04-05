@@ -169,12 +169,27 @@ export const CustomStatesProvider = ({ children }) => {
 
 
   useEffect(() => {
+    if (!graphData || !graphData.nodes || disabledNodes.length === 0) return;
+  
+    const allNodeCount = graphData.nodes.length || graphData.nodes.get().length;
+  
+    if (disabledNodes.length >= allNodeCount && isRunning) {
+      setIsRunning(false);
+      setShowGameOverModal(true);
+      handleStop();
+    } // eslint-disable-next-line 
+  }, [disabledNodes, graphData, isRunning]);
+  
+
+  useEffect(() => {
     if (selectedNodes.length > 0) {
       setShowModal(true);
     } else {
       setShowModal(false);
     }
   }, [selectedNodes]);
+
+
 
   const handleClearEdges = () => {
     selectedEdges.forEach((edgeId) => {
@@ -256,7 +271,7 @@ export const CustomStatesProvider = ({ children }) => {
         resscore: score,
       },
     ]);
-    setCurrentTime(0);
+    // setCurrentTime(0);
   };
 
   useEffect(() => {
@@ -299,21 +314,6 @@ export const CustomStatesProvider = ({ children }) => {
     } catch (error) {
       console.error("Ошибка загрузки пользовательских настроек:", error);
       return null;
-    }
-  };
-
-  /**
-   * Сохранение пользовательских настроек (userUuid) по uuid.
-   */
-  const saveUserGraphSettings = async (uuid, settings) => {
-    try {
-      await saveUserGraphSettingsAPI(uuid, userUuid, settings);
-      // console.log("Пользовательские настройки успешно сохранены!");
-    } catch (error) {
-      // console.log(uuid);
-      // console.log(userUuid);
-      // console.log(settings)
-      console.error("Ошибка сохранения пользовательских настроек:", error);
     }
   };
 
