@@ -308,7 +308,8 @@ async def calculate_score(
             "details": score_result["details"]
         })
         session["total_score"] += score_result["step_score"]
-        
+        session["total_score"] = min(round(session["total_score"], 2), 100)
+
         return JSONResponse({
             "step_score": score_result["step_score"],
             "total_score": session["total_score"],
