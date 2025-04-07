@@ -84,7 +84,12 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
   }, [uuid, setMatrixInfo, setIsLoading, setError]);
 
   useEffect(() => {
-    if (currentTime >= (maxTime / 2) && !catAnimationLaunched) {
+    if (
+      (currentTime === 30 ||
+        currentTime >= (maxTime / 2) ||
+        currentTime === (maxTime - 60)) &&
+      !catAnimationLaunched
+    ) {
       setShowCat(true);
       setCatAnimationLaunched(true);
     }
@@ -149,7 +154,12 @@ export const GraphMainLayout = ({ setHeaderShow }) => {
         <CatAnimation
           triggerAnimation={true}
           stopAtX={1400}
+          onAnimationEnd={() => {
+            setShowCat(false);           // скрыть кота
+            setCatAnimationLaunched(false); // разрешить повторный запуск
+          }}
         />
+
       )}
       <InfoModalWindow planetColor={planetColor} isClosing={isClosing} />
       <GameOverModalWindow planetColor={planetColor} score={score} />

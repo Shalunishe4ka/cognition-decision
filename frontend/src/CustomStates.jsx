@@ -65,7 +65,7 @@ export const CustomStatesProvider = ({ children }) => {
   // Для VerticalProgressBar
   const [currentTime, setCurrentTime] = useState(0);
   // maxTime — допущение, что это время на раунд/уровень
-  const maxTime = 600;
+  const maxTime = 180;
   const [progress, setProgress] = useState(0);
 
   // Пара планетных состояний
@@ -81,6 +81,29 @@ export const CustomStatesProvider = ({ children }) => {
   const gameOverSoundRef = useRef(null);
   const intervalRef = useRef();
   const networkRef = useRef(null);
+  const backgroundMusicRef = useRef(null);
+
+  useEffect(() => {
+    const playMusic = () => {
+      if (backgroundMusicRef.current) {
+        backgroundMusicRef.current.play().catch(err => {
+          console.warn("🎧 Музыка не стартанула сама — нужен клик от пользователя:", err.message);
+        });
+      }
+    };
+  
+    playMusic(); // Пытаемся сразу
+  
+    // На случай, если блокировка — слушаем первый клик
+    const unlockAudio = () => {
+      playMusic();
+      document.removeEventListener("click", unlockAudio);
+    };
+  
+    document.addEventListener("click", unlockAudio);
+  }, []);
+
+
 
   const handleClosePreviewWindow = () => {
     setIsClosing(true);
@@ -519,6 +542,7 @@ export const CustomStatesProvider = ({ children }) => {
       gameOverSoundRef,
       intervalRef,
       networkRef,
+      backgroundMusicRef,
 
       // Допфункции
       handleOpenModal,

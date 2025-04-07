@@ -7,7 +7,7 @@ export const RulesPage = ({setHeaderShow}) => {
     setHeaderShow=true
   return (
     <div className="container Rules-div">
-      <h1 className="Start-End-Phrase">Встречайте Equilibrium!</h1>
+      <h1 className="Start-End-Phrase">Meet the Equilibrium!</h1>
       <h2 id="sub-topic">Цель игры</h2>
       <p>
         <span id="sub-paragraph">Набрать</span> как можно больше очков из 100

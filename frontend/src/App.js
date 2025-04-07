@@ -12,9 +12,14 @@ import { CustomStatesProvider } from "./CustomStates";
 import { SciencePage } from "./Components/Science/SciencePage";
 import { AlgoPage } from "./Components/Science/AlgoPage";
 import { RulesPage } from "./Components/RulesPage/RulesPage";
+import { GlobalAudioManager } from "./Components/Audio";
+
 
 function App() {
   const [headerShow, setHeaderShow] = useState(true);
+
+
+
   return (
     <CustomStatesProvider>
       {" "}
@@ -60,6 +65,8 @@ function App() {
           />
         </Routes>
       </Router>
+      {/* 🎵 Воспроизведение фоновой музыки */}
+      <GlobalAudioManager />
     </CustomStatesProvider>
   );
 }
