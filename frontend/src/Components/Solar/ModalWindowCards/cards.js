@@ -37,7 +37,8 @@ export const cards = {
       title: "Связывание углерода в связи с изменениями климата",
       description:
         "Модель предназначена для исследования проблемы поглощения углерода в связи с изменениями климата на примере Великих озер.  Связывание углерода – это процесс улавливания и хранения углекислого газа из атмосферы. Это один из механизмов сокращения количества углекислого газа в атмосфере с целью уменьшения глобального изменения климата. Частота, продолжительность и интенсивность осадков, температура окружающего воздуха и температура воды показывают последствия изменения климата.Сокращение количества осадков, увеличение испарения и изменение структуры стока угрожают жизнеспособности водно-болотных угодий, болот и других уязвимых мест обитания. Загрязнение питательными веществами и инвазивные виды еще больше усугубляют эти проблемы, приводя к ухудшению качества воды и нарушению функционирования экосистем.",
-      link: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). https://dx.doi.org/10.7302/4364 . Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      paper: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      link: "https://dx.doi.org/10.7302/4364",
       image: images.Green.carbonSeq,
     },
     {
@@ -45,14 +46,16 @@ export const cards = {
       title: "Влияние изменения климата на безопасное жизненное пространство человечества",
       description:
         "Модель предназначена для исследования проблемы изменения климатических систем на планете в контексте сохранения жизненного пространства для человечества. Изменение климата рассматривается как повышение средней температуры Земли, т. е. изменчивость климата в терминах экстремальных и средних значений. В частности, имеется в виду антропогенное изменение климата, как следствие деятельности человека. Последствия выражаются в виде утраты биоразнообразия, подкисления океана, разрушения стратосферного озона, высыхания и сокращения водных ресурсов из-за увеличения потребления пресной воды и других факторов, в результате жизнедеятельности человека.",
-      link: "García, C.G., Ortiz, I.P. (2014). Stability Analysis of Climate System Using Fuzzy Cognitive Maps. In: Obaidat, M., Filipe, J., Kacprzyk, J., Pina, N. (eds) Simulation and Modeling Methodologies, Technologies and Applications. Advances in Intelligent Systems and Computing, vol 256. Springer, Cham. https://doi.org/10.1007/978-3-319-03581-9_15",
+      paper: "García, C.G., Ortiz, I.P. (2014). Stability Analysis of Climate System Using Fuzzy Cognitive Maps. In: Obaidat, M., Filipe, J., Kacprzyk, J., Pina, N. (eds) Simulation and Modeling Methodologies, Technologies and Applications. Advances in Intelligent Systems and Computing, vol 256. Springer, Cham.",
+      link: "https://doi.org/10.1007/978-3-319-03581-9_15",
       image: images.Green.globalWarming,
     },
     {
       uuid: "68ed3011-111e-47cf-b0c9-295ee75dbb32",
       title: "Качество и доступность среды обитания",
       description: "Качество и доступность среды обитания",
-      link: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). https://dx.doi.org/10.7302/4364. Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      paper: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      link: "https://dx.doi.org/10.7302/4364",
       image: images.Green.habitat,
     },
     {
@@ -60,7 +63,8 @@ export const cards = {
       title: "Влияние изменения климата на коммерческое рыболовство",
       description:
         "Модель исследует факторы стресса, связанные с изменением климата, для среды обитания популяций рыб и рыболовства в крупных озерах на примере экосистемы  Великих озер. Изменение климата вызывает сокращение среды обитания коммерческих холодноводных видов рыб, способствует увеличению межвидовой конкуренции и появлению инвазивных видов рыб. К факторам, вызывающим изменения среды обитания этих видов рыб отнесены уменьшение ледяного покрова, увеличение температуры или осадков, усиление нисходящей длинноволновой радиации. Уменьшая воздействие волн на мелководье, ледяной покров может влиять на физические условия для рыб, чья икра насиживает зимой. Повышение температуры влияет на концентрацию растворенного кислорода в поверхностных водах, которая имеет сезонный и суточный цикл. Когда растворимость кислорода ограничена, преобладание гипоксии может вызвать дополнительный стресс у рыб, в то же время предоставляя возможность доминировать инвазивным рыбам.",
-      link: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). https://dx.doi.org/10.7302/4364. Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      paper: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      link: "https://dx.doi.org/10.7302/4364",
       image: images.Green.climateChange,
     },
     {
@@ -68,7 +72,8 @@ export const cards = {
       title: "Влияние изменения климата на спортивное рыболовство",
       description:
         "Спортивное рыболовство обеспечивает не только прекрасный отдых и духовное служение посредством спортивной рыбалки, но и является важным источником туризма. Модель исследует факторы стресса, связанные с изменением климата, для среды обитания популяций рыб и спортивного рыболовства в крупных озерах. К факторам, вызывающим изменения среды обитания спортивных видов рыб, таких как сиг и окунь, отнесены уменьшение ледяного покрова, увеличение температуры или осадков, усиление нисходящей длинноволновой радиации. Уменьшение ледяного покрова также сокращает возможности для подледной рыбалки, поскольку зимний сезон составляет большую часть сезона спортивного рыболовства. Более короткие и теплые зимы вредны для репродуктивного цикла рыб.",
-      link: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). https://dx.doi.org/10.7302/4364. Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      paper: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      link: "https://dx.doi.org/10.7302/4364",
       image: images.Green.sportFishing,
     },
     {
@@ -76,7 +81,8 @@ export const cards = {
       title: "Влияние изменения климата на услуги прогулочных катаний на лодках",
       description:
         "Модель исследует влияние факторов изменения климата на оказание экосистемных услуг, таких как катание на лодках. Такие климатические переменные, как интенсивность, продолжительность и частота осадков, температура окружающего воздуха и ветер, негативно влияют на возможность предоставления услуг катания на лодках. Понимание связей между изменением климата и экосистемными услугами позволит лучше понять последствия изменения климата и разработать эффективные средства адаптации к ним.",
-      link: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). https://dx.doi.org/10.7302/4364. Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      paper: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      link: "https://dx.doi.org/10.7302/4364",
       image: images.Green.recreation,
     },
     {
@@ -84,7 +90,8 @@ export const cards = {
       title: "Воздействие изменения климата на производство дикого риса",
       description:
         "Модель рассматривает воздействия изменения климата, связанные с интенсивностью выпадения осадков, качеством воды и температуры окружающего воздуха на производство дикого риса. Увеличение количества осадков увеличивает сток, перемещая больше питательных веществ с земли в озера. Чистый сток бассейна оказывает сильное влияние на загрязнение вод биогенными веществами и инвазивными макрофитами (агрессивными чужеродными видами водорослей).",
-      link: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). https://dx.doi.org/10.7302/4364. Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      paper: "Huber, J., Shrethsa, P., Vander Bilt, L., Nowicki, A.: Using Fuzzy Cognitive Mapping to Assess the Impacts of Climate Change on Great Lakes Ecosystem Services. (2022). Completed in partial fulfillment of the requirements for the degree of Master of Science in the University of Michigan, April 202",
+      link: "https://dx.doi.org/10.7302/4364",
       image: images.Green.wildRice,
     },
     {
@@ -92,7 +99,8 @@ export const cards = {
       title: "Урожайность озимой пшеницы в условиях богарного земледелия ",
       description:
         "Модель рассматривает процесс формирования урожайности озимой пшеницы при фотосинтезе растений в определенных почвенно-климатических условиях с применением технологии богарного земледелия при нулевой обработкой почвы (No-Till). В этой технологии важна квалификация оператора и оператора агротехнического аппарата, своевременное внесение в почву препаратов, а также мульчирование поверхности почвы, что призвано сохранить почву от эрозии и способствовать накоплению влаги.",
-      link: "Al-Gunaid, M.A., Salygina, I.I., Shcherbakov, M. V., Trubitsin, V.N., Groumpos, P.P.: Forecasting potential yields under uncertainty using fuzzy cognitive maps. Agric. Food Secur. 10, 32 (2021). https://doi.org/10.1186/s40066-021-00314-9.",
+      paper: "Al-Gunaid, M.A., Salygina, I.I., Shcherbakov, M. V., Trubitsin, V.N., Groumpos, P.P.: Forecasting potential yields under uncertainty using fuzzy cognitive maps. Agric. Food Secur. 10, 32 (2021).",
+      link: "https://doi.org/10.1186/s40066-021-00314-9",
       image: images.Green.yieldRice,
     },
     {
@@ -100,7 +108,8 @@ export const cards = {
       title: "Риск разрушительных лесных пожаров ",
       description:
         "Модель рассматривает риск лесных пожаров в экорегионе с преобладанием сухих смешанных хвойных лесов. Исследуемая система представляет собой мозаику государственных, частных и племенных земель. Крупномасштабные и неконтролируемые «мегапожары» становятся все более распространенными, отчасти из-за изменения климатических условий и накопления горючих материалов в результате давней политики тушения лесных пожаров. Смягчение риска лесных пожаров может осуществляться отдельными частными землевладельцами, но часто требует коллективных действий нескольких групп заинтересованных сторон на муниципальных, государственных и федеральных землях.",
-      link: "Hamilton, M., Salerno, J., Fischer, A.P.: Cognition of complexity and trade-offs in a wildfire-prone social-ecological system. Environ. Res. Lett. 14, 125017 (2019). https://doi.org/10.1088/1748-9326/ab59c1.",
+      paper: "Hamilton, M., Salerno, J., Fischer, A.P.: Cognition of complexity and trade-offs in a wildfire-prone social-ecological system. Environ. Res. Lett. 14, 125017 (2019).",
+      link: "https://doi.org/10.1088/1748-9326/ab59c1",
       image: images.Green.wildFire,
     },
     {
@@ -108,7 +117,8 @@ export const cards = {
       title: "Вырубка лесов в сельской горной местности ",
       description:
         "Модель фокусируется на изменениях лесного покрова (обезлесения) из-за роста вырубки лесов в горных областях, подверженным оползням. Вырубка лесов может увеличить восприимчивость к оползням и привести к их локальному увеличению. Это основано на выявленных изменениях в отношении разрешенной вырубки леса и сплошной рубки. Лесная политика по снижению риска оползней формирует приоритетное регулирование вырубки лесов или планируемое лесовозобновление.",
-      link: "Malek, Ž.: Fuzzy-Logic Cognitive Mapping: Introduction and Overview of the Method. In: Environmental Modeling with Stakeholders. pp. 127–143. Springer International Publishing, Cham (2017). https://doi.org/10.1007/978-3-319-25053-3_7.",
+      paper: "Malek, Ž.: Fuzzy-Logic Cognitive Mapping: Introduction and Overview of the Method. In: Environmental Modeling with Stakeholders. pp. 127–143. Springer International Publishing, Cham (2017).",
+      link: "https://doi.org/10.1007/978-3-319-25053-3_7",
       image: images.Green.deforestation,
     },
   ],
@@ -118,7 +128,8 @@ export const cards = {
       title: "Жизнеобеспечение животноводческих систем, основанных на разведении крупного рогатого скота",
       description:
         "Модель описывает систему жизнеобеспечения сельских домохозяйств, которые находятся в полузасушливом регионе на стыке человека и дикой природы. Жители выращивают и продают крупный рогатый скот и допонительно для пропитания выращивают зерновые культуры на высокогорных склонах (большую часть) и в своих огородах. Вырученные от продажи скота деньги используются для покупки еды, лекарств для поддержания здоровья скота, а также на прямые закупки скота после хорошего урожая. В засушливые годы домохозяйства страдают от недостатка корма на горных пастбищах и для спасения приоритетного племенного стада от гибели используют на корм корни многолетнего бобового кустарника Жомбве. Однако для выкапывания клубней требуется много труда. На продуктивность скота влияют болезни и хищничество диких зверей. Существуют общественные комитеты, которые помогают жителям, облегчая и удешевляя доступ к лекарствам для скота.",
-      link: "Murungweni, C., van Wijk, M.T., Andersson, J.A., Smaling, E.M.A., Giller, K.E.: Application of Fuzzy Cognitive Mapping in Livelihood Vulnerability Analysis. Ecol. Soc. 16, art8 (2011). https://doi.org/10.5751/ES-04393-160408.",
+      paper: "Murungweni, C., van Wijk, M.T., Andersson, J.A., Smaling, E.M.A., Giller, K.E.: Application of Fuzzy Cognitive Mapping in Livelihood Vulnerability Analysis. Ecol. Soc. 16, art8 (2011).",
+      link: "https://doi.org/10.5751/ES-04393-160408",
       image: images.Violet.cattleLivelihood,
     },
     {
@@ -126,7 +137,8 @@ export const cards = {
       title: "Жизнеобеспечение смешанных сельскохозяйственных  систем, основанных на растениеводстве и мелком животноводстве",
       description:
         "Модель описывает систему жизнеобеспечения сельских домохозяйств, которые находятся в долине полузасушливого региона на стыке человека и дикой природы. Жители занимаются растениеводством, которое обеспечивает домохозяйства продовольствием. Жители закупают извне семена, ограждения, а также дизельное топливо для орошения полей. Мясо дичи, урожай сельскохозяйственных культур с приусадебного хозяйства и полей, а также мелкий скот, такой как козы и куры, продают для заработка денег во время засухи. Дикие звери и птицы наносят ущерб напрямую снижая общий урожай. Наличие рабочей силы определяет общий урожай продовольствия. После неурожая большинство членов семьи начинают работать на богатые семьи, и при этом теряют время на собственный урожай. Для восстановления хозяйств после засухи существует две социальные практики: сдача скота в аренду тем, кто потерял скот во время засухи, и коллективная помощь соседей для обработки полей в период пиковой нагрузки и недостатка рабочей силы. Меньшее количество ограничений на границах обеспечивает большую гибкость в доступе к продовольствию через границы.",
-      link: "Murungweni, C., van Wijk, M.T., Andersson, J.A., Smaling, E.M.A., Giller, K.E.: Application of Fuzzy Cognitive Mapping in Livelihood Vulnerability Analysis. Ecol. Soc. 16, art8 (2011). https://doi.org/10.5751/ES-04393-160408.",
+      paper: "Murungweni, C., van Wijk, M.T., Andersson, J.A., Smaling, E.M.A., Giller, K.E.: Application of Fuzzy Cognitive Mapping in Livelihood Vulnerability Analysis. Ecol. Soc. 16, art8 (2011).",
+      link: "https://doi.org/10.5751/ES-04393-160408",
       image: images.Violet.cropCattleLivelihood,
     },
     {
@@ -134,7 +146,8 @@ export const cards = {
       title: "Жизнеобеспечение в городских и периферийных районах, не связанных с сельским хозяйством",
       description:
         "Модель описывает систему жизнеобеспечения в городских и периферийных районах развивающихся стран, которые находятся в полузасушливом регионе на стыке человека и дикой природы. Засуха является основной движущей силой несельскохозяйственной деятельности жителей. Эти домохозяйства продают ремесленные изделия в близлежащих городах или за границей, а также работают за пределами региона. Продукты питания доставляются на грузовиках от родственников, работающих за пределами страны. Домохозяйства, принадлежащие к этой системе, имеют некоторое количество крупного рогатого скота в домашнем хозяйстве для сбора урожая и доставки продуктов питания непосредственно в домохозяйство. Люди полагаются на свой сад как источник еды и денег, а также продают мелкий домашний скот через границу. Таким образом, если границы закрыты, доступность наличных денег снижается.",
-      link: "Murungweni, C., van Wijk, M.T., Andersson, J.A., Smaling, E.M.A., Giller, K.E.: Application of Fuzzy Cognitive Mapping in Livelihood Vulnerability Analysis. Ecol. Soc. 16, art8 (2011). https://doi.org/10.5751/ES-04393-160408.",
+      paper: "Murungweni, C., van Wijk, M.T., Andersson, J.A., Smaling, E.M.A., Giller, K.E.: Application of Fuzzy Cognitive Mapping in Livelihood Vulnerability Analysis. Ecol. Soc. 16, art8 (2011)",
+      link: "https://doi.org/10.5751/ES-04393-160408",
       image: images.Violet.nonFarmLivelihood,
     },
     {
@@ -142,7 +155,8 @@ export const cards = {
       title: "Устойчивость предприятия",
       description:
         "Модель описывает зависимость стабильности функционирования предприятия от основных факторов его деятельности. Рассматривается как изменения в продажах, оборотах, расходах, долгах и кредитах, вложениях в исследованиях и инновациях, объемах инвестиций, доле рынка и текущем капитале влияют на его устойчивость.",
-      link: "Groumpos, P.P.: Why Model Complex Dynamic Systems Using Fuzzy Cognitive Maps? Robot. Autom. Eng. J. 1, (2017). https://doi.org/10.19080/RAEJ.2017.01.555563.",
+      paper: "Groumpos, P.P.: Why Model Complex Dynamic Systems Using Fuzzy Cognitive Maps? Robot. Autom. Eng. J. 1, (2017).",
+      link: "https://doi.org/10.19080/RAEJ.2017.01.555563",
       image: images.Violet.enterpriseStability,
     },
     {
@@ -150,7 +164,8 @@ export const cards = {
       title: "Надежность и безопасность автомобиля",
       description:
         "Модель определяет уровень надежности и безопасности автомобиля в завичисимости от совместного влияния 3-х групп факторов: квалификации водителя, технических характеристик автомобиля и дорожных условий.",
-      link: "Rotshtein, A.Р.: Fuzzy cognitive maps in the dependability analysis of systems. Dependability. 19, 24–31 (2019). https://doi.org/10.21683/1729-2646-2019-19-4-24-31.",
+      paper: "Rotshtein, A.Р.: Fuzzy cognitive maps in the dependability analysis of systems. Dependability. 19, 24–31 (2019).",
+      link: "https://doi.org/10.21683/1729-2646-2019-19-4-24-31",
       image: images.Violet.vehicle,
     },
     {
@@ -158,7 +173,8 @@ export const cards = {
       title: "Оценка операционной эффективности бизнеса через долю рынка",
       description:
         "Моделирование операционной эффективности бизнеса на основе общей бизнес-архитектуры организации. Эта эффективность оценивается через долю рынка, которая выражает конкурентную стратегическую идентичность (индивидуальность) предприятия. Модель ориентирована на основных бенефициаров и заинтересованные стороны проектов изменений, нацеленных на эффективность (администрацию предприятия, руководителей по редизайну и т.д.) на этапах стратегического планирования. Модель включает концепции, относящиеся к основной деятельности компании (уровень внутренних издержек), управлению персоналом, инфраструктуре, гибкости организации и процессов, а также к способности реагировать на изменения рынка.",
-      link: "Xirogiannis, G., Glykas, M.: Fuzzy Cognitive Maps in Business Analysis and Performance-Driven Change. IEEE Trans. Eng. Manag. 51, 334–351 (2004). https://doi.org/10.1109/TEM.2004.830861.",
+      paper: "Xirogiannis, G., Glykas, M.: Fuzzy Cognitive Maps in Business Analysis and Performance-Driven Change. IEEE Trans. Eng. Manag. 51, 334–351 (2004).",
+      link: "https://doi.org/10.1109/TEM.2004.830861",
       image: images.Violet.marketShare,
     },
     {
@@ -166,7 +182,8 @@ export const cards = {
       title: "Управление знаниями персонала",
       description:
         "Модель показывает влияние управления знаниями, обучения и удовлетворенности сотрудников на бизнес-модель. Это влияние формирует уровень квалификации сотрудников, достигаемый в организации.",
-      link: "G. Xirogiannis and M. Glykas, Fuzzy cognitive maps in business analysis and performance-driven change, in IEEE Transactions on Engineering Management, vol. 51, no. 3, pp. 334-351, Aug. 2004, doi: 10.1109/TEM.2004.830861",
+      paper: "G. Xirogiannis and M. Glykas, Fuzzy cognitive maps in business analysis and performance-driven change, in IEEE Transactions on Engineering Management, vol. 51, no. 3, pp. 334-351, Aug. 2004.",
+      link: "https://doi.org/10.1109/TEM.2004.830861",
       image: images.Violet.staffKnowledge,
     },
     {
@@ -174,7 +191,8 @@ export const cards = {
       title: "Затраты на реализацию",
       description:
         "Модель показывает институциональные факторы, формирующие производственные издержки. Эти факторы объединены в две группы: стоимость операционных решений и факторы, определяющие загрузку производственных мощностей. Первая группа связана с затратами по изготовлению продукции. Вторая – с эффективностью использования мощностей в зависимости от спроса и требований потребителей.",
-      link: "G. Xirogiannis and M. Glykas, Fuzzy cognitive maps in business analysis and performance-driven change, in IEEE Transactions on Engineering Management, vol. 51, no. 3, pp. 334-351, Aug. 2004, doi: 10.1109/TEM.2004.830861",
+      paper: "G. Xirogiannis and M. Glykas, Fuzzy cognitive maps in business analysis and performance-driven change, in IEEE Transactions on Engineering Management, vol. 51, no. 3, pp. 334-351, Aug. 2004.",
+      link: "https://doi.org/10.1109/TEM.2004.830861",
       image: images.Violet.executionCost,
     },
     {
@@ -182,7 +200,8 @@ export const cards = {
       title: "Клинический риск при администрировании медикаментозной терапии",
       description:
         "Модель исследует вопрос клинического риска при администрировании медикаментозной терапии в больницах. Улучшение клинических результатов может быть достигнуто благодаря более контролируемому процессу администрирования лекарств, что снижает вероятность ошибок, допускаемых задействованными операторами. Администрирование лекарств является одним из важнейших инструментов для снижения вероятности ошибок (профилактика) или для восстановления и смягчения (защита) их последствий.",
-      link: "Mazzuto, G., Stylios, C., Ciarapica, F.E., Bevilacqua, M., Voula, G.: Improved Decision-Making through a DEMATEL and Fuzzy Cognitive Maps-Based Framework. Math. Probl. Eng. 2022, 1–14 (2022). https://doi.org/10.1155/2022/2749435.",
+      paper: "Mazzuto, G., Stylios, C., Ciarapica, F.E., Bevilacqua, M., Voula, G.: Improved Decision-Making through a DEMATEL and Fuzzy Cognitive Maps-Based Framework. Math. Probl. Eng. 2022, 1–14 (2022).",
+      link: "https://doi.org/10.1155/2022/2749435",
       image: images.Violet.clinicalRisk,
     },
     {
@@ -190,7 +209,8 @@ export const cards = {
       title: "Выбор научной конференции",
       description:
         "Моделирование приоритетов выбора научной конференции на основе факторов репутации конференции и докладчиков, академической репутации университета, экономичности и удобства проживания.",
-      link: "Kadaifci, C., Asan, U., Topcu, Y.I.: A Fuzzy Cognitive Mapping Approach to the Conference Selection Problem. Int. J. Inf. Technol. Decis. Mak. 19, 1451–1484 (2020). https://doi.org/10.1142/S0219622020500352.",
+      paper: "Kadaifci, C., Asan, U., Topcu, Y.I.: A Fuzzy Cognitive Mapping Approach to the Conference Selection Problem. Int. J. Inf. Technol. Decis. Mak. 19, 1451–1484 (2020).",
+      link: "https://doi.org/10.1142/S0219622020500352",
       image: images.Violet.conferenceSelection,
     },
     {
@@ -198,7 +218,8 @@ export const cards = {
       title: "Качество менеджмента в строительстве и взаимоотношении с клиентом",
       description:
         "Управление строительством - сложный процесс, связанный с технической сложностью. Модель фокусируется на критической проблеме управления сложностью и неопределенностью, присущими строительному менеджменту. Модель исследует влияние проблем качества менеджмента строительства для конкретной технической системы (монтаж трубопроводов) на отношения с клиентами. Факторы модели были определены как подмножество проблем, которые способствуют ухудшению отношений с клиентом строительного проекта. ",
-      link: "Case, D.M., Blackburn, T., Stylios, C.: Modelling Construction Management Problems with Fuzzy Cognitive Maps. In: Fuzzy Hybrid Computing in Construction Engineering and Management. pp. 413–449. Emerald Publishing Limited (2018). https://doi.org/10.1108/978-1-78743-868-220181012.",
+      paper: "Case, D.M., Blackburn, T., Stylios, C.: Modelling Construction Management Problems with Fuzzy Cognitive Maps. In: Fuzzy Hybrid Computing in Construction Engineering and Management. pp. 413–449. Emerald Publishing Limited (2018).",
+      link: "https://doi.org/10.1108/978-1-78743-868-220181012",
       image: images.Violet.pipingInstallation,
     },
     {
@@ -206,7 +227,8 @@ export const cards = {
       title: "Энергетический переход",
       description:
         "Моделирует переход от биоэнергетики к низкоуглеродной биоэкономике замкнутого цикла. Переход к низкоуглеродному развитию (с сокращением выбросов парниковых газов) через циклическую биоэкономику, включающую более экологически чистое производство энергии, например, в форме биотоплива, который позволит достичь региональных выгод и преимуществ и сократить загрязнение окружающей среды. Этот переход оценивает отходы как биоресурсы для производства биоэнергиине.",
-      link: "Kokkinos, K., Karayannis, V., Moustakas, K.: Circular bio-economy via energy transition supported by Fuzzy Cognitive Map modeling towards sustainable low-carbon environment. Sci. Total Environ. 721, 137754 (2020). https://doi.org/10.1016/j.scitotenv.2020.137754.",
+      paper: "Kokkinos, K., Karayannis, V., Moustakas, K.: Circular bio-economy via energy transition supported by Fuzzy Cognitive Map modeling towards sustainable low-carbon environment. Sci. Total Environ. 721, 137754 (2020).",
+      link: "https://doi.org/10.1016/j.scitotenv.2020.137754",
       image: images.Violet.energyTransition,
     },
   ],
@@ -216,7 +238,8 @@ export const cards = {
       title: "Преступление и наказание",
       description:
         "Моделирование взаимосвязи между ключевыми факторами, влияющими на преступность и систему уголовного правосудия. Модель включает факторы, влияющие на уровень воровства: наличие имущества (видимое присутствие товаров, желаемых ворами), возможность (физический доступ к имуществу, наличие инструментов для взлома и т. д.), участие сообщества (городское наблюдение, общение между соседями, сообщения о преступлениях в местных новостях), присутствие полиции (видимое присутствие сотрудников полиции в форме на регулярной основе), наказание (мера надежности и определенности наказания за преступления), преступный умысел (наличие лиц, намеревающихся совершить кражу). ",
-      link: "Mohr, S.: The Use and Interpretation of Fuzzy Cognitive Maps, (1997). Master Thesis, Rensselaer Polytechnic Institute. https://doi.org/10.13140/RG.2.2.34905.36961.",
+      paper: "Mohr, S.: The Use and Interpretation of Fuzzy Cognitive Maps, (1997). Master Thesis, Rensselaer Polytechnic Institute.",
+      link: "https://doi.org/10.13140/RG.2.2.34905.36961",
       image: images.Orange.crime,
     },
     {
@@ -224,7 +247,8 @@ export const cards = {
       title: "Американская версия Карибского кризиса 1962 года",
       description:
         "Моделирование ситуации Кубинского ракетного кризиса (Карибского кризиса) 1962 года.  Модель разработана на основе текста телевизионного обращения президента США Ф. Кеннеди к народу 22 октября 1962 года, в котором была представлена американская версия ситуации, а также декларации целей, к которым должна стремиться администрация США; и заявления президента Ф. Кеннеди на пресс-конференции 22 ноября, 1962, содержащий его оценку ситуации после разрешения кризиса. Требуется определить наиболее эффективные управляющие действия на основе восприятия Карибского кризиса 1962 года для достижения интересов США и обеспечения мира и безопасности.",
-      link: "Sergeev, V.M., Akimov, V.P., Lukov, V.B., Parshin, P.B.: Interdependence in a Crisis Situation. J. Conflict Resolut. 34, 179–207 (1990). https://doi.org/10.1177/0022002790034002001 .",
+      paper: "Sergeev, V.M., Akimov, V.P., Lukov, V.B., Parshin, P.B.: Interdependence in a Crisis Situation. J. Conflict Resolut. 34, 179–207 (1990).",
+      link: "https://doi.org/10.1177/0022002790034002001",
       image: images.Orange.cuban,
     },
     {
@@ -232,7 +256,8 @@ export const cards = {
       title: "Финансовый кризис, связанный с иностранными спекулятивными инвестициями",
       description:
         "В контексте политики и управления заявления лидеров интерпретируются как выражение предполагаемой политики. Модель разработана на основе высказываний руководства страны и предоставляет индикаторы направления и основы финансовой и экономической политики. Причинные отношения в модели представляют собой восприятие политиками определяющих факторов возникновения финансового кризиса. На основании этого восприятия вырабатываются меры по преодолению кризиса и достиженя политических целей. ",
-      link: "Kim, D.-H.: Cognitive Maps of Policy Makers on Financial Crises of South Korea and Malaysia: A Comparative Study. Int. Rev. Public Adm. 9, 31–38 (2004). https://doi.org/10.1080/12294659.2005.10805047.",
+      paper: "Kim, D.-H.: Cognitive Maps of Policy Makers on Financial Crises of South Korea and Malaysia: A Comparative Study. Int. Rev. Public Adm. 9, 31–38 (2004).",
+      link: "https://doi.org/10.1080/12294659.2005.10805047",
       image: images.Orange.malaysia,
     },
     {
@@ -240,7 +265,8 @@ export const cards = {
       title: "Финансовый кризис из-за отсутствия демократии",
       description:
         "В контексте политики и управления заявления лидеров интерпретируются как выражение предполагаемой политики. Модель разработана на основе высказываний руководства страны и предоставляет индикаторы направления и основы финансовой и экономической политики. Причинные отношения в модели представляют собой восприятие политиками определяющих факторов возникновения финансового кризиса. На основании этого восприятия вырабатываются меры по преодолению кризиса и достиженя политических целей. ",
-      link: "Kim, D.-H.: Cognitive Maps of Policy Makers on Financial Crises of South Korea and Malaysia: A Comparative Study. Int. Rev. Public Adm. 9, 31–38 (2004). https://doi.org/10.1080/12294659.2005.10805047.",
+      paper: "Kim, D.-H.: Cognitive Maps of Policy Makers on Financial Crises of South Korea and Malaysia: A Comparative Study. Int. Rev. Public Adm. 9, 31–38 (2004).",
+      link: "https://doi.org/10.1080/12294659.2005.10805047",
       image: images.Orange.korea,
     },
     {
@@ -248,7 +274,8 @@ export const cards = {
       title: "Приоритизация закупок ИТ-услуг в госсекторе",
       description:
         "Модель рассматривает принятие решений относительно приоритетности закупок ИТ-услуг в государственном секторес учетом различных экономических и социальных факторов. Требуется обеспечить эффективное «соотношение цены и качества» с учетом ограниченного бюджета.",
-      link: "Choi, Y., Lee, H., Irani, Z.: Big data-driven fuzzy cognitive map for prioritising IT service procurement in the public sector. Ann. Oper. Res. 270, 75–104 (2018). https://doi.org/10.1007/s10479-016-2281-6.",
+      paper: "Choi, Y., Lee, H., Irani, Z.: Big data-driven fuzzy cognitive map for prioritising IT service procurement in the public sector. Ann. Oper. Res. 270, 75–104 (2018).",
+      link: "https://doi.org/10.1007/s10479-016-2281-6",
       image: images.Orange.itImpact,
     },
     {
@@ -256,7 +283,8 @@ export const cards = {
       title: "Проблема бездомности",
       description:
         "Модель представляет сложную социальную проблему бездомности. Силы, которые влияют на бездомность, сложны и часто интерактивны по своей природе. Социальные силы, такие как зависимости, распад семьи и психические заболевания, усугубляются структурными силами, такими как отсутствие доступного недорогого жилья, плохие экономические условия и недостаточные услуги в области психического здоровья. Факторы, влияющие на проблему бездомности возникают на микро-, мезо- и макроуровнях общества. Связанная картина позволяет принимать изменения в государственной политике  для решения сложных социальных проблем, таких как бездомность.",
-      link: "Mago, V.K., Morden, H.K., Fritz, C., Wu, T., Namazi, S., Geranmayeh, P., Chattopadhyay, R., Dabbaghian, V.: Analyzing the impact of social factors on homelessness: a Fuzzy Cognitive Map approach. BMC Med. Inform. Decis. Mak. 13, 94 (2013). https://doi.org/10.1186/1472-6947-13-94.",
+      paper: "Mago, V.K., Morden, H.K., Fritz, C., Wu, T., Namazi, S., Geranmayeh, P., Chattopadhyay, R., Dabbaghian, V.: Analyzing the impact of social factors on homelessness: a Fuzzy Cognitive Map approach. BMC Med. Inform. Decis. Mak. 13, 94 (2013).",
+      link: "https://doi.org/10.1186/1472-6947-13-94",
       image: images.Orange.homelessness,
     },
   ],

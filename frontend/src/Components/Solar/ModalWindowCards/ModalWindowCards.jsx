@@ -103,6 +103,10 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
                       <>
                         <div className="card-description">
                           <p>{card.description}</p>
+                          <br />
+                          <p style={{color: "rgb(255, 218, 150)"}}>Источник: </p>
+                          <p>{card.paper}</p>
+                          <a style={{color: "rgb(255, 218, 150)"}} href={card.link}>Ссылка на статью</a>
                         </div>
                         <div className="card-footer">
                           <button
