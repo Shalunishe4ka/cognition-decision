@@ -12,8 +12,6 @@ export const SciencePageButtons = () => {
         </a>
       </button>
 
-
-
     <Link to="/algorithm">
       <button id="algo-button">
           <h4>Algorithm</h4>

@@ -1,4 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { jwtDecode } from "jwt-decode";
+import gameOverSoundSrc from "./assets/sounds/gameOver.mp3";
+import hoverSoundSrc from "./assets/sounds/clearSection.mp3";
 
 import {
   calculateScore,
@@ -51,7 +54,8 @@ export const CustomStatesProvider = ({ children }) => {
   const [isHoveredStart, setIsHoveredStart] = useState(false);
   const [isHoveredStop, setIsHoveredStop] = useState(false);
   const [showPreviewWindow, setShowPreviewWindow] = useState(true); // Состояние для окна "Исследуйте граф"
-
+  const [prevScores, setPrevScores] = useState([]); // Храним накопительные очки на момент каждого хода
+  const [history, setHistory] = useState([]);
 
   // Текущий юзер
   // const [userUuid, setuserUuid] = useState(localStorage.getItem("currentUser") || "defaultUser");
@@ -65,12 +69,14 @@ export const CustomStatesProvider = ({ children }) => {
   // Для VerticalProgressBar
   const [currentTime, setCurrentTime] = useState(0);
   // maxTime — допущение, что это время на раунд/уровень
-  const maxTime = 180;
+  const maxTime = 600;
   const [progress, setProgress] = useState(0);
 
   // Пара планетных состояний
   const [selectedPlanet, setSelectedPlanet] = useState(null);
   const [hoveredPlanet, setHoveredPlanet] = useState(null);
+  const [showHistory, setShowHistory] = useState(false);
+
 
   // ----- Дописанные функции-заглушки -----
 
@@ -82,6 +88,17 @@ export const CustomStatesProvider = ({ children }) => {
   const intervalRef = useRef();
   const networkRef = useRef(null);
   const backgroundMusicRef = useRef(null);
+  const containerRef = useRef(null);
+
+
+  // разочек на старте приложения “подхватываем” звуки
+  useEffect(() => {
+    hoverSoundRef.current = new Audio(hoverSoundSrc);
+    hoverSoundRef.current.preload = 'auto';
+
+    gameOverSoundRef.current = new Audio(gameOverSoundSrc);
+    gameOverSoundRef.current.preload = 'auto';
+  }, []);
 
   useEffect(() => {
     const playMusic = () => {
@@ -91,19 +108,59 @@ export const CustomStatesProvider = ({ children }) => {
         });
       }
     };
-  
+
     playMusic(); // Пытаемся сразу
-  
+
     // На случай, если блокировка — слушаем первый клик
     const unlockAudio = () => {
       playMusic();
       document.removeEventListener("click", unlockAudio);
     };
-  
+
     document.addEventListener("click", unlockAudio);
   }, []);
 
 
+  const isTokenExpired = (token) => {
+    if (!token) return true;
+    try {
+      const decoded = jwtDecode(token);
+      if (!decoded.exp) return true;
+
+      const now = Math.floor(Date.now() / 1000); // сейчас в секундах
+      return decoded.exp < now; // токен просрочен?
+    } catch (error) {
+      console.error("Ошибка при декодировании токена:", error);
+      return true;
+    }
+  };
+
+
+  useEffect(() => {
+    if (moveHistory.length > prevScores.length) {
+      setPrevScores((prev) => [...prev, score]);
+    }
+  }, [moveHistory, score]);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [prevScores]);
+
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token || isTokenExpired(token)) {
+      console.warn("Токен отсутствует или истёк, принудительный выход");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user_uuid");
+      setUserUuid(null);
+      // можно даже делать редирект здесь, если нужно
+      // window.location.href = "/sign-in";
+    }
+  }, []);
 
   const handleClosePreviewWindow = () => {
     setIsClosing(true);
@@ -193,16 +250,16 @@ export const CustomStatesProvider = ({ children }) => {
 
   useEffect(() => {
     if (!graphData || !graphData.nodes || disabledNodes.length === 0) return;
-  
+
     const allNodeCount = graphData.nodes.length || graphData.nodes.get().length;
-  
+
     if (disabledNodes.length >= allNodeCount && isRunning) {
       setIsRunning(false);
       setShowGameOverModal(true);
       handleStop();
     } // eslint-disable-next-line 
   }, [disabledNodes, graphData, isRunning]);
-  
+
 
   useEffect(() => {
     if (selectedNodes.length > 0) {
@@ -269,8 +326,8 @@ export const CustomStatesProvider = ({ children }) => {
     setMoveHistory([]);
     setMovesHistory([]);
     setLockedNodes({});
-    setDisabledNodes([]); // Очистили, чтобы все вершины снова стали кликабельными
-
+    setDisabledNodes([]); // Очистили, чтобы все узлы снова стали кликабельными
+    setPrevScores([])
     // Запускаем таймер
     intervalRef.current = setInterval(() => {
       setCurrentTime(prev => prev + 1);
@@ -315,6 +372,7 @@ export const CustomStatesProvider = ({ children }) => {
    */
   const loadDefaultCoordinates = async (uuid) => {
     try {
+      console.log("UUID перед отправкой запроса:", uuid, typeof uuid);
       const data = await loadDefaultCoordinatesAPI(uuid);
       const payload = Array.isArray(data) ? data[0] : data;
       return payload;
@@ -536,6 +594,10 @@ export const CustomStatesProvider = ({ children }) => {
       isHoveredStart, setIsHoveredStart,
       isHoveredStop, setIsHoveredStop,
       showPreviewWindow,
+      prevScores, setPrevScores,
+      showHistory, setShowHistory,
+      history, setHistory,
+
 
       // Рефы
       hoverSoundRef,
@@ -543,6 +605,7 @@ export const CustomStatesProvider = ({ children }) => {
       intervalRef,
       networkRef,
       backgroundMusicRef,
+      containerRef,
 
       // Допфункции
       handleOpenModal,

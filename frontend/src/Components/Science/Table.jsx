@@ -1,134 +1,56 @@
 import React from "react";
+import { useCustomStates } from "../../CustomStates";
 
-const MovesTableHeader = [
-  { title: "Ходы", key: "Moves", width: "150px" },
-  {
-    title: "Начисленные очки",
-    key: "Scores",
-    width: "300px",
-    subHeaders: [
-      { title: "За 1 ход", key: "PerMove", width: "150px" },
-      { title: "Накопительные", key: "Cumulative", width: "150px" },
-    ],
-  },
-];
+export const MovesTable = () => {
+  const { prevScores, containerRef } = useCustomStates();
 
-export const MovesTable = ({ data }) => {
-  const defaultData = [
-    { Moves: "Ход 1", PerMove: "None" },
-    { Moves: "Ход 2", PerMove: "None" },
-    { Moves: "Ход 3", PerMove: "None" },
-    { Moves: "Ход 4", PerMove: "None" },
-    { Moves: "Ход 5", PerMove: "None" },
-    { Moves: "Ход 6", PerMove: "None" },
-    { Moves: "Ход 7", PerMove: "None" },
-  ];
-
-  // Проверка на непустой массив
-  const hasData = Array.isArray(data) && data.length > 0;
-
-  const tableData = hasData
-    ? data.map((item, index) => ({
-        Moves: `Ход ${index + 1}`,
-        PerMove: "None",  // можно адаптировать позже
-      }))
-    : defaultData;
-
-  const calculatedData = tableData.map((row, index) => ({
-    ...row,
-    Cumulative: "None",
-  }));
-
+  
   return (
-    <div id="synthetic-table-container">
-      <h5 style={{ color: "#ffd700", textAlign: "center", marginBottom: "10px" }}>
-        Данные о ходах и очках
-      </h5>
-      <div style={{ overflowX: "auto" }}>
-        <table style={{ borderCollapse: "collapse", width: "100%", minWidth: "400px" }}>
+    <div id="moves-table-alignment-div">
+      <h5 className="moves-table-title">Данные о ходах и очках</h5>
+      <div
+        ref={containerRef}
+        className="moves-table-container"
+        style={{ overflowY: prevScores.length > 7 ? "auto" : "hidden" }}
+      >
+        <table className="moves-table">
           <thead>
             <tr>
-              <th
-                style={{
-                  width: MovesTableHeader[0].width,
-                  fontSize: "18px",
-                  textAlign: "center",
-                  border: "1px solid white",
-                  padding: "8px",
-                }}
-                rowSpan="2"
-              >
-                {MovesTableHeader[0].title}
-              </th>
-              <th
-                style={{
-                  width: MovesTableHeader[1].width,
-                  fontSize: "18px",
-                  textAlign: "center",
-                  border: "1px solid white",
-                  padding: "8px",
-                }}
-                colSpan={MovesTableHeader[1].subHeaders.length}
-              >
-                {MovesTableHeader[1].title}
-              </th>
+              <th className="moves-table-header" rowSpan="2">Ходы</th>
+              <th className="moves-table-header" colSpan="2">Начисленные очки</th>
             </tr>
             <tr>
-              {MovesTableHeader[1].subHeaders.map((subHeader, index) => (
-                <th
-                  key={index}
-                  style={{
-                    width: subHeader.width,
-                    fontSize: "16px",
-                    textAlign: "center",
-                    border: "1px solid white",
-                    padding: "8px",
-                  }}
-                >
-                  {subHeader.title}
-                </th>
-              ))}
+              <th className="moves-table-header">За 1 ход</th>
+              <th className="moves-table-header">Накопительные</th>
             </tr>
           </thead>
           <tbody>
-            {calculatedData.map((row, index) => (
-              <tr key={index}>
-                <td
-                  style={{
-                    width: MovesTableHeader[0].width,
-                    border: "1px solid white",
-                    padding: "8px",
-                  }}
-                >
-                  {row.Moves}
-                </td>
-                <td
-                  style={{
-                    width: MovesTableHeader[1].subHeaders[0].width,
-                    border: "1px solid white",
-                    padding: "8px",
-                  }}
-                >
-                  {row.PerMove}
-                </td>
-                <td
-                  style={{
-                    width: MovesTableHeader[1].subHeaders[1].width,
-                    border:
-                      index === calculatedData.length - 1
-                        ? "2px solid red"
-                        : "1px solid white",
-                    padding: "8px",
-                    fontWeight:
-                      index === calculatedData.length - 1 ? "bold" : "normal",
-                    fontSize:
-                      index === calculatedData.length - 1 ? "1.2rem" : "",
-                  }}
-                >
-                  {row.Cumulative}
-                </td>
+            {prevScores.length > 0 ? (
+              prevScores.map((cumulative, index) => {
+                const prevCumulative = index > 0 ? prevScores[index - 1] : 0;
+                const perMove = (cumulative - prevCumulative).toFixed(2);
+
+                return (
+                  <tr
+                    key={index}
+                    className={`moves-table-row ${index === prevScores.length - 1 ? "moves-table-last-row" : ""}`}
+                  >
+                    <td className="moves-table-cell">
+                      {index === prevScores.length - 1 ? "🏁 " : ""}
+                      {`Move ${index + 1}`}
+                    </td>
+                    <td className="moves-table-cell">{perMove}</td>
+                    <td className="moves-table-cell">{cumulative.toFixed(2)}</td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr className="moves-table-row">
+                <td className="moves-table-cell">Move 1</td>
+                <td className="moves-table-cell">None</td>
+                <td className="moves-table-cell">None</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

@@ -10,7 +10,7 @@ export const SelectedNodesList = ({
 }) => {
   return (
     <div className="selected-nodes-list">
-      <h2>Выбранные вершины:</h2>
+      <h2>Выбранные узлы:</h2>
       <ol className="selected-list">
         {selectedNodes.map((nodeId, index) => (
           <li

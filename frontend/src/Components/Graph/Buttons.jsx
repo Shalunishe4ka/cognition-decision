@@ -14,7 +14,7 @@ export const Buttons = ({ matrixUuid, planetColor, planetImg }) => {
     handleLoadCoordinates,
     handleResetCoordinates,
     handleSaveUserView,
-    handleSaveDefaultView
+    handleSaveDefaultView, applyCoordinates, setShowHistory
   } = useCustomStates();
 
   const [scienceClicks, setScienceClicks] = useState(null); // null пока не загрузилось
@@ -58,12 +58,14 @@ export const Buttons = ({ matrixUuid, planetColor, planetImg }) => {
         </li>
 
         <li>
-          <Link to={`/science/${matrixUuid}`} state={{ selectedPlanet, selectedCardIndex, planetColor, planetImg }}>
+          {/* <Link to={`/science/${matrixUuid}`} state={{ selectedPlanet, selectedCardIndex, planetColor, planetImg }}> */}
             <button
               id="science-button"
               className='game-button'
               onClick={handleScienceClick}
-              disabled={scienceClicks !== null && scienceClicks <= 0}
+              // disabled={scienceClicks !== null && scienceClicks <= 0}
+              disabled
+              title='Временно заблокирована!'
             >
               <p>Science</p>
               {scienceClicks !== null &&
@@ -72,20 +74,53 @@ export const Buttons = ({ matrixUuid, planetColor, planetImg }) => {
                 ))
               }
             </button>
-          </Link>
+          {/* </Link> */}
         </li>
 
         {/* Остальные кнопки */}
-        <li><button className="game-button">Graph</button></li>
         <li>
-          <button className="game-button" disabled={isRunning} title={isRunning ? "Not available during the game" : ""}>
+
+          {/* GAME возвращает граф, без refresh */}
+          <button
+            className="game-button"
+            id="game-button-divider"
+            onClick={() => {
+              setShowHistory(false);        // возвращаемся в граф
+              if (matrixUuid && applyCoordinates) {
+                handleLoadCoordinates(matrixUuid, applyCoordinates); // переобновляем координаты
+              }
+            }}
+          >
+            Game
+          </button>
+
+        </li>
+        <li>
+          {/* PROFILE показывает историю */}
+          <button
+            className="game-button"
+            disabled={isRunning}
+            title={isRunning ? "Not available during the game" : ""}
+            onClick={() => setShowHistory(true)}
+          >
             Profile
           </button>
         </li>
         <li><button className="game-button" onClick={handleSaveUserView}>Save View</button></li>
-        <li><button className="game-button" onClick={handleResetCoordinates}>Reset</button></li>
+        <li><button
+          className="game-button"
+          onClick={() => handleResetCoordinates(matrixUuid, applyCoordinates)}
+          title="Сбросить граф к дефолтным настройкам"
+        >
+          Reset
+        </button>
+        </li>
         <li>
-          <button className="game-button" onClick={handleLoadCoordinates} title="Загружает последний сохранённый вид графа">
+          <button
+            className="game-button"
+            onClick={() => handleLoadCoordinates(matrixUuid, applyCoordinates)}
+            title="Загружает последний сохранённый вид графа"
+          >
             Load Last View
           </button>
         </li>

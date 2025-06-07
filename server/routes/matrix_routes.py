@@ -138,7 +138,7 @@ log = logging.getLogger("matrix_routes")
 
 CURRENT_DIR  = pathlib.Path(__file__).parent.resolve()
 USERS_ROOT   = (CURRENT_DIR / "../users").resolve()
-TRUE_SEQ_DIR = (CURRENT_DIR / "../data/RU/processed_files/True_Seq").resolve()
+TRUE_SEQ_DIR = (CURRENT_DIR / "../data/processed_files/True_Seq").resolve()
 
 SECRET_KEY = "MY_SUPER_SECRET_KEY"
 ALGORITHM  = "HS256"
@@ -162,7 +162,7 @@ def load_json(path: pathlib.Path):        return json.loads(path.read_text(encod
 # --- Path-генераторы (из твоего оригинала) -----------------------
 def get_user_uuid_creds_path(u):      return USERS_ROOT/u/"user_creds"/f"{u}.json"
 def get_user_settings_filepath(u,n):  return ensure_dir(USERS_ROOT/u/"user_settings") / f"{n}_settings.json"
-def get_default_settings_filepath(n): return ensure_dir(CURRENT_DIR/"../data/RU/graph_settings") / f"{n}_graph_settings.json"
+def get_default_settings_filepath(n): return ensure_dir(CURRENT_DIR/"../data/graph_settings") / f"{n}_graph_settings.json"
 def fp_history(u,n):                  return ensure_dir(USERS_ROOT/u/"history") / f"{n}_history.json"
 # -----------------------------------------------------------------
 
@@ -370,13 +370,13 @@ async def get_science_table(request: Request):
         if not matrix_name:
             return JSONResponse({"error": "Matrix UUID not found"}, 404)
 
-        report_file_path = BASE_DIR / "../data/RU/processed_files/Reports" / f"{matrix_name}_report.txt"
+        report_file_path = BASE_DIR / "../data/processed_files/Reports" / f"{matrix_name}_report.txt"
 
         if not report_file_path.exists():
             log.info(f"Report not found: {report_file_path}. Processing...")
             process_input_files(
-                str(BASE_DIR / "../data/RU/models"),
-                str(BASE_DIR / "../data/RU/processed_files/Models"),
+                str(BASE_DIR / "../data/models"),
+                str(BASE_DIR / "../data/processed_files/Models"),
                 BASE_DIR / "edited_mils.f90"
             )
 

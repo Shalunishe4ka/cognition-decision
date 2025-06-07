@@ -9,7 +9,7 @@ const SocialIcons = () => {
       <a href="https://github.com" target="_blank" rel="noopener noreferrer">
         <GitHubIcon fontSize="large" />
       </a>
-      <a href="https://telegram.org" target="_blank" rel="noopener noreferrer">
+      <a href="https://t.me/cognition_decision_bot" target="_blank" rel="noopener noreferrer">
         <TelegramIcon fontSize="large" />
       </a>
     </div>

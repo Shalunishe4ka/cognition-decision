@@ -5,8 +5,6 @@
 
 .algoPage-submain-div {
     display: flex;
-    justify-content: center;
-    align-content: center;
     align-items: center;
     flex-direction: column;
     position: relative;
@@ -29,14 +27,16 @@
 }
 
 .blue-text {
-    color: blue;
+    color: #3498db;
 }
 
 .blue-background {
-    background-color: blue;
+    background-color: #3498db;
     font-size: 3rem;
 }
-
+ol a{
+    color: #3498db
+}
 #small-blue-bg {
     font-size: 1.5rem;
 }
@@ -48,3 +48,17 @@ h1 {
 .italic {
     font-style: italic;
 }
+
+
+.algo-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .algo-table th,
+  .algo-table td {
+    border: 1px solid #cccccc;
+    padding: 8px;
+    text-align: center;
+  }

@@ -63,12 +63,12 @@ export const TableSmall = ({ data }) => {
 
   return (
     <div id="small-table-alignment-div">
-      <h5 style={{ color: "#ffd700", height: "48px" }}>
-        Step 1: Находим силу воздействия каждого узла по алгоритму из [Science]
+      <h5 style={{ color: "#ffd700", height: "48px", fontSize: "1.25rem"}}>
+        Step 1: Находим силу воздействия каждого узла по <a href="/algorithm">Algorithm</a>
       </h5>
 
       <h2 id="small-table-name">
-        Отклики и воздействия, рассчитанные{" "}
+        Оптимизированные отклики и воздействия, рассчитанные{" "}
         <a href="https://arxiv.org">алгоритмом</a>
       </h2>
 

@@ -7,28 +7,37 @@ const BASE_URL = `${window.location.protocol}//${window.location.hostname}:8000`
 /**
  * Утилита для fetch-запросов с обработкой ошибок.
  */
-async function fetchJson(url, options = {}) {
-  const token = localStorage.getItem("access_token"); // <-- твой токен
+async function fetchJson(url, options = {}, retry = true) {
+  let token = localStorage.getItem("access_token");
   const headers = {
     "Content-Type": "application/json",
     ...(options.headers || {}),
   };
   if (token) {
-    // Прокидываем авторизацию
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const res = await fetch(url, {
+  let res = await fetch(url, {
     ...options,
     headers,
   });
-  if (!res.ok) {
-    // Ошибка - читаем и бросаем
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(
-      errorData.error || `Ошибка fetch: ${res.status} ${res.statusText}`
-    );
+
+  if (res.status === 401 && retry) {
+    // Попробуем обновить токен через refresh
+    const success = await tryRefreshToken();
+    if (success) {
+      return fetchJson(url, options, false); // Повторный запрос
+    } else {
+      // Рефреш неудачный — выкидываем
+      throw new Error("Unauthorized");
+    }
   }
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.error || `Ошибка fetch: ${res.status} ${res.statusText}`);
+  }
+
   return res.json().catch(() => ({}));
 }
 
@@ -93,6 +102,36 @@ export async function loginUser(username, password) {
   return payload;
 }
 
+async function tryRefreshToken() {
+  const refreshToken = localStorage.getItem("refresh_token");
+  if (!refreshToken) return false;
+
+  try {
+    const res = await fetch(`${BASE_URL}/refresh`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ refresh_token: refreshToken }),
+    });
+
+    if (!res.ok) {
+      return false;
+    }
+
+    const data = await res.json();
+    if (data.access_token) {
+      localStorage.setItem("access_token", data.access_token);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("Ошибка при обновлении токена:", error);
+    return false;
+  }
+}
+
+
 // ========================= МАТРИЦЫ ========================= //
 
 export async function getAllMatrices() {
@@ -141,6 +180,11 @@ export async function logScienceQuery(matrixUuid, userUuid) {
     method: "POST",
     body: JSON.stringify({ matrixUuid, userUuid }),
   });
+}
+
+
+export async function getGameHistory(matrixUuid) {
+  return await fetchJson(`${BASE_URL}/history/${matrixUuid}`);
 }
 
 // ========================= ГРАФ-НАСТРОЙКИ ========================= //

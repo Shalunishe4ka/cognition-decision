@@ -3,7 +3,9 @@
     color: white;
     padding: 50px;
   }
-  
+  .Rules-div li::marker {
+    color:rgb(255, 215, 0) !important
+  }
   .Rules-div strong{
     font-weight: 850;
   }
@@ -46,7 +48,7 @@
   }
   
   #video-span {
-    color: red;
+    color: rgb(255, 215, 0);
   }
   
   #sub-topic {
@@ -90,19 +92,19 @@
   }
   
   #letter-sublist-uncolored li::marker {
-    color: red;
+    color: rgb(255, 215, 0);
     font-size: 1.5em;
   }
   
   #letter-list-uncolored li::marker {
-    color: red;
+    color: rgb(255, 215, 0);
     /* font-size: 1.5em; */
     font-size: calc(1.325rem + .9vw);
   }
   
   
   #sub-list-colored-span {
-    color: red;
+    color: rgb(255, 215, 0);
     font-size: 1.5em;
   
   }
@@ -133,12 +135,21 @@
   
   #list-header-h2 {
     font-weight: 800;
-    
+    font-size: 1.9rem;
   
   }
-  
+  .num-list-unordered {
+    list-style: none;
+  }
+  .num-list-unordered strong {
+    color: rgb(255, 215, 0);
+  }
+
   #spanned-list-header-p {
-    color: rgb(114, 144, 255);
+    /* color: rgb(114, 144, 255); */
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: 2px;
   }
   
   

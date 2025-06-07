@@ -1,0 +1,41 @@
+.history-table-container {
+    width: 100%;
+    max-width: 800px; /* чтобы не растягивалась бесконечно */
+    margin: 20px auto; /* центрируем */
+    overflow-x: auto; /* горизонтальная прокрутка при необходимости */
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+  
+  .history-table {
+    width: 100%;
+    min-width: 600px; /* чтобы таблица не схлопывалась */
+    border-collapse: collapse;
+  }
+  
+  .history-table th,
+  .history-table td {
+    padding: 12px 15px;
+    text-align: left;
+    color: white;
+    border-bottom: 1px solid white;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+  }
+  
+  .history-table th {
+    background-color: rgba(255, 255, 255, 0.05);
+    font-weight: bold;
+  }
+  
+  .history-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+  
+  .history-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  

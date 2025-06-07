@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { useCustomStates } from "../../CustomStates";
-import { useLocation, useParams } from 'react-router-dom';
-import { getMatrixByUUID, fetchScienceDataByUUID, logScienceQuery } from "../../clientServerHub";
+import { useLocation, useParams } from "react-router-dom";
+import {
+  getMatrixByUUID,
+  fetchScienceDataByUUID,
+  logScienceQuery,
+} from "../../clientServerHub";
 import { MovesTable } from "./Table";
 import { TableHuge } from "./TableHuge";
 import { TableSmall } from "./TableSmall";
@@ -9,7 +13,7 @@ import { ScienceGraphComponent } from "./ScienceGraphComp";
 import { ChallengeYourMindText } from "../ChallengeYourMindText/ChallengeYourMindText";
 import "./SciencePage.css";
 import { Conditions } from "./Conditions";
-import { SciencePageButtons } from "./SciencePageButtons"
+import { SciencePageButtons } from "./SciencePageButtons";
 import { ScienceStopWatchContainer } from "./ScienceStopWatchContainer";
 import CatAnimation from "../Cat/CatAnimation";
 
@@ -20,21 +24,32 @@ export const SciencePage = () => {
   const planetImg = location.state?.planetImg;
 
   const {
-    smallTableData, setSmallTableData,
-    hugeTableData, setHugeTableData,
-    syntheticData, setSyntheticData,
-    matrixInfo, setMatrixInfo,
-    isLoading, setIsLoading,
-    error, setError, showCat,
-    setShowCat, currentTime,
-    catAnimationLaunched, setCatAnimationLaunched,
-    isRunning, maxTime,
+    smallTableData,
+    setSmallTableData,
+    hugeTableData,
+    setHugeTableData,
+    syntheticData,
+    setSyntheticData,
+    matrixInfo,
+    setMatrixInfo,
+    isLoading,
+    setIsLoading,
+    error,
+    setError,
+    showCat,
+    setShowCat,
+    currentTime,
+    catAnimationLaunched,
+    setCatAnimationLaunched,
+    isRunning,
+    maxTime,
   } = useCustomStates();
 
   const {
-    graphData, setGraphData,
+    graphData,
+    setGraphData,
     setMatrixInfo: setMatrixCtxInfo,
-    userUuid
+    userUuid,
   } = useCustomStates();
 
   // Получение данных матрицы
@@ -56,7 +71,7 @@ export const SciencePage = () => {
     };
 
     if (uuid) fetchMatrix();
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, [uuid]);
 
   // Получение аналитических данных (science)
@@ -68,7 +83,9 @@ export const SciencePage = () => {
 
         const [scienceData] = await Promise.all([
           fetchScienceDataByUUID(matrixUUID),
-          userUuid ? logScienceQuery(matrixUUID, userUuid) : Promise.resolve(null)
+          userUuid
+            ? logScienceQuery(matrixUUID, userUuid)
+            : Promise.resolve(null),
         ]);
 
         // console.log("Получены scienceData:", scienceData);
@@ -87,7 +104,7 @@ export const SciencePage = () => {
           ID: id,
           Score1: val?.toFixed(4) ?? "N/A",
           S: "None",
-          Score2: "None"
+          Score2: "None",
         }));
 
         setSmallTableData(small);
@@ -104,17 +121,22 @@ export const SciencePage = () => {
 
     const matrixUUID = matrixInfo?.matrix_info?.uuid;
     if (matrixUUID) fetchScience(matrixUUID);
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, [matrixInfo, userUuid]);
 
-
   useEffect(() => {
-    if (currentTime >= (maxTime / 2) && !catAnimationLaunched) {
+    const halfTime = Math.floor(maxTime / 2);
+
+    if (
+      (currentTime === 30 ||
+        currentTime === halfTime ||
+        currentTime === (maxTime - 60)) &&
+      !catAnimationLaunched
+    ) {
       setShowCat(true);
       setCatAnimationLaunched(true);
     }
-    // eslint-disable-next-line 
-  }, [currentTime, isRunning, catAnimationLaunched]);
+  }, [currentTime, catAnimationLaunched, maxTime]);
 
 
   return (
@@ -149,16 +171,30 @@ export const SciencePage = () => {
               <TableSmall data={smallTableData} />
               <TableHuge data={hugeTableData} />
             </div>
-
+            <h5
+              style={{ color: "#ffd700", height: "48px", fontSize: "1.25rem" }}
+            >
+              Step 3: Сыграйте с нашими данными!
+            </h5>
             <div className="graph-section">
               {graphData && <ScienceGraphComponent uuid={uuid} />}
               <ScienceStopWatchContainer planetColor={planetColor} />
               <MovesTable data={syntheticData} />
               {showCat && (
-                <div style={{ position: "fixed", top: "70%", paddingBottom: "100px"}}>
+                <div
+                  style={{
+                    position: "fixed",
+                    top: "70%",
+                    paddingBottom: "100px",
+                  }}
+                >
                   <CatAnimation
                     triggerAnimation={true}
-                    stopAtX={850}
+                    stopAtX={800}
+                    onAnimationEnd={() => {
+                      setShowCat(false);           // скрыть кота
+                      setCatAnimationLaunched(false); // разрешить повторный запуск
+                    }}
                   />
                 </div>
               )}

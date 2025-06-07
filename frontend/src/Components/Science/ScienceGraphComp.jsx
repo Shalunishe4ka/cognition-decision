@@ -34,6 +34,7 @@ export const ScienceGraphComponent = () => {
     handleClearEdges,
     handleLoadCoordinates,
     applyCoordinates,
+    hoverSoundRef,
   } = useCustomStates();
 
   // Локальные refs для DataSet узлов, рёбер и экземпляра сети
@@ -47,7 +48,7 @@ export const ScienceGraphComponent = () => {
   // При изменении disabledNodes обновляем ref:
   useEffect(() => {
     disabledNodesRef.current = disabledNodes;
-    // Если у нас были выбраны вершины, которые вдруг стали недоступными,
+    // Если у нас были выбраны узлы, которые вдруг стали недоступными,
     // уберём их из selectedNodes (аналог GraphCanvasRender).
     setSelectedNodes((prev) => prev.filter((id) => !disabledNodesRef.current.includes(id)));
   }, [disabledNodes, setSelectedNodes]);
@@ -250,6 +251,10 @@ export const ScienceGraphComponent = () => {
         setHoveredNode(null);
         return;
       }
+      // играем звук при наведении на активный узел
+      hoverSoundRef.current
+        ?.play()
+        .catch(err => console.warn("hoverSound play failed:", err.message));
       setHighlightedNode(event.node);
       setShowNodeList(true);
       setHoveredNode(event.node);

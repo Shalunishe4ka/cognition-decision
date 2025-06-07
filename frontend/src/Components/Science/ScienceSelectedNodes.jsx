@@ -14,7 +14,7 @@ export const ScienceSelectedNodesList = ({
 
   return (
     <div className="selected-nodes-list">
-      <h2>Выбранные вершины:</h2>
+      <h2>Выбранные узлы:</h2>
       <ol className="selected-list">
         {selectedNodes.map((nodeId, index) => {
           // Ищем данные узла по его ID через DataSet

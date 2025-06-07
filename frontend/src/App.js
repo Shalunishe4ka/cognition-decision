@@ -13,12 +13,10 @@ import { SciencePage } from "./Components/Science/SciencePage";
 import { AlgoPage } from "./Components/Science/AlgoPage";
 import { RulesPage } from "./Components/RulesPage/RulesPage";
 import { GlobalAudioManager } from "./Components/Audio";
-
+import { ComaBerenicesPage } from "./Components/ComaBerenicesPage/ComaBerenicesPage";
 
 function App() {
   const [headerShow, setHeaderShow] = useState(true);
-
-
 
   return (
     <CustomStatesProvider>
@@ -62,6 +60,11 @@ function App() {
           <Route
             path="/rules"
             element={<RulesPage setHeaderShow={setHeaderShow} />}
+          />
+          <Route
+            path="/coma-berenices"
+            element={<ComaBerenicesPage setHeaderShow={setHeaderShow} />}
+
           />
         </Routes>
       </Router>

@@ -12,9 +12,27 @@ export const GameOverModalWindow = ({ planetColor, score }) => {
         maxTime,
         currentTime,
         handleStop,
+        gameOverSoundRef,
+        backgroundMusicRef
     } = useCustomStates();
 
     const hasTriggeredGameOver = useRef(false);
+
+    // 🔊 играем звук, когда модалка появляется
+    useEffect(() => {
+        if (showGameOverModal) {
+            // стопим фон
+            backgroundMusicRef.current?.pause();
+            // при желании можно и сбросить позицию:
+            // backgroundMusicRef.current.currentTime = 0;
+
+            // и кидаем GameOver звук
+            gameOverSoundRef.current
+                ?.play()
+                .catch(err => console.warn("gameOverSound play failed:", err.message));
+        }
+    }, [showGameOverModal, gameOverSoundRef]);
+
 
     useEffect(() => {
         if (
@@ -41,6 +59,10 @@ export const GameOverModalWindow = ({ planetColor, score }) => {
         if (isClosing) {
             setIsClosing(false);
             setShowGameOverModal(false);
+            // 🔄 когда модалка окончательно скрылась — продолжаем фон
+            backgroundMusicRef.current
+                ?.play()
+                .catch(err => console.warn("backgroundMusic play failed:", err.message));
         }
     };
 
@@ -59,8 +81,8 @@ export const GameOverModalWindow = ({ planetColor, score }) => {
                     <div className="GameOverModalBody">
                         {score >= 100 ? (
                             <>
-                            <h3 style={{ color: "#FFD700", fontWeight: "bold", marginBottom: "10px" }}>Идеальное прохождение! 🌟</h3>
-                            <h3>Your Score: {score.toFixed(2)}</h3>
+                                <h3 style={{ color: "#FFD700", fontWeight: "bold", marginBottom: "10px" }}>Идеальное прохождение! 🌟</h3>
+                                <h3>Your Score: {score.toFixed(2)}</h3>
                             </>
                         ) : (
                             <h3>Your Score: {score.toFixed(2)}</h3>

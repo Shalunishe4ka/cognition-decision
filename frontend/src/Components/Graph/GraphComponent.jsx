@@ -3,6 +3,7 @@ import { GraphCanvasRender } from './GraphCanvasRender'
 import Stopwatch from './Stopwatch'
 import VerticalProgressBar from './VerticalProgressBar'
 import { Buttons } from './Buttons'
+import { HistoryTable } from './HistoryTable'
 
 export const GraphComponent = (props) => {
   const {
@@ -10,7 +11,7 @@ export const GraphComponent = (props) => {
     setHighlightedNode,
     setSelectedNodes,
     selectedEdges, setSelectedEdges,
-    isRunning, setCurrentTime,
+    history, setHistory,
     setShowNodeList, lockedNodes,
     setHoveredNode, handleLoadCoordinates,
     disabledNodes, matrixInfo,
@@ -26,7 +27,7 @@ export const GraphComponent = (props) => {
     setIsNetworkReady, isNetworkReady,
     graphDataState, setGraphDataState,
     planetColor, modelName, planetImg,
-
+    showHistory, hoverSoundRef
   } = props
 
 
@@ -42,21 +43,6 @@ export const GraphComponent = (props) => {
     console.log("Сеть готова, применяем координаты...");
     handleLoadCoordinates(uuid, applyCoordinates);
   }, [matrixInfo, isNetworkReady, uuid, applyCoordinates]);
-
-
-  // --- Логика запуска/остановки таймера ---
-  useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(() => {
-        setCurrentTime((prevTime) => prevTime + 1);
-      }, 1000);
-    } else {
-      clearInterval(intervalRef.current);
-    }
-    return () => clearInterval(intervalRef.current);
-    // eslint-disable-next-line
-  }, [isRunning]);
-
 
   const graphCanvasProps = {
     matrixInfo,
@@ -80,7 +66,7 @@ export const GraphComponent = (props) => {
     selectedNodes, hoveredNode,
     showModal, setShowModal, lastIndex, showNodeList,
     handleClearEdges, setIsNetworkReady,
-    graphDataState, setGraphDataState
+    graphDataState, setGraphDataState, hoverSoundRef
   };
 
   return (
@@ -107,11 +93,23 @@ export const GraphComponent = (props) => {
           </div>
         </div>
       </div>
-      <div className="graph-component-row">
-        <VerticalProgressBar />
-        <GraphCanvasRender {...graphCanvasProps} />
-        <Stopwatch planetColor={planetColor} />
-      </div>
+      {/* если showHistory – показываем таблицу вместо графа */}
+      {showHistory ? (
+        <div style={{ padding: "20px" }}>
+          <HistoryTable
+            matrixUuid={uuid}
+            planetColor={planetColor}
+            history={history}
+            setHistory={setHistory}
+          />
+        </div>
+      ) : (
+        <div className="graph-component-row">
+          <VerticalProgressBar />
+          <GraphCanvasRender {...graphCanvasProps} />
+          <Stopwatch planetColor={planetColor} />
+        </div>
+      )}
     </div>
   )
 }

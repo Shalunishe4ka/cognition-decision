@@ -14,7 +14,7 @@ export const ScienceAllNodesList = ({ nodes, hoveredNode }) => {
 
   return (
     <div className="node-list-container">
-      <h4>Все вершины:</h4>
+      <h4>Все узлы:</h4>
       <ol className="node-list">
         {nodes.map((node) => (
           <li

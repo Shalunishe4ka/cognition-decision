@@ -16,31 +16,27 @@ export const ScienceStopWatchContainer = ({ planetColor }) => {
     setIsHoveredStop,
   } = useCustomStates();
 
+  const formattedTime = `${String(Math.floor(currentTime / 60)).padStart(2, '0')}:${String(currentTime % 60).padStart(2, '0')}`;
 
   return (
-    <div className="stopwatch-container" style={{ color: 'white', maxWidth: "250px" }}>
+    <div className="science-stopwatch-container">
       {/* Время */}
-      <div className="stopwatch-container-time" style={{ marginBottom: '15px' }}>
+      <div className="science-stopwatch-container-time">
         <h3>Time</h3>
-        <p>
-          <FaStopwatch />{' '}
-          {`${String(Math.floor(currentTime / 60)).padStart(2, '0')}:${String(currentTime % 60).padStart(2, '0')}`}
-        </p>
+        <p><FaStopwatch /> {formattedTime}</p>
       </div>
 
       {/* Счёт */}
-      <div className="stopwatch-container-score" style={{ marginBottom: '15px' }}>
+      <div className="science-stopwatch-container-score">
         <h3>Score</h3>
-        <p>
-          <FaMedal /> {score}
-        </p>
+        <p><FaMedal /> {score}</p>
       </div>
 
       {/* История ходов */}
-      <div className="stopwatch-container-table" style={{ marginBottom: '15px' }}>
+      <div className="science-stopwatch-container-table" style={{ overflowY: 'auto' }}>
         <h3>Vertices</h3>
         {movesHistory.length > 0 ? (
-          <ul style={{ padding: 0, listStyle: 'none', margin: 0 }}>
+          <ul className="selected-list" style={{ padding: 0, margin: 0 }}>
             {movesHistory.map((move) => (
               <li key={move.moveNumber} style={{ marginBottom: '10px' }}>
                 <strong>Move {move.moveNumber}:</strong> {move.nodes.map(node => node?.id ?? 'N/A').join(', ')}
@@ -52,39 +48,38 @@ export const ScienceStopWatchContainer = ({ planetColor }) => {
         )}
       </div>
 
-      {/* Кнопки управления */}
-      <div className="stopwatch-container-buttons">
+      {/* Кнопки */}
+      <div className="science-stopwatch-container-buttons">
         <button
+          className="btn-start"
           style={{
             backgroundColor: isRunning ? "gray" : (isHoveredStart ? 'transparent' : planetColor),
             border: `1px solid ${isRunning ? "gray" : planetColor}`,
-            cursor: isRunning ? "not-allowed" : "pointer",
-            color: isHoveredStart ? planetColor : "black"
+            color: isHoveredStart ? planetColor : "black",
+            cursor: isRunning ? "not-allowed" : "pointer"
           }}
-          className='btn-start'
           onMouseEnter={() => setIsHoveredStart(true)}
           onMouseLeave={() => setIsHoveredStart(false)}
-          disabled={isRunning}
           onClick={handleStart}
+          disabled={isRunning}
           title={isRunning ? "Вы уже в процессе игры!" : "Начать игру"}
-
         >
           Start
         </button>
+
         <button
-          onMouseEnter={() => setIsHoveredStop(true)}
-          onMouseLeave={() => setIsHoveredStop(false)}
+          className="btn-stop"
           style={{
             backgroundColor: isRunning ? (isHoveredStop ? 'transparent' : 'rgb(255, 105, 105)') : 'gray',
             border: `1px solid ${isRunning ? (isHoveredStop ? planetColor : "rgb(255, 105, 105)") : 'gray'}`,
-            cursor: isRunning ? "pointer" : "not-allowed",
-            color: isHoveredStop ? planetColor : "black"
-
+            color: isHoveredStop ? planetColor : "black",
+            cursor: isRunning ? "pointer" : "not-allowed"
           }}
-          disabled={!isRunning}
+          onMouseEnter={() => setIsHoveredStop(true)}
+          onMouseLeave={() => setIsHoveredStop(false)}
           onClick={handleStop}
+          disabled={!isRunning}
           title={isRunning ? "Остановить игру" : "Вы ещё не начали игру!"}
-          className='btn-stop'
         >
           Stop
         </button>

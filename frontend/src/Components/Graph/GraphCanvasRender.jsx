@@ -31,6 +31,7 @@ export const GraphCanvasRender = ({
   showNodeList,
   handleClearEdges,
   setIsNetworkReady,
+  hoverSoundRef
 }) => {
   const localNetworkRef = useRef(null);
   const nodesRef = useRef(null);
@@ -42,6 +43,24 @@ export const GraphCanvasRender = ({
   useEffect(() => {
     disabledNodesRef.current = disabledNodes;
   }, [disabledNodes]);
+
+  useEffect(() => {
+    const network = networkRef.current;
+    if (!network) return;
+
+    const onHover = ({ node }) => {
+      // не играем, если этот узел задизейблен
+      if (disabledNodesRef.current.includes(Number(node))) return;
+      hoverSoundRef.current
+        ?.play()
+        .catch(err => console.warn("hoverSound play failed:", err.message));
+    };
+
+    network.on("hoverNode", onHover);
+    return () => {
+      network.off("hoverNode", onHover);
+    };
+  }, [networkRef, hoverSoundRef]);
 
   // 1) Инициализация DataSet и Network только один раз, когда получен matrixInfo
   useEffect(() => {

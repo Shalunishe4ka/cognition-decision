@@ -92,6 +92,17 @@
   background-color: gray;
 }
 
+
+/* Ячейки со значениями "Счёт" */
+.huge-table-container td:nth-child(2) {
+  border: 3px solid #ffd700;
+  font-weight: bold;
+}
+
+.small-table-container td:nth-child(5) {
+  border: 3px solid #ffd700;
+}
+
 /* Адаптивная ширина секции таблиц */
 #small-table-alignment-div,
 #huge-table-alignment-div {
@@ -136,6 +147,12 @@
 #algo-button {
   background-color: transparent;
   cursor: pointer;
+  background-color: #3498db;
+  font-style: italic;
+}
+
+#game-button, #algo-button {
+  font-size: 1.5rem;
 }
 
 .science-graph-page {
@@ -214,4 +231,78 @@
 
 .selected-nodes-list {
   position: fixed;
+}
+
+
+/* Контейнер */
+.moves-table-container {
+  border: 2px solid #fff;
+  border-radius: 10px;
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+/* Таблица */
+.moves-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Заголовки */
+.moves-table-header {
+  background-color: #0e0a20;
+  color: #fff;
+  font-size: 18px;
+  padding: 8px 12px;
+  border: 1px solid #fff;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* Строки */
+.moves-table-row:nth-child(even) {
+  background-color: #0e0a20;
+}
+
+.moves-table-row:hover {
+  background-color: gray;
+}
+
+/* Ячейки */
+.moves-table-cell {
+  border: 1px solid #fff;
+  padding: 8px 12px;
+  text-align: center;
+  color: #fff;
+}
+
+/* Заголовок таблицы */
+.moves-table-title {
+  color: #ffd700;
+  font-size: 1.25rem;
+  height: 48px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Контейнер для всей секции */
+#moves-table-alignment-div {
+  flex: 1;
+  min-width: 400px;
+}
+
+
+@keyframes highlightRow {
+  from {
+    background-color: rgba(255, 215, 0, 0.4);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+.moves-table-last-row {
+  animation: highlightRow 1.5s ease;
 }

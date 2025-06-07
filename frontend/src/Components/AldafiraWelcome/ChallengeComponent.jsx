@@ -69,7 +69,7 @@ const ChallengeComponent = ({ setHeaderShow }) => {
         </div>
 
         <div className="second-page-texts">
-          <h1 className="comabla">Coma Berenices</h1>
+          <a className="comabla" href="/coma-berenices">Coma Berenices</a>
           {showText && (
             <h1 onClick={handleVideoEnd} className="letsGoText">
               Let's go!

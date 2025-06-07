@@ -4,3 +4,5 @@ pyjwt
 pandas
 numpy
 bcrypt
+dotenv
+python-telegram-bot
