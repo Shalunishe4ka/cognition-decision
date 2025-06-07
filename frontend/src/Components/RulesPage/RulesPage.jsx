@@ -1,20 +1,21 @@
 import React from "react";
 import "./RulesPage.css";
 import { Link } from "react-router-dom";
-import crimeImg from "../Science/images/C_P.png"
+import crimeImg from "../Science/images/C_P.png";
 
 export const RulesPage = ({ setHeaderShow }) => {
-  setHeaderShow = true
+  setHeaderShow = true;
   return (
     <div className="container Rules-div">
       <h1 className="Start-End-Phrase">Meet the Equilibrium!</h1>
-      <h2 id="sub-topic">Цель игры</h2>
+
+      <h2 id="sub-topic">Game Objective</h2>
       <p>
-        <span id="sub-paragraph">Набрать</span> как можно больше очков из 100
-        возможных за одну игру. Это означает уровень изменения ситуации в лучшую
-        сторону благодаря Вашей стратегии действий. Игра заканчивается, когда у
-        игрока не остается больше ходов. <span id="video-span">ВИДЕО</span> с
-        соответствующими действиями доступно в {" "}
+        <span id="sub-paragraph">Score</span> as many points as possible out of
+        100 in a single game. This represents the degree to which you improve
+        the situation through your strategic actions. The game ends when the
+        player has no moves left. A <span id="video-span">VIDEO</span> showing
+        the corresponding actions is available in the{" "}
         <button
           style={{
             borderRadius: "10px",
@@ -28,448 +29,467 @@ export const RulesPage = ({ setHeaderShow }) => {
         >
           GUIDE
         </button>
+        .
       </p>
-      <h2 id="sub-topic">Ход игры</h2>
-      <p id="sub-paragraph">Игра имеет два этапа:</p>
 
+      <h2 id="sub-topic">Gameplay Overview</h2>
+      <p id="sub-paragraph">The game has two phases:</p>
       <ol type="A" id="letter-sublist-uncolored">
         <li>
-          <p>Ознакомление и исследование игровой ситуации.</p>
+          <p>Familiarization and exploration of the scenario.</p>
         </li>
         <li>
-          <p>Воздействие на ситуацию.</p>
+          <p>Applying control actions to the scenario.</p>
         </li>
       </ol>
-      <div>
-        <ol type="A" id="letter-list-uncolored">
-          <li>
-            <h2 id="list-header-h2">
-              Ознакомление и исследование игровой ситуации
-            </h2>
-            <br />
-            <div id="sub-list-colored-div">
-              <span id="sub-list-colored-span">A.1. </span>
-              <p id="spanned-list-header-p">
-                Описание модели, представляющей ситуации
-              </p>
-            </div>
-            <br />
-            <p>
-              Игрок знакомится с ситуацией, отображающей реальную ситуацию мира.
-            </p>
-            <p>Представление ситуации:</p>
-            <ol id="num-list-uncolored">
-              <li>
-                <p>
-                  <strong>Модель </strong> ситуации предоставляется в виде
-                  направленного знакового взвешенного графа с детерминированной
-                  причинностью на дугах.
-                </p>
-              </li>
 
-              <li>
-                <p>
-                  <strong>Узлы </strong> графа имеют номер и название, и
-                  представляют собой институциональные сложные факторы реальной
-                  системы.
-                </p>
-              </li>
-
-              <li>
-                <p>
-                  <strong>Дуги </strong> графа (стрелки) выражают каузальную
-                  связь между узлами графа и имеют вес от (-1) до (+1).
-                </p>
-              </li>
-
-              <li>
-                <p>
-                  <strong>Определить и визуализировать </strong>(по смыслу задачи) целевой узел, то есть узел
-                  графа, который должен получить максимальную реакцию (отклик)
-                  при воздействии на другие узлы модели.
-                </p>
-              </li>
-
-              <li>
-                <p>
-                  <strong>Визуализировать </strong> узлы, на которые запрещено
-                  прямое воздействие. Узлы, на которые воздействие запрещено,
-                  окрашены <span style={{ color: "gray" }}>серым цветом.</span>
-                </p>
-              </li>
-            </ol>
-            <br />
-            <h3 style={{ fontSize: "1.75rem" }}>
-              <span
-                style={{
-                  fontStyle: "italic",
-                  // backgroundColor: "rgb(114, 144, 255)",
-                  fontSize: "1.75rem"
-                }}
-              >
-                Пример
-              </span>
-              . Модель <span style={{ fontStyle: "italic" }}>«Преступление и наказание»</span>
-            </h3>
-            <br />
-            <ol id="num-list-uncolored">
-              <li>
-                <p>
-                  Модель <span style={{ fontStyle: "italic" }}>«Преступление и наказание»</span> описывает ситуацию с
-                  регулированием воровства в обществе.
-                </p>
-              </li>
-              <li>
-                <p>Модель имеет 7 узлов:</p>
-              </li>
-            </ol>
-            <div className="Example-crime-div">
-              <img src={crimeImg} id="crime-img" />
-              <ol className="num-list-unordered">
-                <li>
-                  <p><strong>Узел 1:</strong> Наличие имущества (видимое наличие имущества, желаемого ворами).</p>
-                </li>
-                <li>
-                  <p><strong>Узел 2:</strong> Возможность (физический доступ к имуществу, наличие инструментов для взлома и т. д.).</p>
-                </li>
-                <li>
-                  <p><strong>Узел 3:</strong> Кража (фактическое завладение имуществом)</p>
-                </li>
-                <li>
-                  <p><strong>Узел 4:</strong> Участие общественности (наблюдение за городом, общение между соседями, сообщения о преступлениях в местных новостях).</p>
-                </li>
-                <li>
-                  <p><strong>Узел 5:</strong> Преступный умысел (наличие лиц, намеревающихся совершить кражу).</p>
-                </li>
-                <li>
-                  <p><strong>Узел 6:</strong> Наказание (мера надежности и неотвратимости наказания за преступления).</p>
-                </li>
-                <li>
-                  <p><strong>Узел 7:</strong> Присутствие полиции (регулярное видимое присутствие офицеров в форме).</p>
-                </li>
-              </ol>
-
-            </div>
-
-            <ol start={3} id="num-list-uncolored">
-              <li>
-                <p>Узлы графа соединены дугами (стрелками), имеющими вес.</p>
-              </li>
-              <li>
-                <p>
-                  Целевой узел в данной модели – узел 3 “Кража” (“Theft”).
-                  Цель управления данной ситуацией – максимально увеличить
-                  реакцию узла 3 через воздействия на остальные узла модели. При
-                  этом напрямую на целевой узел 3 воздействовать{" "}
-                  <strong>нельзя.</strong>
-                </p>
-              </li>
-            </ol>
-            <p>
-              Например, значение веса -0,8 (причинное уменьшение) на дуге,
-              соединяющей узел <span style={{ fontStyle: "italic" }}>Присутствие полиции</span> с узлом <span style={{ fontStyle: "italic" }}>Кража</span>, может означать,
-              что увеличение <span style={{ fontStyle: "italic" }}>Присутствие полиции</span> приводит (или имеет эффект; или
-              вызывает...) к уменьшению <span style={{ fontStyle: "italic" }}>Кража</span> (и наоборот, уменьшение значения
-              узла <span style={{ fontStyle: "italic" }}>Присутствие полиции</span> приведет к увеличению количества <span style={{ fontStyle: "italic" }}>Краж</span>).
-            </p>
-            <br /><br />
-            <div id="sub-list-colored-div">
-              <span id="sub-list-colored-span">A.2. </span>
-              <p id="spanned-list-header-p">
-                Действия при ознакомлении с моделью ситуации
-              </p>
-            </div>
-          </li>
-          <br /><br />
-          <p>Игрок может:</p>
+      <ol type="A" id="letter-list-uncolored">
+        <li>
+          <h2 id="list-header-h2">
+            Familiarization and Exploration of the Scenario
+          </h2>
           <br />
-          <ul id="listik">
-            <li>
-              <p>
-                <strong>Представить ситуацию.</strong> Понять значимость
-                институциональных узлов (факторов) и причинно-следственных
-                связей между ними. Для этого, при наведении курсора на объект
-                представляется:
-              </p>
-              <br />
-              <ul type="circle" id="players-capabilities-list">
-                <li>
-                  <p>перечень узлов модели;</p>
-                </li>
-                <li>
-                  <p>название каждого узла;</p>
-                </li>
-                <li>
-                  <p>описание причинной связи между узлами.</p>
-                </li>
-              </ul>
-            </li>
-            <br />
-            <li>
-              <p>
-                <strong>Идентифицировать целевой узел.</strong> Визуализировать
-                целевой узел (фактор), который должен получить максимальную
-                реакцию (отклик) при воздействии на другие узлы модели.
-              </p>
-            </li>
-            <br />
-            <li>
-              <p>
-                <strong>Идентифицировать пути</strong> (подсветить). Для
-                восприятия возможностей передачи воздействий по дугам графа
-                можно проследить любой путь (непрерывную последовательность дуг
-                (связей) между узлами от исходного до любого узла в модели).
-              </p>
-            </li>
-          </ul>
-          <br /><br />
+          <div id="sub-list-colored-div">
+            <span id="sub-list-colored-span">A.1.</span>
+            <p id="spanned-list-header-p">
+              Scenario Model Description
+            </p>
+          </div>
+          <br />
           <p>
-            Время ознакомления с ситуацией <strong>не нормируется.</strong>
+            The player reviews a representation of a real-world situation.
           </p>
-          <br /><br />
-          <li>
-            <p id="list-header-h2">Воздействие на ситуацию</p>
-            <br />
-            <div id="sub-list-colored-div">
-              <span id="sub-list-colored-span">B.1. </span>
-              <p id="spanned-list-header-p">Задача игрока</p>
-            </div>
-            <br />
-            <p>
-              Атлас Стратегос – опытный влиятельный человек, поведение которого
-              отражает мудрость и расчетливый интеллект.
-            </p>
-            <br />
-            <p>
-              Вам, как стратегу и влиятельному человеку, поручено разобраться в
-              тонкостях институционального комплекса.
-            </p>
-            <br />
-            <p>
-              Вы можете воздействовать на ситуацию, прилагая воздействия к узлам
-              графа с целью достигнуть максимальной реакции модели. Как правило,
-              у общества нет средств и возможности воздействовать сразу на все
-              узлы.
-            </p>
-            <br />
-            <p>
-              Поэтому Ваша задача – в первый ход выбрать наиболее значимые, с
-              Вашей точки зрения, узлы. Практически первый ход из трех узлов
-              захватит почти 50% силы всех возможных воздействий на систему.
-              Последующие ходы только дополнят Ваше решение.
-            </p>
-            <br />
-            <p style={{ fontWeight: "bold", color: "rgb(255, 215, 0)" }}>
-              Постарайтесь максимизировать первый ход. Он определит всю Вашу
-              стратегию и ее успех!
-            </p>
-            <br /><br />
-            <p>
-              <strong>Максимальная реакция</strong> модели – это достижение
-              максимально возможной реакции модели с ориентацией на целевой
-              узел. Это достигается за счет выстраивания правильной стратегии
-              воздействия на узлы графа.
-            </p>
-            <br /><br />
-            <p>
-              <strong>Стратегия воздействия</strong> – это последовательность из
-              узлов, выбранных Вами для воздействия на систему.
-            </p>
-            <p><br />
-              <strong>Максимально возможная </strong>(оптимальная) реакция
-              модели рассчитывается алгоритмом игры с помощью специального
-              математического алгоритма -{" "}
-              <Link to={"/algorithm"}>
-                <button
-                  style={{
-                    borderRadius: "10px",
-                    color: "white",
-                    backgroundColor: "#4F75FF",
-                    fontSize: "0.6em",
-                    cursor: "pointer",
-                  }}
-                >
-                  Algorithm
-                </button>
-              </Link>
-              .
-            </p>
-            <br /><br />
-            <div id="sub-list-colored-div">
-              <span id="sub-list-colored-span">B.2. </span>
-              <p id="spanned-list-header-p">Правила игры</p>
-            </div>
-            <br /><br />
-            <p style={{ textDecoration: "underline" }}>Ходы игрока: </p>
-            <br />
-            <ol id="num-list-uncolored">
-              <li>
-                <p>
-                  Ход игрока – это выбор последовательности из узлов, на которые
-                  будет осуществляться воздействие за один ход.
-                </p>
-              </li>
-              <li>
-                <p>
-                  За один ход разрешается воздействовать не менее, чем на 3
-                  узла.
-                </p>
-              </li>
-              <li>
-                <p>
-                  Вы можете выбрать больше, чем 3 узла за один ход.{" "}
-                  <span style={{ color: "rgb(255, 215, 0)", fontWeight: "bold" }}>
-                    Однако помните, что последовательность узлов очень важна!
-                  </span>
-                </p>
-              </li>
-              <li>
-                <p>
-                  Выбранная последовательность узлов за один ход
-                  ранжирует узлы по их силе воздействия от высшего к низшему.
-                </p>
-              </li>
-            </ol>
-            <br /><br />
+          <p>Situation representation:</p>
+          <ol id="num-list-uncolored">
+            <li>
+              <p>
+                The <strong>model</strong> of the situation is presented as a
+                directed, signed, weighted graph with deterministic causality on
+                its edges.
+              </p>
+            </li>
+            <li>
+              <p>
+                <strong>Nodes</strong> are numbered and named, representing
+                complex institutional factors in the real-world system.
+              </p>
+            </li>
+            <li>
+              <p>
+                <strong>Edges</strong> (arrows) represent causal links between
+                nodes, with weights ranging from –1 to +1.
+              </p>
+            </li>
+            <li>
+              <p>
+                <strong>Identify and highlight</strong> (per the task) the target
+                node—i.e., the node that should achieve the maximum response
+                when other nodes are influenced.
+              </p>
+            </li>
+            <li>
+              <p>
+                <strong>Shade</strong> nodes that cannot be directly influenced.
+                These forbidden nodes are colored{" "}
+                <span style={{ color: "gray" }}>gray</span>.
+              </p>
+            </li>
+          </ol>
+          <br />
+          <h3 style={{ fontSize: "1.75rem" }}>
             <span
               style={{
                 fontStyle: "italic",
-                backgroundColor: "rgb(114, 144, 255)",
-                fontSize: "1.7rem",
+                fontSize: "1.75rem"
               }}
             >
-              Пример
+              Example
             </span>
-            <p>
-              Модель <span style={{ fontStyle: "italic" }}>«Преступление и наказание»</span> включает 7 узлов.
-            </p>
-            <br />
-            <p>
-              <span style={{ fontStyle: "italic", fontWeight: 700 }}>Первый ход </span> – выбор
-              первой последовательности (например, из трех узлов). Например, вы указали
-              последовательность 2,7,4. Это означает то, что Вы считаете, что
-              именно эти три узла обеспечат максимальное воздействие на систему.
-              Кроме этого, сила воздействия узла 2 больше, чем узла 7; узла 7
-              больше, чем узла 4. То есть, узлу 2 присваивается первый ранг,
-              узлу 7 – второй ранг, узлу 4 – третий ранг.
-            </p>
-            <br />
-            <p>
-              <span style={{ fontStyle: "italic", fontWeight: 700 }}>Второй ход </span> - выбор
-              второй последовательности. Можно выбрать последовательность из 3 или 4 узлов.
-            </p>
-            <br />
-
-            <p>
-              <span style={{ fontStyle: "italic", fontWeight: 700 }}>Третий ход </span> - Оставшийся один узел (если вы выбрали для 2
-              хода последовательность из 3 узлов).
-            </p>
-            <br /><br />
-            <p style={{ textDecoration: "underline" }}>Время игры: </p>
-            <ol id="num-list-uncolored">
+            . The <span style={{ fontStyle: "italic" }}>“Crime and Punishment”</span>{" "}
+            model
+          </h3>
+          <br />
+          <ol id="num-list-uncolored">
+            <li>
+              <p>
+                The <span style={{ fontStyle: "italic" }}>“Crime and Punishment”</span>{" "}
+                model depicts the regulation of theft in society.
+              </p>
+            </li>
+            <li>
+              <p>The model contains 7 nodes:</p>
+            </li>
+          </ol>
+          <div className="Example-crime-div">
+            <img src={crimeImg} id="crime-img" alt="Crime and Punishment Model" />
+            <ol className="num-list-unordered">
               <li>
                 <p>
-                  <strong>Нормативное время </strong> игры – 600 секунд.
+                  <strong>Node 1:</strong> Availability of property (visibility
+                  of desirable goods to thieves).
                 </p>
               </li>
               <li>
                 <p>
-                  <strong>Нормативное время </strong> одного хода – отсутствует.
+                  <strong>Node 2:</strong> Opportunity (physical access to
+                  property, tools for breaking in, etc.).
                 </p>
               </li>
               <li>
                 <p>
-                  <strong>Таймер </strong> отсчитывает оставшееся время до конца
-                  игры.
+                  <strong>Node 3:</strong> Theft (actual acquisition of the
+                  property).
                 </p>
               </li>
               <li>
                 <p>
-                  <strong>Таймер </strong> останавливает игру по истечении
-                  нормативного времени игры.
+                  <strong>Node 4:</strong> Public participation (neighborhood
+                  watch, community communication, local news crime reports).
                 </p>
               </li>
               <li>
                 <p>
-                  <strong>Прогресс-бар </strong> отсчитывает
-                  оставшееся от нормативного времени игры.
+                  <strong>Node 5:</strong> Criminal intent (presence of
+                  individuals planning theft).
                 </p>
               </li>
               <li>
                 <p>
-                  <strong>Космический кот </strong> предупредит Вас о ключевых
-                  моментах времени.
-                </p>
-              </li>
-            </ol>
-            <br /><br />
-            <div id="sub-list-colored-div">
-              <span id="sub-list-colored-span">B.3. </span>
-              <p id="spanned-list-header-p">Подсчет очков</p>
-            </div>
-            <br />
-            <p style={{ textDecoration: "underline" }}>
-              Правила подсчета очков
-            </p>
-            <p>За каждый ход вы получаете очки по 100-балльной шкале:</p>
-            <ol id="num-list-uncolored">
-              <li>
-                <p>
-                  За правильно указанные ранги узлов – вычисляется специальным
-                  математическим алгоритмом смотри <strong>B.1.</strong>
+                  <strong>Node 6:</strong> Punishment (certainty and severity of
+                  legal consequences).
                 </p>
               </li>
               <li>
                 <p>
-                  За неправильно указанные ранги узлов – минус 10% от баллов по
-                  пункту 1.
-                </p>
-              </li>
-              <li>
-                <p>
-                  За близкий выбор к правильному рангу узлов –плюс от 20% до 50%
-                  от баллов по пункту 1.
-                </p>
-              </li>
-              <li>
-                <p>
-                  За близкий выбор первых двух узлов – плюс 50% от баллов по
-                  пункту 1.
+                  <strong>Node 7:</strong> Police presence (visible presence of
+                  officers in uniform).
                 </p>
               </li>
             </ol>
+          </div>
+          <ol start={3} id="num-list-uncolored">
+            <li>
+              <p>
+                The nodes are connected by edges (arrows) with weights.
+              </p>
+            </li>
+            <li>
+              <p>
+                The target node in this model is node 3, “Theft.” The goal is
+                to maximize node 3’s response by influencing other nodes,
+                without directly affecting node 3.
+              </p>
+            </li>
+          </ol>
+          <p>
+            For example, a weight of –0.8 (causal decrease) on the edge from{" "}
+            <span style={{ fontStyle: "italic" }}>Police Presence</span> to{" "}
+            <span style={{ fontStyle: "italic" }}>Theft</span> means that
+            increasing <span style={{ fontStyle: "italic" }}>Police Presence</span>{" "}
+            reduces <span style={{ fontStyle: "italic" }}>Theft</span> (and
+            vice versa).
+          </p>
+          <br />
+          <br />
+          <div id="sub-list-colored-div">
+            <span id="sub-list-colored-span">A.2.</span>
+            <p id="spanned-list-header-p">
+              Actions During Scenario Exploration
+            </p>
+          </div>
+        </li>
+        <br />
+        <br />
+        <p>The player can:</p>
+        <br />
+        <ul id="listik">
+          <li>
+            <p>
+              <strong>Present the scenario.</strong> Understand the importance
+              of institutional nodes (factors) and causal links between them.
+              Hovering over an element reveals:
+            </p>
             <br />
-            <p>Баллы начисляются по каждому узлу и затем суммируются.</p>
-            <br />
-            <p style={{ textDecoration: "underline" }}>Табло очков:</p>
-            <ul type="disc" id="disc-list-uncolored">
+            <ul type="circle" id="players-capabilities-list">
               <li>
-                <p>Номер хода</p>
+                <p>the list of model nodes;</p>
               </li>
               <li>
-                <p>Последовательность выбранных узлов за каждый ход.</p>
+                <p>each node’s name;</p>
               </li>
               <li>
-                <p>Время хода.</p>
-              </li>
-              <li>
-                <p>Количество набранных очков.</p>
+                <p>the description of the causal link between nodes.</p>
               </li>
             </ul>
-            <br />
-            <div id="sub-list-colored-div">
-              <span id="sub-list-colored-span">B.4. </span>
-              <p id="spanned-list-header-p">Конец игры</p>
-            </div>
-            <br />
-            <p>Игра заканчивается сразу после последнего возможного хода.</p>
           </li>
-        </ol>
-        <h1 className="Start-End-Phrase">
-          Good luck to you!
-        </h1>
-      </div>
+          <br />
+          <li>
+            <p>
+              <strong>Identify the target node.</strong> Highlight the node
+              expected to have the highest response.
+            </p>
+          </li>
+          <br />
+          <li>
+            <p>
+              <strong>Trace paths</strong> (highlight). Follow any continuous
+              sequence of edges from one node to another to see how influence
+              propagates.
+            </p>
+          </li>
+        </ul>
+        <br />
+        <br />
+        <p>
+          There is <strong>no time limit</strong> for scenario exploration.
+        </p>
+        <br />
+        <br />
+
+        <li>
+          <p id="list-header-h2">Applying Control Actions</p>
+          <br />
+          <div id="sub-list-colored-div">
+            <span id="sub-list-colored-span">B.1.</span>
+            <p id="spanned-list-header-p">Player’s Task</p>
+          </div>
+          <br />
+          <p>
+            Atlas Strategos is an experienced influencer whose behavior
+            reflects wisdom and calculated intelligence.
+          </p>
+          <br />
+          <p>
+            As a strategist and influencer, you are tasked with understanding
+            the nuances of the institutional complex.
+          </p>
+          <br />
+          <p>
+            You can influence the scenario by applying control actions to nodes
+            to maximize the model’s response. Society typically cannot
+            influence all nodes at once.
+          </p>
+          <br />
+          <p>
+            Therefore, on your first move, choose the nodes you deem most
+            significant. Your first move—selecting three nodes—accounts for
+            nearly 50% of the total influence potential. Subsequent moves
+            complement your strategy.
+          </p>
+          <br />
+          <p style={{ fontWeight: "bold", color: "rgb(255, 215, 0)" }}>
+            Try to maximize your first move—it will set the course for your
+            entire strategy!
+          </p>
+          <br />
+          <br />
+          <p>
+            The <strong>maximum response</strong> is the highest achievable
+            model response oriented toward the target node, achieved by crafting
+            the optimal control strategy.
+          </p>
+          <br />
+          <br />
+          <p>
+            A <strong>control strategy</strong> is the sequence of nodes you
+            choose to influence.
+          </p>
+          <p>
+            <br />
+            The <strong>optimal response</strong> is computed by the game’s
+            mathematical algorithm—{" "}
+            <Link to={"/algorithm"}>
+              <button
+                style={{
+                  borderRadius: "10px",
+                  color: "white",
+                  backgroundColor: "#4F75FF",
+                  fontSize: "0.6em",
+                  cursor: "pointer"
+                }}
+              >
+                Algorithm
+              </button>
+            </Link>
+            .
+          </p>
+          <br />
+          <br />
+          <div id="sub-list-colored-div">
+            <span id="sub-list-colored-span">B.2.</span>
+            <p id="spanned-list-header-p">Game Rules</p>
+          </div>
+          <br />
+          <br />
+          <p style={{ textDecoration: "underline" }}>Player Moves:</p>
+          <br />
+          <ol id="num-list-uncolored">
+            <li>
+              <p>
+                A move consists of selecting a sequence of nodes to influence
+                in that turn.
+              </p>
+            </li>
+            <li>
+              <p>
+                You must select at least three nodes each turn.
+              </p>
+            </li>
+            <li>
+              <p>
+                You may choose more than three nodes.{" "}
+                <span style={{ color: "rgb(255, 215, 0)", fontWeight: "bold" }}>
+                  However, the sequence order is crucial!
+                </span>
+              </p>
+            </li>
+            <li>
+              <p>
+                The order ranks nodes by their influence strength, from highest
+                to lowest.
+              </p>
+            </li>
+          </ol>
+          <br />
+          <br />
+          <span
+            style={{
+              fontStyle: "italic",
+              backgroundColor: "rgb(114, 144, 255)",
+              fontSize: "1.7rem"
+            }}
+          >
+            Example
+          </span>
+          <p>
+            The <span style={{ fontStyle: "italic" }}>“Crime and Punishment”</span>{" "}
+            model has 7 nodes.
+          </p>
+          <br />
+          <p>
+            <span style={{ fontStyle: "italic", fontWeight: 700 }}>
+              First move
+            </span>{" "}
+            – choose your initial sequence (e.g., three nodes). If you choose
+            [2, 7, 4], you believe these three nodes will yield the greatest
+            influence. Node 2 is ranked first, node 7 second, and node 4 third.
+          </p>
+          <br />
+          <p>
+            <span style={{ fontStyle: "italic", fontWeight: 700 }}>
+              Second move
+            </span>{" "}
+            – choose a second sequence (three or four nodes).
+          </p>
+          <br />
+          <p>
+            <span style={{ fontStyle: "italic", fontWeight: 700 }}>
+              Third move
+            </span>{" "}
+            – the remaining one node (if you chose three nodes on move two).
+          </p>
+          <br />
+          <br />
+          <p style={{ textDecoration: "underline" }}>Game Time:</p>
+          <ol id="num-list-uncolored">
+            <li>
+              <p>
+                The <strong>total time</strong> is 600 seconds.
+              </p>
+            </li>
+            <li>
+              <p>
+                There is <strong>no time limit</strong> per move.
+              </p>
+            </li>
+            <li>
+              <p>
+                A <strong>timer</strong> counts down the remaining game time.
+              </p>
+            </li>
+            <li>
+              <p>
+                The timer ends the game when time runs out.
+              </p>
+            </li>
+            <li>
+              <p>
+                A <strong>progress bar</strong> shows the remaining time.
+              </p>
+            </li>
+            <li>
+              <p>
+                A <strong>cosmic cat</strong> will alert you at key time
+                milestones.
+              </p>
+            </li>
+          </ol>
+          <br />
+          <br />
+          <div id="sub-list-colored-div">
+            <span id="sub-list-colored-span">B.3.</span>
+            <p id="spanned-list-header-p">Scoring</p>
+          </div>
+          <br />
+          <p style={{ textDecoration: "underline" }}>
+            Scoring Rules
+          </p>
+          <p>You earn points on a 100-point scale each turn:</p>
+          <ol id="num-list-uncolored">
+            <li>
+              <p>
+                For correct node rankings—calculated by the game’s mathematical
+                algorithm (see <strong>B.1.</strong>).
+              </p>
+            </li>
+            <li>
+              <p>
+                For incorrect rankings—minus 10% of the points from point 1.
+              </p>
+            </li>
+            <li>
+              <p>
+                For near-correct rankings—plus 20–50% of the points from point 1.
+              </p>
+            </li>
+            <li>
+              <p>
+                For correctly ranking the first two nodes—plus 50% of the points
+                from point 1.
+              </p>
+            </li>
+          </ol>
+          <br />
+          <p>Points are awarded per node and then summed.</p>
+          <br />
+          <p style={{ textDecoration: "underline" }}>Scoreboard:</p>
+          <ul type="disc" id="disc-list-uncolored">
+            <li>
+              <p>Turn number</p>
+            </li>
+            <li>
+              <p>Sequence of nodes selected each turn</p>
+            </li>
+            <li>
+              <p>Time taken</p>
+            </li>
+            <li>
+              <p>Points earned</p>
+            </li>
+          </ul>
+          <br />
+          <div id="sub-list-colored-div">
+            <span id="sub-list-colored-span">B.4.</span>
+            <p id="spanned-list-header-p">End of Game</p>
+          </div>
+          <br />
+          <p>The game ends immediately after the last possible move.</p>
+        </li>
+      </ol>
+
+      <h1 className="Start-End-Phrase">
+        Good luck to you!
+      </h1>
     </div>
   );
 };
-

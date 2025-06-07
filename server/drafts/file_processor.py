@@ -28,7 +28,7 @@ def convert_excel_to_txt(input_file, output_file):
             vertices = []
             vertices_influence = [0, 0, 0]
             while True:
-                vertex_selection = input(f"Введите номер вершины (от 1 до {len(df.columns)}) или 0 для завершения: ")
+                vertex_selection = input(f"Введите номер узла (от 1 до {len(df.columns)}) или 0 для завершения: ")
                 if vertex_selection == "0":
                     # Форматируем списки для записи
                     vertices_str = re.sub(r'[\[\]]', '', str(vertices)).replace(", ", " ")
@@ -98,7 +98,7 @@ def convert_txt_to_fortran(input_file, output_file):
             vertices = []
             vertices_influence = [0, 0, 0]
             while True:
-                vertex_selection = input(f"Введите номер вершины (от 1 до {len(headers)+1}) или 0 для завершения: ")
+                vertex_selection = input(f"Введите номер узла (от 1 до {len(headers)+1}) или 0 для завершения: ")
                 if vertex_selection == "0":
                     vertices_str = re.sub(r'[\[\]]', '', str(vertices)).replace(", ", " ")
                     influence_str = re.sub(r'[\[\]]', '', str(vertices_influence)).replace(", ", "\t")
@@ -169,22 +169,18 @@ def process_fortran_output(file_name):
             sq_x = [num ** 2 for num in x]
             sq_u = [num ** 2 for num in u]
 
-            sum_u = sum(sq_u)
+            sum_sq_u = sum(sq_u)
+            if sum_sq_u == 0:
+                raise ValueError("Сумма sq_u равна нулю, нормализация невозможна.")
+            
+            normalized_u = [value / sum_sq_u for value in sq_u]
 
-            normalized_u = [round(value / sum_u, 4) for value in sq_u]
-
-            sorted_list_u = {i + 1: value for i, value in enumerate(normalized_u)}
-
-            # Создание пар (индекс, sq_x, sorted_list_u)
-            # Создаем пары (id, sq_x)
-            pairs = list(enumerate(sq_x, start=1))
-        
-            # Сортируем пары по значениям sq_x в порядке убывания
-            sorted_pairs = sorted(pairs, key=lambda pair: pair[1], reverse=True)
-        
+            normalized_u_pairs = list(enumerate(normalized_u, start=1))
+            sorted_normalized_u = sorted(normalized_u_pairs, key=lambda pair: pair[1], reverse=True)
+       
             # Преобразуем в словарь с id как ключами и sq_x как значениями
-            result_dict = {str(pair[0]): pair[1] for pair in sorted_pairs}
-        
+            result_dict = {str(node_id): round(value, 6) for node_id, value in sorted_normalized_u}
+            
             # Сохраняем результат в JSON-файл
             result_file_path = BASE_DIR / "../data/processed_files/True_Seq" / f"{file_name}_result.json"
             with open(result_file_path, "w") as json_file:

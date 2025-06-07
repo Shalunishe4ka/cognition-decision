@@ -10,15 +10,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import os
 
+import asyncio
+from io import BytesIO
+from pathlib import Path
 from contextlib import asynccontextmanager
 
+from fastapi import FastAPI
+from telegram import Update, InputMediaPhoto, InputMediaVideo, InputMediaDocument, InputFile
+from telegram.constants import ChatType
+from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters, CommandHandler
 from dotenv import load_dotenv
-from telegram import Update
-from telegram.ext import (
-    ApplicationBuilder, CommandHandler,
-    MessageHandler, ContextTypes, filters
-)
-
 
 # ───────── внешние импорты ─────────
 from services.matrix_service import get_all_matrices, get_matrix_data_by_name
@@ -29,101 +30,259 @@ from routes.UUID_MATRICES     import MATRIX_UUIDS
 
 
 # ==========================TG Bot=======================================
-# load_tg_bot = input("Загружать ТГ бота? ").lower()
-# if load_tg_bot == "yes" or load_tg_bot == "da" or load_tg_bot == "lf" or load_tg_bot == "нуы" or load_tg_bot == "да":
+
+# --- Настройки ---
 load_dotenv()
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-if not TELEGRAM_TOKEN:
-    raise RuntimeError("TELEGRAM_BOT_TOKEN не найден в .env!")
-# ─── bot handlers ───────────────────────────────────────────
-async def tg_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Привет! Я бот для обратной связи — пишите и присылайте файлы.")
-async def tg_save_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    from datetime import datetime
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+ADMIN_GROUP_ID = int(os.getenv("ADMIN_GROUP_ID", "0"))
+
+TOPICS_PATH = Path("server/routes/user_topics.json")
+
+def save_user_topics(user_topics: dict[int, int]) -> None:
+    with open(TOPICS_PATH, "w", encoding="utf-8") as f:
+        json.dump(user_topics, f, ensure_ascii=False, indent=2)
+
+def load_user_topics() -> dict[int, int]:
+    if TOPICS_PATH.exists():
+        try:
+            data = json.loads(TOPICS_PATH.read_text(encoding="utf-8"))
+            return {int(k): int(v) for k, v in data.items()}
+        except Exception as e:
+            logging.warning(f"⚠️ Ошибка загрузки user_topics.json: {e}")
+    return {}
+
+user_topics: dict[int, int] = load_user_topics()
+MEDIA_BUFFER_KEY = "media_group_buffer"
+
+# --- Флеш для буферизации альбома ---
+async def flush_media_group(media_group_id: str, user_id: int, thread_id: int, context: ContextTypes.DEFAULT_TYPE):
+    await asyncio.sleep(1.0)
+    buffer: dict = context.chat_data.get(MEDIA_BUFFER_KEY, {})
+    msgs: list[Update] = buffer.pop(media_group_id, [])
+    if not msgs:
+        return
+
+    msgs.sort(key=lambda m: m.message_id)
+    media = []
+    for idx, msg in enumerate(msgs):
+        caption = msg.caption if idx == 0 else None
+        if msg.photo:
+            file = await msg.photo[-1].get_file()
+            b = BytesIO()
+            await file.download_to_memory(out=b)
+            b.seek(0)
+            media.append(InputMediaPhoto(b, caption=caption))
+        elif msg.video:
+            file = await msg.video.get_file()
+            b = BytesIO()
+            await file.download_to_memory(out=b)
+            b.seek(0)
+            media.append(InputMediaVideo(b, caption=caption))
+        elif msg.document:
+            file = await msg.document.get_file()
+            b = BytesIO()
+            await file.download_to_memory(out=b)
+            b.seek(0)
+            media.append(InputMediaDocument(b, filename=msg.document.file_name, caption=caption))
+
+    sent_msgs = await context.bot.send_media_group(
+        chat_id=ADMIN_GROUP_ID,
+        media=media,
+        message_thread_id=thread_id,
+    )
+    # Сохраняем маппинг для медиагруппы
+    forwarded_mapping = context.bot_data.setdefault("forwarded_mapping", {})
+    mapping = forwarded_mapping.setdefault(thread_id, {})
+    for sent_msg, user_msg in zip(sent_msgs, msgs):
+        mapping[sent_msg.message_id] = user_msg.message_id
+
+# --- Обработка команды /start ---
+async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
-    uid = user.username or f"{user.first_name}_{user.last_name or ''}"
-    uid = uid.replace(" ", "_")  # на всякий случай
-    folder = pathlib.Path("feedback") / uid
-    folder.mkdir(parents=True, exist_ok=True)
-    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    name = user.first_name or "друг"
+    welcome_text = (
+        f"👋 Привет, {name}!\n\n"
+        "Я бот службы поддержки. Просто напиши своё сообщение или прикрепи файлы, "
+        "и мы обязательно свяжемся с тобой как можно скорее.\n\n"
+        "📎 Поддерживаются фото, документы, видео и альбомы (до 10 штук).\n"
+        "⌛ Ответ придёт сюда от нашего оператора.\n\n"
+        "Напиши, чем можем помочь!"
+    )
+    await update.message.reply_text(welcome_text)
+
+# --- Обработка сообщений от пользователей ---
+async def handle_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = update.message
-    # Путь к файлу истории
-    history_file = folder / "chat_history.json"
-    # Загружаем старую историю (если есть)
-    if history_file.exists():
-        with open(history_file, "r", encoding="utf-8") as f:
-            history = json.load(f)
-    else:
-        history = []
-    entry = {
-        "timestamp": ts,
-        "text": None,
-        "files": []
-    }
-    # Сохраняем текст
-    text = msg.text or msg.caption
-    if text:
-        entry["text"] = text
-    # Сохраняем медиа и заполняем ссылки на файлы
+    user = update.effective_user
+
+    thread_id = user_topics.get(user.id)
+    if thread_id is None:
+        topic_name = user.username or f"{user.first_name}_{user.id}"
+        topic = await context.bot.create_forum_topic(
+            chat_id=ADMIN_GROUP_ID,
+            name=topic_name[:128],
+        )
+        thread_id = topic.message_thread_id
+        user_topics[user.id] = thread_id
+        save_user_topics(user_topics)
+
+    if msg.media_group_id:
+        buf = context.chat_data.setdefault(MEDIA_BUFFER_KEY, {})
+        buf.setdefault(msg.media_group_id, []).append(msg)
+        if len(buf[msg.media_group_id]) == 1:
+            context.application.create_task(
+                flush_media_group(msg.media_group_id, user.id, thread_id, context)
+            )
+        await msg.reply_text("✅ Ваше сообщение передано в поддержку!")
+        return
+
+    text = msg.text or msg.caption or None
+    reply_to_message_id = None
+    if msg.reply_to_message:
+        reply_to_id = msg.reply_to_message.message_id
+        reply_mapping = context.bot_data.setdefault("reply_mapping", {})
+        admin_message_id = reply_mapping.get(thread_id, {}).get(reply_to_id)
+        reply_to_message_id = admin_message_id if admin_message_id else None
+
+    forwarded_mapping = context.bot_data.setdefault("forwarded_mapping", {})
+    mapping = forwarded_mapping.setdefault(thread_id, {})
+
     if msg.photo:
         file = await msg.photo[-1].get_file()
-        file_path = folder / f"photo_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
-        await file.download_to_drive(str(file_path))
-        entry["files"].append(str(file_path.relative_to(folder)))
-    if msg.document:
-        file = await msg.document.get_file()
-        file_name = msg.document.file_name or f"document_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        file_path = folder / file_name
-        await file.download_to_drive(str(file_path))
-        entry["files"].append(str(file_path.relative_to(folder)))
-    if msg.audio:
-        file = await msg.audio.get_file()
-        file_name = msg.audio.file_name or f"audio_{datetime.now().strftime('%Y%m%d_%H%M%S')}.mp3"
-        file_path = folder / file_name
-        await file.download_to_drive(str(file_path))
-        entry["files"].append(str(file_path.relative_to(folder)))
-    if msg.voice:
-        file = await msg.voice.get_file()
-        file_path = folder / f"voice_{datetime.now().strftime('%Y%m%d_%H%M%S')}.ogg"
-        await file.download_to_drive(str(file_path))
-        entry["files"].append(str(file_path.relative_to(folder)))
-    if msg.video:
+        b = BytesIO()
+        await file.download_to_memory(out=b)
+        b.seek(0)
+        sent_msg = await context.bot.send_photo(
+            chat_id=ADMIN_GROUP_ID,
+            photo=b,
+            caption=text,
+            message_thread_id=thread_id,
+            reply_to_message_id=reply_to_message_id,
+        )
+    elif msg.video:
         file = await msg.video.get_file()
-        file_name = msg.video.file_name or f"video_{datetime.now().strftime('%Y%m%d_%H%M%S')}.mp4"
-        file_path = folder / file_name
-        await file.download_to_drive(str(file_path))
-        entry["files"].append(str(file_path.relative_to(folder)))
-    # Добавляем запись в историю
-    history.append(entry)
-    # Сохраняем историю обратно
-    with open(history_file, "w", encoding="utf-8") as f:
-        json.dump(history, f, ensure_ascii=False, indent=2)
-    await update.message.reply_text("👍 Сохранено!")
-# ─── lifespan ───────────────────────────────────────────────
+        b = BytesIO()
+        await file.download_to_memory(out=b)
+        b.seek(0)
+        sent_msg = await context.bot.send_video(
+            chat_id=ADMIN_GROUP_ID,
+            video=b,
+            caption=text,
+            message_thread_id=thread_id,
+            reply_to_message_id=reply_to_message_id,
+        )
+    elif msg.document:
+        file = await msg.document.get_file()
+        b = BytesIO()
+        await file.download_to_memory(out=b)
+        b.seek(0)
+        sent_msg = await context.bot.send_document(
+            chat_id=ADMIN_GROUP_ID,
+            document=InputFile(b, filename=msg.document.file_name),
+            caption=text,
+            message_thread_id=thread_id,
+            reply_to_message_id=reply_to_message_id,
+        )
+    else:
+        sent_msg = await context.bot.send_message(
+            chat_id=ADMIN_GROUP_ID,
+            text=text,
+            message_thread_id=thread_id,
+            reply_to_message_id=reply_to_message_id,
+        )
+
+    mapping[sent_msg.message_id] = msg.message_id
+    await msg.reply_text("✅ Ваше сообщение передано в поддержку!")
+
+# --- Обработка ответов админов ---
+async def handle_admin_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = update.message
+    if msg.chat.type != ChatType.SUPERGROUP or not msg.is_topic_message:
+        return
+
+    thread_id = msg.message_thread_id
+    user_id = next((uid for uid, tid in user_topics.items() if tid == thread_id), None)
+    if not user_id:
+        logging.warning("⚠️ Не найден пользователь для топика.")
+        return
+
+    forwarded_mapping = context.bot_data.setdefault("forwarded_mapping", {})
+    reply_mapping = context.bot_data.setdefault("reply_mapping", {})
+    user_message_id = None
+    if msg.reply_to_message:
+        forwarded_message_id = msg.reply_to_message.message_id
+        user_message_id = forwarded_mapping.get(thread_id, {}).get(forwarded_message_id)
+
+    if msg.photo:
+        file = await msg.photo[-1].get_file()
+        b = BytesIO()
+        await file.download_to_memory(out=b)
+        b.seek(0)
+        sent_msg = await context.bot.send_photo(
+            chat_id=user_id,
+            photo=b,
+            caption=msg.caption,
+            reply_to_message_id=user_message_id,
+        )
+    elif msg.video:
+        file = await msg.video.get_file()
+        b = BytesIO()
+        await file.download_to_memory(out=b)
+        b.seek(0)
+        sent_msg = await context.bot.send_video(
+            chat_id=user_id,
+            video=b,
+            caption=msg.caption,
+            reply_to_message_id=user_message_id,
+        )
+    elif msg.document:
+        file = await msg.document.get_file()
+        b = BytesIO()
+        await file.download_to_memory(out=b)
+        b.seek(0)
+        sent_msg = await context.bot.send_document(
+            chat_id=user_id,
+            document=InputFile(b, filename=msg.document.file_name),
+            caption=msg.caption,
+            reply_to_message_id=user_message_id,
+        )
+    else:
+        sent_msg = await context.bot.send_message(
+            chat_id=user_id,
+            text=msg.text,
+            reply_to_message_id=user_message_id,
+        )
+
+    reply_mapping.setdefault(thread_id, {})[sent_msg.message_id] = msg.message_id
+
+# --- Lifespan FastAPI ---
 @asynccontextmanager
-async def lifespan(app):
-    tg_app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
-    tg_app.add_handler(CommandHandler("start", tg_start))
-    tg_app.add_handler(MessageHandler(filters.ALL & ~filters.COMMAND, tg_save_message))
-    # 1-2. инициализация и запуск
-    await tg_app.initialize()
-    await tg_app.start()
-    # 3. запускаем polling асинхронно (не блокируем FastAPI)
-    await tg_app.updater.start_polling()
+async def lifespan(app: FastAPI):
+    bot_app = ApplicationBuilder().token(BOT_TOKEN).build()
+
+    bot_app.add_handler(CommandHandler("start", handle_start))
+    bot_app.add_handler(MessageHandler(filters.ChatType.PRIVATE & ~filters.COMMAND, handle_user_message))
+    bot_app.add_handler(MessageHandler(filters.Chat(ADMIN_GROUP_ID) & filters.REPLY & ~filters.COMMAND, handle_admin_reply))
+
+    await bot_app.initialize()
+    await bot_app.start()
+    await bot_app.updater.start_polling()
     logging.info("[✅ BOT] polling started")
+
     try:
-        yield                      # ← здесь FastAPI начинает работать
+        yield
     finally:
         logging.info("[⏳ BOT] stopping…")
-        # 4. корректная остановка
-        await tg_app.updater.stop()
-        await tg_app.stop()
-        await tg_app.shutdown()
+        await bot_app.updater.stop()
+        await bot_app.stop()
+        await bot_app.shutdown()
         logging.info("[✅ BOT] stopped")
-# ------------------- базовая инициализация -------------------
-# app = FastAPI(lifespan=lifespan)
-# else:
-app = FastAPI()
+
+# --- FastAPI приложение ---
+app = FastAPI(lifespan=lifespan)
+
+
+# app = FastAPI()
 router = APIRouter()
 app.include_router(router, tags=["Matrix Routes"])
 
