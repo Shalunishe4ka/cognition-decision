@@ -13,14 +13,14 @@ export const ComaBerenicesPage = () => {
       <section className="coma-section">
         <h2>Humanoids</h2>
         <p>
-          Жители. Дафиряне имеют правильные и строгие черты лица, высокий рост — от двух до двух с половиной метров — и стройные пропорциональные фигуры, тонкие руки с длинными запястьями. Выразительные миндалевидные, со слегка продолговатым разрезом, глаза с тёмными ресницами и тонкими, выгнутыми бровями, имеют очень чёткую сегментарную прорисовку радужной оболочки. Легко и быстро «перемещаются» на довольно большие расстояния — 20–30 метров за один «шаг-прыжок». Для дальних и быстрых перемещений в пространстве используются очень компактные индивидуальные летательные средства, позволяющие практически мгновенно переместиться в пространство в любую точку планеты или даже на любую из планет звезды. К обычной левитации способны все с самого рождения.
+          Inhabitants. The Dafirians have well-defined, austere facial features, stand between two and two and a half meters tall, and possess slender, proportionate bodies with thin arms and long wrists. Their expressive almond-shaped eyes, slightly elongated with dark lashes and thin, arched brows, display very clear segmented detailing of the iris. They can easily and swiftly “move” over considerable distances—20–30 meters in a single “step-jump.” For long-range and rapid travel through space, they use very compact individual flying devices that allow near-instantaneous relocation to any point on the planet or even to any of the star’s planets. All are capable of innate levitation from birth.
         </p>
       </section>
 
       <section className="coma-section">
         <h2>Housing</h2>
         <p>
-          Дафиряне живут семьями в индивидуальных комфортабельных сооружениях, внутреннее строение которых непрерывно меняется не только по своим масштабам, но и по форме. Окружение изменяется в строгом соответствии с внутренним эмоциональным состоянием владельца. Сферообразные крыши жилищ с красивыми высокими крестами, выполняющими технологическую роль и действующие как узконаправленные радары и передатчики энергии высокочастотных вибраций, выполняющие функции энергоочистителей и стабилизаторов энергии.
+          Dafirians live in family units in individual, comfortable structures whose internal layout continuously changes not only in scale but also in shape. The environment shifts in strict accordance with the owner’s inner emotional state. Their dwellings feature spherical roofs adorned with elegant tall crosses that serve a technological role, acting as directional radars and transmitters of high-frequency vibrational energy, functioning as energy purifiers and stabilizers.
         </p>
       </section>
 
@@ -29,17 +29,17 @@ export const ComaBerenicesPage = () => {
 
         <h3>Technologies</h3>
         <p>
-          Имеют высокоразвитую науку и высокий технический уровень.
+          They possess highly advanced science and a high level of technological development.
         </p>
 
         <h3>Knowledge</h3>
         <p>
-          Огромное внимание уделяется духовному развитию, уровень которого определяет практически всё. С повышением его увеличивается не только доступ к более высоким сферам Знания и Космическому Банку Информации, но также и возможности каждого по владению различными видами энергии.
+          Great emphasis is placed on spiritual development, the level of which determines almost everything. As it increases, not only does access to higher realms of Knowledge and the Cosmic Information Bank expand, but so do individuals’ abilities to harness various forms of energy.
         </p>
 
         <h3>Governance</h3>
         <p>
-          Существует глобальное правительство <span style={{ backgroundColor: "#3498db", fontSize: "1.2rem", borderRadius: "7px", padding: "0 5px" }}>Akkad</span>, на которое возложена задача всестороннего устройства звездной системы. При нём есть агентство для поддержки решений — <span style={{ backgroundColor: "#3498db", fontSize: "1.2rem", borderRadius: "7px", padding: "0 5px" }}>Anum</span>, представители которого помогают решать сложные проблемы, возникающие на планетах. На каждой из 4-х планет сформировалось своё правительство. Эти правительства могут вкладывать средства в финансовые инструменты других планет. Материальных денежных знаков нет. Криптовалюта — дафира.
+          There is a global government <span style={{ backgroundColor: "#3498db", fontSize: "1.2rem", borderRadius: "7px", padding: "0 5px" }}>Akkad</span>, entrusted with the comprehensive administration of the star system. Under it operates a decision-support agency — <span style={{ backgroundColor: "#3498db", fontSize: "1.2rem", borderRadius: "7px", padding: "0 5px" }}>Anum</span> — whose representatives assist in resolving complex issues arising on the planets. Each of the four planets has its own government. These governments can invest resources in the financial instruments of other planets. There is no physical currency. The cryptocurrency is Dafira.
         </p>
       </section>
     </div>

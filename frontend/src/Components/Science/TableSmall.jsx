@@ -1,32 +1,30 @@
 // TableSmall.jsx
 import React from "react";
-
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-
 
 const TableHeader = [
   { title: "ID", key: "ID", width: "75px", height: "75px" },
   {
-    title: "Реакция (отклик) узлов модели на воздействие",
+    title: "Model node response to impact",
     key: "Response",
     width: "170px",
     height: "75px",
   },
   {
-    title: "Сила воздействия от узла",
+    title: "Node impact strength",
     key: "Impact",
     width: "200px",
     height: "75px",
   },
   {
-    title: "Взвешенная реакция узла",
+    title: "Weighted node response",
     key: "Eff_in",
     width: "120px",
     height: "75px",
   },
   {
-    title: "Взвешенное воздействие от узла",
+    title: "Weighted node impact",
     key: "Control_in",
     width: "120px",
     height: "75px",
@@ -34,7 +32,6 @@ const TableHeader = [
 ];
 
 export const TableSmall = ({ data }) => {
-
   const tableData = data;
 
   const [sortConfig, setSortConfig] = React.useState({
@@ -63,13 +60,14 @@ export const TableSmall = ({ data }) => {
 
   return (
     <div id="small-table-alignment-div">
-      <h5 style={{ color: "#ffd700", height: "48px", fontSize: "1.25rem"}}>
-        Step 1: Находим силу воздействия каждого узла по <a href="/algorithm">Algorithm</a>
+      <h5 style={{ color: "#ffd700", height: "48px", fontSize: "1.25rem" }}>
+        Step 1: Determine each node’s impact strength using the{" "}
+        <a href="/algorithm">Algorithm</a>
       </h5>
 
       <h2 id="small-table-name">
-        Оптимизированные отклики и воздействия, рассчитанные{" "}
-        <a href="https://arxiv.org">алгоритмом</a>
+        The optimized responses and impacts computed by the{" "}
+        <a href="https://arxiv.org">algorithm</a>
       </h2>
 
       <div className="small-table-container">
@@ -93,7 +91,7 @@ export const TableSmall = ({ data }) => {
                   {(hoveredSortButton === index ||
                     sortConfig.key === header.key) &&
                     (sortConfig.key === header.key &&
-                      sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                       <KeyboardArrowDownIcon />
                     ) : (
                       <KeyboardArrowUpIcon />
@@ -105,9 +103,9 @@ export const TableSmall = ({ data }) => {
           <tbody>
             {sortedData.map((row, index) => (
               <tr key={index}>
-                {TableHeader.map((header, columnIndex) => (
+                {TableHeader.map((header, colIndex) => (
                   <td
-                    key={columnIndex}
+                    key={colIndex}
                     style={{
                       width: header.width,
                       fontSize: "18px",

@@ -59,21 +59,21 @@ export const Buttons = ({ matrixUuid, planetColor, planetImg }) => {
 
         <li>
           {/* <Link to={`/science/${matrixUuid}`} state={{ selectedPlanet, selectedCardIndex, planetColor, planetImg }}> */}
-            <button
-              id="science-button"
-              className='game-button'
-              onClick={handleScienceClick}
-              // disabled={scienceClicks !== null && scienceClicks <= 0}
-              disabled
-              title='Временно заблокирована!'
-            >
-              <p>Science</p>
-              {scienceClicks !== null &&
-                Array.from({ length: scienceClicks }, (_, index) => (
-                  <KeyIcon key={index} sx={{ marginRight: "4px" }} />
-                ))
-              }
-            </button>
+          <button
+            id="science-button"
+            className='game-button'
+            onClick={handleScienceClick}
+            // disabled={scienceClicks !== null && scienceClicks <= 0}
+            disabled
+            title='Temporarily disabled!'
+          >
+            <p>Science</p>
+            {scienceClicks !== null &&
+              Array.from({ length: scienceClicks }, (_, index) => (
+                <KeyIcon key={index} sx={{ marginRight: "4px" }} />
+              ))
+            }
+          </button>
           {/* </Link> */}
         </li>
 
@@ -100,17 +100,18 @@ export const Buttons = ({ matrixUuid, planetColor, planetImg }) => {
           <button
             className="game-button"
             disabled={isRunning}
-            title={isRunning ? "Not available during the game" : ""}
+            title={isRunning ? "Not available during the game" : "Game history is here"}
             onClick={() => setShowHistory(true)}
+
           >
             Profile
           </button>
         </li>
-        <li><button className="game-button" onClick={handleSaveUserView}>Save View</button></li>
+        <li><button className="game-button" onClick={handleSaveUserView} title='Save current graph view'>Save View</button></li>
         <li><button
           className="game-button"
           onClick={() => handleResetCoordinates(matrixUuid, applyCoordinates)}
-          title="Сбросить граф к дефолтным настройкам"
+          title="Reset graph to default settings"
         >
           Reset
         </button>
@@ -119,13 +120,13 @@ export const Buttons = ({ matrixUuid, planetColor, planetImg }) => {
           <button
             className="game-button"
             onClick={() => handleLoadCoordinates(matrixUuid, applyCoordinates)}
-            title="Загружает последний сохранённый вид графа"
+            title="Loads the last saved view of the graph"
           >
             Load Last View
           </button>
         </li>
         <li>
-          <button className='game-button' onClick={handleSaveDefaultView} title='Временная кнопка'>
+          <button className='game-button' onClick={handleSaveDefaultView} title='Temporary button'>
             Save Graph (Default)
           </button>
         </li>

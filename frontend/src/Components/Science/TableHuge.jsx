@@ -1,16 +1,16 @@
 // TableHuge.jsx
-import React from "react";
+
 
 const TableHeader1 = [
-  { title: "Расчётные данные (по воздействию)", width: "300px", colSpan: 2 },
-  { title: "Ваш игровой результат", width: "300px", colSpan: 2 },
+  { title: "Calculated data (by impact)", width: "300px", colSpan: 2 },
+  { title: "Your game results", width: "300px", colSpan: 2 },
 ];
 
 const TableHeader2 = [
-  { title: "Вершина", key: "ID", width: "150px", height: "20px" },
-  { title: "Счёт", key: "Score1", width: "240px", height: "20px" },
-  { title: "Вершина", key: "S", width: "150px", height: "20px" },
-  { title: "Счёт", key: "Score2", width: "240px", height: "20px" },
+  { title: "Vertex", key: "ID", width: "150px", height: "20px" },
+  { title: "Score", key: "Score1", width: "240px", height: "20px" },
+  { title: "Vertex", key: "S", width: "150px", height: "20px" },
+  { title: "Score", key: "Score2", width: "240px", height: "20px" },
 ];
 
 export const TableHuge = ({ data }) => {
@@ -37,9 +37,9 @@ export const TableHuge = ({ data }) => {
   return (
     <div id="huge-table-alignment-div">
       <h5 style={{ fontSize: "1.25rem" }}>
-        Step 2: Сравним Ваши результаты с расчётными
+        Step 2: Compare your results with the calculated ones
       </h5>
-      <h2 id="huge-table-name">Результаты</h2>
+      <h2 id="huge-table-name">Results</h2>
       <div className="huge-table-container">
         <table>
           <thead>

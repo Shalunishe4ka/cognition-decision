@@ -28,7 +28,7 @@ export const InfoModalWindow = ({ planetColor }) => {
                 <div className="preview-modal-window preview-custom-modal preview-custom-modal-content">
                     <div className="GraphPreviewModalBody">
                         <h2 id="graph-preview-title">
-                            Прежде чем начать игру, вы можете произвести предпросмотр графа, чтобы понять логику игры.
+                            Before starting the game, you can preview the graph to understand the game logic.
                         </h2>
                     </div>
                     <div className="GraphPreviewModalFooter">

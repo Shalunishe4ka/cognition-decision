@@ -158,6 +158,7 @@
   -webkit-box-orient: vertical;
   overflow: scroll;
   text-align: center;
+  height: 30px;
 }
 
 

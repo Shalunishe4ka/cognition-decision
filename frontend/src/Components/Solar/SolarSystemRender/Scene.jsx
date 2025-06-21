@@ -1,11 +1,10 @@
 import { Planet } from "./Planet";
 import { Sun } from "./Sun";
 import { Orbit } from "./Orbit";
-import GreenPlanetTexture from "./assets/imgs/Green/GreenPlanetTexture.png"
-import OrangePlanetTexture from "./assets/imgs/Orange/OrangePlanetTexture.jpg"
-import VioletPlanetTexture from "./assets/imgs/Violet/VioletPlanetTexture.jpg"
+import GreenPlanetTexture from "./assets/imgs/Green/GreenPlanetTexture.png";
+import OrangePlanetTexture from "./assets/imgs/Orange/OrangePlanetTexture.jpg";
+import VioletPlanetTexture from "./assets/imgs/Violet/VioletPlanetTexture.jpg";
 import { useEffect } from "react";
-
 
 export const Scene = ({
   sunRef,
@@ -15,14 +14,11 @@ export const Scene = ({
   hoveredPlanet
 }) => {
 
-
   useEffect(() => {
-    setHoveredPlanet("Orange")
-    // console.log("Hovered Planet изменился:", hoveredPlanet);
+    setHoveredPlanet("Orange");
+    // console.log("Hovered Planet changed:", hoveredPlanet);
     // eslint-disable-next-line
   }, [setHoveredPlanet]);
-
-
 
   return (
     <>
@@ -31,7 +27,7 @@ export const Scene = ({
       <Orbit radius={12} speed={0.3}>
         <Planet
           name="Green"
-          description="Жители планеты Green приняли всеобъемлющую стратегию сбережения ее природных ресурсов и жизни в окружении природы. Обеспечение качества среды обитания занимают первостепенное значение в принятии решений."
+          description="The inhabitants of planet Green have adopted a comprehensive strategy for conserving its natural resources and living enveloped by nature. Ensuring habitat quality is of paramount importance in their decision-making."
           textureUrl={GreenPlanetTexture}
           size={1}
           setHoveredPlanet={setHoveredPlanet}
@@ -39,10 +35,11 @@ export const Scene = ({
           selectedPlanet={selectedPlanet}
         />
       </Orbit>
+
       <Orbit radius={18} speed={-0.05}>
         <Planet
           name="Orange"
-          description="Жители планеты Orange строят совершенное общественное устройство. Баланс социальных факторов определяет процветание нации. Настройка институционального комплекса во всех сферах жизни людей является первостепенной задачей."
+          description="The inhabitants of planet Orange are building an ideal societal system. Balancing social factors determines the nation’s prosperity. Configuring the institutional framework across all aspects of life is their primary task."
           textureUrl={OrangePlanetTexture}
           size={1.1}
           setHoveredPlanet={setHoveredPlanet}
@@ -50,10 +47,11 @@ export const Scene = ({
           selectedPlanet={selectedPlanet}
         />
       </Orbit>
+
       <Orbit radius={28} speed={0.05}>
         <Planet
           name="Violet"
-          description="Жители планеты Violet сосредоточены на обеспечении устойчивого жизнеобеспечения, надежности и безопасности всех индустриальных и социально-экономических систем, развивающихся на планете. Предпочитают сберегающие методы, оказывающих положительное воздействие на окружающую среду, животных и людей."
+          description="The inhabitants of planet Violet focus on ensuring sustainable livelihoods, reliability, and safety of all industrial and socio-economic systems on the planet. They prefer conservation-oriented methods that have a positive impact on the environment, animals, and people."
           textureUrl={VioletPlanetTexture}
           size={1.3}
           setHoveredPlanet={setHoveredPlanet}

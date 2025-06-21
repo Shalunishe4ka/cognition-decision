@@ -174,7 +174,7 @@ export const SciencePage = () => {
             <h5
               style={{ color: "#ffd700", height: "48px", fontSize: "1.25rem" }}
             >
-              Step 3: Сыграйте с нашими данными!
+              Step 3: Play with our data!
             </h5>
             <div className="graph-section">
               {graphData && <ScienceGraphComponent uuid={uuid} />}

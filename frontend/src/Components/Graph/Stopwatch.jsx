@@ -62,7 +62,7 @@ const Stopwatch = ({ planetColor }) => {
           onMouseLeave={() => setIsHoveredStart(false)}
           onClick={handleStart}
           disabled={isRunning}
-          title={isRunning ? "Вы уже в процессе игры!" : "Начать игру"}
+          title={isRunning ? "You are already in the game!" : "Start the game"}
         >
           Start
         </button>
@@ -79,7 +79,7 @@ const Stopwatch = ({ planetColor }) => {
           onMouseLeave={() => setIsHoveredStop(false)}
           onClick={handleStop}
           disabled={!isRunning}
-          title={isRunning ? "Остановить игру" : "Вы ещё не начали игру!"}
+          title={isRunning ? "Stop the game" : "You haven't started the game yet!"}
         >
           Stop
         </button>

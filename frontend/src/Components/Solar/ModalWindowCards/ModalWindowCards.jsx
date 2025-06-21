@@ -53,7 +53,7 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
                   id="life-strategy-span"
                   style={{ color: cardcreds[selectedPlanet.name].color }}
                 >
-                  Стратегия жизни:
+                  Life strategy:
                 </span>{" "}
                 {selectedPlanet.description}
               </h3>
@@ -104,9 +104,9 @@ export const PlanetCardModal = ({ selectedPlanet, setSelectedPlanet }) => {
                         <div className="card-description">
                           <p>{card.description}</p>
                           <br />
-                          <p style={{color: "rgb(255, 218, 150)"}}>Источник: </p>
+                          <p style={{color: "rgb(255, 218, 150)"}}>Source: </p>
                           <p>{card.paper}</p>
-                          <a className="card-desc-link" id="card-desc-link" target="_blank" href={card.link}>Ссылка на статью</a>
+                          <a className="card-desc-link" id="card-desc-link" target="_blank" href={card.link}>DOI link</a>
                         </div>
                         <div className="card-footer">
                           <button
